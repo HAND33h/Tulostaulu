@@ -4,8 +4,8 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/wos_bunny"
-        android:roundIcon="@drawable/wos_bunny"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="WOS Bunny King"
         android:theme="@style/Theme.Tulostaulu"
         android:usesCleartextTraffic="true">
