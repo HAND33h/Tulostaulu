@@ -16,7 +16,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    if: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUNNY_KING != '' }}
 
     steps:
       - name: Checkout
@@ -42,6 +41,7 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUNNY_KING }}
         run: |
           set -euo pipefail
+          test -n "$FIREBASE_SERVICE_ACCOUNT" || { echo "FIREBASE_SERVICE_ACCOUNT_BUNNY_KING is not configured"; exit 1; }
           umask 077
           printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
           echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-service-account.json" >> "$GITHUB_ENV"
