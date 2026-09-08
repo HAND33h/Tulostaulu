@@ -2,17 +2,7 @@ package com.hand33h.tulostaulu;
 
 import java.util.Locale;
 
-/**
- * Whiteout Survival hero battle metadata.
- *
- * Sources checked 2026-09-08: WOS Heroes generation/standalone hero pages and
- * WOS Forge Hero Skills/Heroes.  Values are only applied automatically where
- * they can be represented safely by this aggregate battle model.
- *
- * Important: conditional/proc/turn-based skills are kept in notes instead of
- * being silently converted into an invented average.  Exclusive Weapon
- * Expedition Lethality/Health values are exact for the listed Legendary heroes.
- */
+/** Whiteout Survival hero battle metadata used by Battle Simulator. */
 public final class HeroBattleData {
     private HeroBattleData() {}
 
@@ -37,192 +27,74 @@ public final class HeroBattleData {
         "Zinman — Gen 1 — Marksman"
     };
 
-    public static final String[] SKILL_LEVELS = {"1","2","3","4","5"};
-    public static final String[] EXCLUSIVE_LEVELS = {"0","1","2","3","4","5","6","7","8","9","10"};
-    public static final String[] HERO_GEAR_LEVELS = buildLevels(200);
-    public static final String[] HERO_GEAR_SLOTS = {"Headgear / Goggles","Gloves","Belt","Boots"};
+    public static final String[] SKILL_LEVELS={"1","2","3","4","5"};
+    public static final String[] EXCLUSIVE_LEVELS={"0","1","2","3","4","5","6","7","8","9","10"};
+    public static final String[] HERO_GEAR_LEVELS=buildLevels(200);
+    public static final String[] HERO_GEAR_SLOTS={"Headgear / Goggles","Gloves","Belt","Boots"};
 
-    /** Direct effects the aggregate simulator can represent without inventing proc averages. */
     public static final class Effect {
-        public double atk, def, hp, leth;
-        public double enemyAtk, enemyDef, enemyHp, enemyLeth;
-        public double infAtk, infDef, infHp, infLeth;
-        public double lanAtk, lanDef, lanHp, lanLeth;
-        public double marAtk, marDef, marHp, marLeth;
-        public double damageDealt, damageTakenReduction;
-        public String note = "";
+        public double atk,def,hp,leth;
+        public double enemyAtk,enemyDef,enemyHp,enemyLeth;
+        public double infAtk,infDef,infHp,infLeth;
+        public double lanAtk,lanDef,lanHp,lanLeth;
+        public double marAtk,marDef,marHp,marLeth;
+        public double damageDealt,damageTakenReduction;
+        public String note="";
         public boolean hasVerifiedSkillData;
     }
 
-    public static String nameOf(String selected) {
-        if (selected == null) return "None";
-        int p = selected.indexOf(" — ");
-        return p < 0 ? selected : selected.substring(0, p);
+    public static String nameOf(String selected){
+        if(selected==null)return "None";int p=selected.indexOf(" — ");return p<0?selected:selected.substring(0,p);
+    }
+    public static int generationOf(String selected){
+        if(selected==null)return 0;int p=selected.indexOf("Gen ");if(p<0)return 0;int s=p+4,e=s;while(e<selected.length()&&Character.isDigit(selected.charAt(e)))e++;try{return Integer.parseInt(selected.substring(s,e));}catch(Exception ignored){return 0;}
+    }
+    public static String troopTypeOf(String selected){
+        if(selected==null)return "None";if(selected.endsWith("Infantry"))return "Infantry";if(selected.endsWith("Lancer"))return "Lancer";if(selected.endsWith("Marksman"))return "Marksman";return "None";
     }
 
-    public static int generationOf(String selected) {
-        if (selected == null) return 0;
-        int p = selected.indexOf("Gen ");
-        if (p < 0) return 0;
-        int s = p + 4, e = s;
-        while (e < selected.length() && Character.isDigit(selected.charAt(e))) e++;
-        try { return Integer.parseInt(selected.substring(s, e)); } catch (Exception ignored) { return 0; }
+    public static double exclusiveExpeditionLethHp(String selected,int weaponLevel){
+        if(selected==null||"None".equals(nameOf(selected))||weaponLevel<=0)return 0;
+        int lv=Math.max(0,Math.min(10,weaponLevel));String n=nameOf(selected);int g=generationOf(selected);
+        if(g==1){if("Jeronimo".equals(n))return 6.25*lv;if("Natalia".equals(n))return 5.50*lv;if("Molly".equals(n)||"Zinman".equals(n))return 5.00*lv;return 0;}
+        double[] step={0,0,6.00,7.00,9.25,11.10,13.35,16.05,19.30,23.20,27.85,33.45,40.15,48.20,57.85,69.40,83.30,99.95};
+        return(g>=2&&g<step.length)?step[g]*lv:0;
     }
+    public static int exclusiveExpeditionTier(int weaponLevel){return Math.max(0,Math.min(5,weaponLevel/2));}
+    private static double v(int level,double a,double b,double c,double d,double e){int i=Math.max(1,Math.min(5,level));return new double[]{a,b,c,d,e}[i-1];}
+    private static double ewTierValue(int weaponLevel){int t=exclusiveExpeditionTier(weaponLevel);if(t==0)return 0;return new double[]{5,7.5,10,12.5,15}[t-1];}
 
-    public static String troopTypeOf(String selected) {
-        if (selected == null) return "None";
-        if (selected.endsWith("Infantry")) return "Infantry";
-        if (selected.endsWith("Lancer")) return "Lancer";
-        if (selected.endsWith("Marksman")) return "Marksman";
-        return "None";
-    }
+    public static Effect directEffect(String selected,int skillLevel,int weaponLevel,boolean defenderSide){
+        Effect x=new Effect();String n=nameOf(selected);int l=Math.max(1,Math.min(5,skillLevel));double ew=ewTierValue(weaponLevel);if("None".equals(n))return x;
 
-    /**
-     * Exact Exclusive Weapon Expedition Lethality/Health bonus for current Legendary roster.
-     * WOS Heroes tables are linear by weapon strength within a generation.
-     */
-    public static double exclusiveExpeditionLethHp(String selected, int weaponLevel) {
-        if (selected == null || "None".equals(nameOf(selected)) || weaponLevel <= 0) return 0;
-        int lv = Math.max(0, Math.min(10, weaponLevel));
-        String n = nameOf(selected);
-        int g = generationOf(selected);
+        if("Aiden".equals(n)){x.atk+=v(l,3,6,9,12,15);x.def+=v(l,2,4,6,8,10);if(defenderSide)x.atk+=ew;x.note="Scarlet Brigade applied. Starfire Wall (40% proc) and Rush (every 2 turns) kept conditional. Guardians of Iron applies on defense.";x.hasVerifiedSkillData=true;}
+        else if("Bertha".equals(n)){x.leth+=v(l,5,10,15,20,25);x.note="Squad Lethality applied. Vengeance/Lethal Precision are attack-cycle/target conditional and are not averaged.";x.hasVerifiedSkillData=true;}
+        else if("Eleanor".equals(n)){x.enemyDef+=v(l,5,10,15,20,25);x.note="Enemy Defense reduction applied. Marksman proc/target skills remain conditional.";x.hasVerifiedSkillData=true;}
+        else if("Estrella".equals(n)){x.enemyDef+=v(l,5,10,15,20,25);x.atk+=v(l,3,6,9,12,15);x.def+=v(l,2,4,6,8,10);x.note="Corrosive Color + Dawn Canvas applied; troop-specific Splendid Scene remains conditional.";x.hasVerifiedSkillData=true;}
+        else if("Hank".equals(n)){x.leth+=v(l,5,10,15,20,25);if(defenderSide)x.hp+=ew;x.note="Roaring Rage applied. Flying Sparks/Raging Force are timed/target conditional. Wall of Despair applies on defense.";x.hasVerifiedSkillData=true;}
+        else if("Norah".equals(n)){if(defenderSide)x.def+=ew;x.note="Combined Arms, Sneak Strike and Momentum are troop/trigger conditional; True Grit applies on defense.";x.hasVerifiedSkillData=true;}
+        else if("Hector".equals(n)){if(defenderSide)x.atk+=ew;x.note="Survival Instincts (40% proc), Rampant and Blitz are conditional and not averaged. Goliath applies on defense.";x.hasVerifiedSkillData=true;}
+        else if("Ahmose".equals(n)){if(defenderSide)x.hp+=ew;x.note="Viper Formation/Prayer of Flame/Blade of Light are troop or timing dependent; Exclusive defender Health applies.";x.hasVerifiedSkillData=true;}
+        else if("Edith".equals(n)){x.hp+=v(l,5,10,15,20,25);if(defenderSide)x.hp+=ew;x.note="Steel Sentinel Health applied; Strategic Balance/Ironclad are troop-specific. Exclusive defender Health applies.";x.hasVerifiedSkillData=true;}
+        else if("Bradley".equals(n)){x.atk+=v(l,5,10,15,20,25);if(defenderSide)x.atk+=ew;x.note="Veteran's Might applied. Power Shot/Tactical Assistance are target/timing conditional. Exclusive defender Attack applies.";x.hasVerifiedSkillData=true;}
+        else if("Eleonora".equals(n)){x.hp+=v(l,5,10,15,20,25);if(defenderSide)x.hp+=ew;x.note="Scorching Sun Health applied. Solaris Nexus/Soaring Flame are troop/timing conditional. Exclusive defender Health applies.";x.hasVerifiedSkillData=true;}
+        else if("Elif".equals(n)){x.enemyAtk+=v(l,5,10,15,20,25);x.atk+=v(l,3,6,9,12,15);x.def+=v(l,2,4,6,8,10);if(defenderSide)x.def+=ew;x.note="Enemy ATK reduction + allied ATK/DEF applied; Infantry shield skill conditional. Exclusive defender Defense applies.";x.hasVerifiedSkillData=true;}
+        else if("Flint".equals(n)){x.atk+=v(l,5,10,15,20,25);x.leth+=v(l,5,10,15,20,25);if(defenderSide)x.atk+=ew;x.note="Troop Attack + Lethality applied. Infantry damage skill is troop-specific. Exclusive defender Attack applies.";x.hasVerifiedSkillData=true;}
+        else if("Gatot".equals(n)){x.infDef+=v(l,6,12,18,24,30);x.enemyAtk+=v(l,5,10,15,20,25);if(defenderSide)x.def+=ew;x.note="Infantry Defense and enemy Attack reduction applied; shield proc conditional. Exclusive defender Defense applies.";x.hasVerifiedSkillData=true;}
+        else if("Gisela".equals(n)){x.infDef+=v(l,6,12,18,24,30);if(defenderSide)x.atk+=ew;x.note="Infantry Defense applied. 40% Defense/damage-taken procs remain conditional. Exclusive defender Attack applies.";x.hasVerifiedSkillData=true;}
+        else if("Gregory".equals(n)){x.atk+=v(l,3,6,9,12,15);x.def+=v(l,2,4,6,8,10);if(defenderSide)x.leth+=ew;x.note="Troop Attack/Defense applied. Crit and Infantry damage-taken skill remain conditional. Exclusive defender Lethality applies.";x.hasVerifiedSkillData=true;}
+        else if("Hervor".equals(n)){x.leth+=v(l,5,10,15,20,25);if(defenderSide)x.def+=ew;x.note="Troop Lethality applied. Infantry normal/skill damage reductions remain troop-specific. Exclusive defender Defense applies.";x.hasVerifiedSkillData=true;}
+        else if("Jeronimo".equals(n)){x.atk+=v(l,5,10,15,20,25);x.damageDealt+=v(l,5,10,15,20,25);x.note="Battle Manifesto + Swordmentor applied; Expert Swordsmanship is turn-based and not averaged.";x.hasVerifiedSkillData=true;}
+        else if("Natalia".equals(n)){x.atk+=v(l,5,10,15,20,25);x.damageDealt+=v(l,5,10,15,20,25);x.note="Queen/Call of the Wild applied. Feral Protection is a 40% proc and not averaged.";x.hasVerifiedSkillData=true;}
+        else if("Molly".equals(n)){x.damageDealt+=v(l,5,10,15,20,25);if(defenderSide)x.leth+=ew;x.note="Youthful Rage applied. Ice Dominion is 50% proc and not averaged. Snowy Blessing applies on defense.";x.hasVerifiedSkillData=true;}
+        else if("Zinman".equals(n)){x.leth+=v(l,5,10,15,20,25);if(defenderSide)x.atk+=ew;x.note="Positional Battler applied; construction skill ignored for battle. Defend to Attack applies on defense.";x.hasVerifiedSkillData=true;}
 
-        if (g == 1) {
-            if ("Jeronimo".equals(n)) return 6.25 * lv;
-            if ("Natalia".equals(n)) return 5.50 * lv;
-            if ("Molly".equals(n) || "Zinman".equals(n)) return 5.00 * lv;
-            return 0;
-        }
-        double[] step = {
-                0,0,
-                6.00,   // Gen 2
-                7.00,   // Gen 3
-                9.25,   // Gen 4
-                11.10,  // Gen 5
-                13.35,  // Gen 6
-                16.05,  // Gen 7
-                19.30,  // Gen 8
-                23.20,  // Gen 9
-                27.85,  // Gen 10
-                33.45,  // Gen 11
-                40.15,  // Gen 12
-                48.20,  // Gen 13
-                57.85,  // Gen 14
-                69.40,  // Gen 15
-                83.30,  // Gen 16
-                99.95   // Gen 17
-        };
-        return (g >= 2 && g < step.length) ? step[g] * lv : 0;
-    }
-
-    /** Exclusive Expedition skill tier: levels 2/4/6/8/10 -> tiers 1..5. */
-    public static int exclusiveExpeditionTier(int weaponLevel) {
-        return Math.max(0, Math.min(5, weaponLevel / 2));
-    }
-
-    private static double v(int level, double a, double b, double c, double d, double e) {
-        int i = Math.max(1, Math.min(5, level));
-        return new double[]{a,b,c,d,e}[i-1];
-    }
-
-    private static double ewTierValue(int weaponLevel) {
-        int t = exclusiveExpeditionTier(weaponLevel);
-        if (t == 0) return 0;
-        return new double[]{5,7.5,10,12.5,15}[t-1];
-    }
-
-    /**
-     * Verified direct Expedition effects. Conditional/proc/turn-specific effects are described
-     * in note and deliberately not averaged into the score.
-     */
-    public static Effect directEffect(String selected, int skillLevel, int weaponLevel, boolean defenderSide) {
-        Effect x = new Effect();
-        String n = nameOf(selected);
-        int l = Math.max(1, Math.min(5, skillLevel));
-        double ew = ewTierValue(weaponLevel);
-
-        if ("None".equals(n)) return x;
-
-        if ("Aiden".equals(n)) {
-            x.atk += v(l,3,6,9,12,15); x.def += v(l,2,4,6,8,10);
-            if (defenderSide) x.atk += ew;
-            x.note = "Scarlet Brigade applied. Starfire Wall (40% proc) and Rush (every 2 turns) kept conditional. Guardians of Iron applies on defense."; x.hasVerifiedSkillData=true;
-        } else if ("Bertha".equals(n)) {
-            x.leth += v(l,5,10,15,20,25);
-            x.note = "Squad Lethality applied. Vengeance/Lethal Precision are attack-cycle/target conditional and are not averaged."; x.hasVerifiedSkillData=true;
-        } else if ("Eleanor".equals(n)) {
-            x.enemyDef += v(l,5,10,15,20,25);
-            x.note = "Enemy Defense reduction applied. Marksman proc/target skills remain conditional."; x.hasVerifiedSkillData=true;
-        } else if ("Estrella".equals(n)) {
-            x.enemyDef += v(l,5,10,15,20,25); x.atk += v(l,3,6,9,12,15); x.def += v(l,2,4,6,8,10);
-            x.note = "Corrosive Color + Dawn Canvas applied; troop-specific Splendid Scene remains conditional."; x.hasVerifiedSkillData=true;
-        } else if ("Hank".equals(n)) {
-            x.leth += v(l,5,10,15,20,25); if (defenderSide) x.hp += ew;
-            x.note = "Roaring Rage applied. Flying Sparks/Raging Force are timed/target conditional. Wall of Despair applies on defense."; x.hasVerifiedSkillData=true;
-        } else if ("Norah".equals(n)) {
-            if (defenderSide) x.def += ew;
-            x.note = "Combined Arms, Sneak Strike and Momentum are troop/trigger conditional; True Grit applies on defense."; x.hasVerifiedSkillData=true;
-        } else if ("Hector".equals(n)) {
-            if (defenderSide) x.atk += ew;
-            x.note = "Survival Instincts (40% proc), Rampant and Blitz are conditional and not averaged. Goliath applies on defense."; x.hasVerifiedSkillData=true;
-        } else if ("Ahmose".equals(n)) {
-            if (defenderSide) x.hp += ew;
-            x.note = "Viper Formation/Prayer of Flame/Blade of Light are troop or timing dependent; Exclusive defender Health applies."; x.hasVerifiedSkillData=true;
-        } else if ("Edith".equals(n)) {
-            x.hp += v(l,5,10,15,20,25); if (defenderSide) x.hp += ew;
-            x.note = "Steel Sentinel Health applied; Strategic Balance/Ironclad are troop-specific. Exclusive defender Health applies."; x.hasVerifiedSkillData=true;
-        } else if ("Bradley".equals(n)) {
-            x.atk += v(l,5,10,15,20,25); if (defenderSide) x.atk += ew;
-            x.note = "Veteran's Might applied. Power Shot/Tactical Assistance are target/timing conditional. Exclusive defender Attack applies."; x.hasVerifiedSkillData=true;
-        } else if ("Eleonora".equals(n)) {
-            x.hp += v(l,5,10,15,20,25); if (defenderSide) x.hp += ew;
-            x.note = "Scorching Sun Health applied. Solaris Nexus/Soaring Flame are troop/timing conditional. Exclusive defender Health applies."; x.hasVerifiedSkillData=true;
-        } else if ("Elif".equals(n)) {
-            x.enemyAtk += v(l,5,10,15,20,25); x.atk += v(l,3,6,9,12,15); x.def += v(l,2,4,6,8,10); if (defenderSide) x.def += ew;
-            x.note = "Enemy ATK reduction + allied ATK/DEF applied; Infantry shield skill conditional. Exclusive defender Defense applies."; x.hasVerifiedSkillData=true;
-        } else if ("Flint".equals(n)) {
-            x.atk += v(l,5,10,15,20,25); x.leth += v(l,5,10,15,20,25); if (defenderSide) x.atk += ew;
-            x.note = "Troop Attack + Lethality applied. Infantry damage skill is troop-specific. Exclusive defender Attack applies."; x.hasVerifiedSkillData=true;
-        } else if ("Gatot".equals(n)) {
-            x.infDef += v(l,6,12,18,24,30); x.enemyAtk += v(l,5,10,15,20,25); if (defenderSide) x.def += ew;
-            x.note = "Infantry Defense and enemy Attack reduction applied; shield proc conditional. Exclusive defender Defense applies."; x.hasVerifiedSkillData=true;
-        } else if ("Gisela".equals(n)) {
-            x.infDef += v(l,6,12,18,24,30); if (defenderSide) x.atk += ew;
-            x.note = "Infantry Defense applied. 40% Defense/damage-taken procs remain conditional. Exclusive defender Attack applies."; x.hasVerifiedSkillData=true;
-        } else if ("Gregory".equals(n)) {
-            x.atk += v(l,3,6,9,12,15); x.def += v(l,2,4,6,8,10); if (defenderSide) x.leth += ew;
-            x.note = "Troop Attack/Defense applied. Crit and Infantry damage-taken skill remain conditional. Exclusive defender Lethality applies."; x.hasVerifiedSkillData=true;
-        } else if ("Hervor".equals(n)) {
-            x.leth += v(l,5,10,15,20,25); if (defenderSide) x.def += ew;
-            x.note = "Troop Lethality applied. Infantry normal/skill damage reductions remain troop-specific. Exclusive defender Defense applies."; x.hasVerifiedSkillData=true;
-        } else if ("Jeronimo".equals(n)) {
-            x.atk += v(l,5,10,15,20,25); x.damageDealt += v(l,5,10,15,20,25);
-            x.note = "Battle Manifesto + Swordmentor applied; Expert Swordsmanship is turn-based and not averaged."; x.hasVerifiedSkillData=true;
-        } else if ("Natalia".equals(n)) {
-            x.atk += v(l,5,10,15,20,25); x.damageDealt += v(l,5,10,15,20,25);
-            x.note = "Queen/Call of the Wild applied. Feral Protection is a 40% proc and not averaged."; x.hasVerifiedSkillData=true;
-        } else if ("Molly".equals(n)) {
-            x.damageDealt += v(l,5,10,15,20,25); if (defenderSide) x.leth += ew;
-            x.note = "Youthful Rage applied. Ice Dominion is 50% proc and not averaged. Snowy Blessing applies on defense."; x.hasVerifiedSkillData=true;
-        } else if ("Zinman".equals(n)) {
-            x.leth += v(l,5,10,15,20,25); if (defenderSide) x.atk += ew;
-            x.note = "Positional Battler applied; construction skill ignored for battle. Defend to Attack applies on defense."; x.hasVerifiedSkillData=true;
-        }
-
+        if(!x.hasVerifiedSkillData){x.hasVerifiedSkillData=HeroBattleDataExpanded.apply(x,n,l,defenderSide);}
         return x;
     }
 
-    public static String exclusiveSummary(String selected, int weaponLevel) {
-        if (weaponLevel <= 0 || "None".equals(nameOf(selected))) return "No Exclusive Weapon expedition stat";
-        double v = exclusiveExpeditionLethHp(selected, weaponLevel);
-        if (v <= 0) return "No verified Expedition Lethality/HP table for this hero";
-        return String.format(Locale.US, "%s EW Lv%d: +%.2f%% Lethality & +%.2f%% Health to %s troops",
-                nameOf(selected), weaponLevel, v, v, troopTypeOf(selected));
+    public static String exclusiveSummary(String selected,int weaponLevel){
+        if(weaponLevel<=0||"None".equals(nameOf(selected)))return "No Exclusive Weapon expedition stat";double val=exclusiveExpeditionLethHp(selected,weaponLevel);if(val<=0)return "No verified Expedition Lethality/HP table for this hero";return String.format(Locale.US,"%s EW Lv%d: +%.2f%% Lethality & +%.2f%% Health to %s troops",nameOf(selected),weaponLevel,val,val,troopTypeOf(selected));
     }
-
-    private static String[] buildLevels(int max) {
-        String[] out = new String[max + 1];
-        for (int i = 0; i <= max; i++) out[i] = String.valueOf(i);
-        return out;
-    }
+    private static String[] buildLevels(int max){String[] out=new String[max+1];for(int i=0;i<=max;i++)out[i]=String.valueOf(i);return out;}
 }
