@@ -39,7 +39,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private static final int CREATE_CSV = 9001;
+    private static final int CREATE_XLSX = 9002;
     private static final String PREFS = "wos_tulostaulu";
     private static final String PROXY_BASE = "https://europe-north1-bunny-king.cloudfunctions.net/wosProxy";
     private static final int BG = Color.rgb(234, 244, 251);
@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
 
         Button loadButton = button(tr("HAE WOS CONTROL -DATA", "LOAD WOS CONTROL DATA"), ACCENT, 16);
         root.addView(loadButton, lp(0,24,0,10));
-        exportButton = button(tr("VIE CSV / EXCEL", "EXPORT CSV / EXCEL"), Color.rgb(48,95,130), 15);
+        exportButton = button(tr("VIE EXCEL (.XLSX)", "EXPORT EXCEL (.XLSX)"), Color.rgb(48,95,130), 15);
         exportButton.setEnabled(false); root.addView(exportButton, new LinearLayout.LayoutParams(-1,-2));
 
         statusText = text(tr("Syötä serveri. FID:llä haetaan pelaajatiedot; ilman FID:tä serveritiedot.", "Enter a server. With a FID, player data is loaded; without one, state data is loaded."), 16, true, TEXT, Gravity.CENTER);
@@ -99,7 +99,7 @@ public class MainActivity extends Activity {
         root.addView(text("Powered by WOS Control • App owner: HAND33h", 13, true, MUTED, Gravity.CENTER), lp(0,36,0,0));
 
         loadButton.setOnClickListener(v -> loadBestData());
-        exportButton.setOnClickListener(v -> chooseCsvLocation());
+        exportButton.setOnClickListener(v -> chooseXlsxLocation());
         setContentView(scroll);
     }
 
@@ -169,11 +169,11 @@ public class MainActivity extends Activity {
         if(!parsed.isEmpty()){
             Collections.sort(parsed, Comparator.comparingLong((PlayerRow p)->p.might).reversed());for(int i=0;i<parsed.size();i++)if(parsed.get(i).rank<=0)parsed.get(i).rank=i+1;
             rows.clear();rows.addAll(parsed);
-            String both=stateText+"\n\n"+tr("MIGHT-RANKING","MIGHT RANKING")+"\n\n"+renderRows(rows);
-            runOnUiThread(() -> {statusText.setText(tr("Serveridata + Might-ranking ladattu ✓","State data + Might ranking loaded ✓"));resultsText.setText(both);exportButton.setEnabled(true);});
+            String both=stateText+"\n\n"+tr("PERSONAL POWER / MIGHT","PERSONAL POWER / MIGHT")+"\n\n"+renderRows(rows)+"\n"+tr("Excel-vienti luo saman 14 välilehden rakenteen kuin State_1738-tiedostossa.","Excel export creates the same 14-tab structure as the State_1738 workbook.");
+            runOnUiThread(() -> {statusText.setText(tr("Serveridata ladattu – Excel valmis ✓","State data loaded – Excel ready ✓"));resultsText.setText(both);exportButton.setEnabled(true);});
         }else{
-            String note=stateText+"\n\n"+tr("WOS Controlin julkinen API ei dokumentoi serverikohtaista pelaajien Might-listaa. /leaderboardia ei näytetä pelaajarankingina, ellei vastaus sisällä oikeita pelaajatietoja tälle serverille.","WOS Control's public API does not document a state-specific player Might list. /leaderboard is not shown as a player ranking unless it actually contains player records for this state.");
-            runOnUiThread(() -> {statusText.setText(tr("Serveridata ladattu ✓","State data loaded ✓"));resultsText.setText(note);exportButton.setEnabled(false);});
+            String note=stateText+"\n\n"+tr("Excel-rakenne on valmis. WOS Controlin nykyinen julkinen API ei kuitenkaan dokumentoi serverikohtaisia 14 ranking-listaa, joten välilehdet luodaan valmiiksi ja täytetään vain datalla, jonka API oikeasti palauttaa.","The Excel structure is ready. WOS Control's current public API does not document the 14 state-specific ranking lists, so all tabs are created and only data actually returned by the API is populated.");
+            runOnUiThread(() -> {statusText.setText(tr("Serveridata ladattu – Excel-pohja valmis ✓","State data loaded – Excel template ready ✓"));resultsText.setText(note);exportButton.setEnabled(true);});
         }
     }
 
@@ -192,10 +192,38 @@ public class MainActivity extends Activity {
     private List<PlayerRow> parsePlayers(String body,String state)throws Exception{Object root=body.trim().startsWith("[")?new JSONArray(body):new JSONObject(body);List<JSONObject> objs=new ArrayList<>();collect(root,objs,0);List<PlayerRow> out=new ArrayList<>();for(JSONObject o:objs){long might=longValue(o,"might","power","total_power","player_power");if(might<=0)continue;String rs=stringValue(o,"state_id","state","kid","server","server_id");if(rs.isEmpty()||!normalize(rs).equals(normalize(state)))continue;String name=stringValue(o,"nickname","name","player_name","username"),fid=stringValue(o,"fid","player_id","id"),alliance=stringValue(o,"alliance","alliance_name","alliance_tag","tag");if(name.isEmpty()&&fid.isEmpty())continue;out.add(new PlayerRow((int)longValue(o,"rank","ranking","position"),name,fid,alliance,might));}return out;}
     private void collect(Object n,List<JSONObject> out,int d)throws Exception{if(n==null||d>6)return;if(n instanceof JSONObject){JSONObject o=(JSONObject)n;out.add(o);Iterator<String>k=o.keys();while(k.hasNext()){Object x=o.opt(k.next());if(x instanceof JSONObject||x instanceof JSONArray)collect(x,out,d+1);}}else if(n instanceof JSONArray){JSONArray a=(JSONArray)n;for(int i=0;i<a.length();i++){Object x=a.opt(i);if(x instanceof JSONObject||x instanceof JSONArray)collect(x,out,d+1);}}}
     private String renderRows(List<PlayerRow> list){StringBuilder sb=new StringBuilder();int limit=Math.min(list.size(),100);for(int i=0;i<limit;i++){PlayerRow p=list.get(i);sb.append(p.rank).append(". ").append(p.name.isEmpty()?"FID "+p.fid:p.name).append("\nMight: ").append(formatNumber(p.might));if(!p.alliance.isEmpty())sb.append(" • ").append(p.alliance);if(!p.fid.isEmpty())sb.append(" • FID ").append(p.fid);sb.append("\n\n");}return sb.toString();}
-    private void chooseCsvLocation(){if(rows.isEmpty())return;Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT);i.addCategory(Intent.CATEGORY_OPENABLE);i.setType("text/csv");i.putExtra(Intent.EXTRA_TITLE,"WOS_state_"+currentState+"_might.csv");startActivityForResult(i,CREATE_CSV);}
-    @Override protected void onActivityResult(int rc,int result,Intent data){super.onActivityResult(rc,result,data);if(rc==CREATE_CSV&&result==RESULT_OK&&data!=null&&data.getData()!=null)writeCsv(data.getData());}
-    private void writeCsv(Uri uri){try(OutputStream out=getContentResolver().openOutputStream(uri)){if(out==null)throw new Exception("File open failed");StringBuilder csv=new StringBuilder("\uFEFFRank;Player;FID;Alliance;Might;State\r\n");for(PlayerRow p:rows)csv.append(p.rank).append(';').append(csv(p.name)).append(';').append(csv(p.fid)).append(';').append(csv(p.alliance)).append(';').append(p.might).append(';').append(csv(currentState)).append("\r\n");out.write(csv.toString().getBytes(StandardCharsets.UTF_8));Toast.makeText(this,tr("CSV tallennettu ✓","CSV saved ✓"),Toast.LENGTH_LONG).show();}catch(Exception e){Toast.makeText(this,tr("Tallennus epäonnistui: ","Save failed: ")+e.getMessage(),Toast.LENGTH_LONG).show();}}
-    private String csv(String v){if(v==null)return"";return"\""+v.replace("\"","\"\"")+"\"";}
+
+    private void chooseXlsxLocation(){
+        Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        i.putExtra(Intent.EXTRA_TITLE,"State_"+currentState+".xlsx");
+        startActivityForResult(i,CREATE_XLSX);
+    }
+
+    @Override protected void onActivityResult(int rc,int result,Intent data){
+        super.onActivityResult(rc,result,data);
+        if(rc==CREATE_XLSX&&result==RESULT_OK&&data!=null&&data.getData()!=null)writeXlsx(data.getData());
+    }
+
+    private void writeXlsx(Uri uri){
+        try(OutputStream out=getContentResolver().openOutputStream(uri)){
+            if(out==null)throw new Exception("File open failed");
+            List<String[]> personal=new ArrayList<>();
+            int rank=1;
+            for(PlayerRow p:rows){
+                int r=p.rank>0?p.rank:rank;
+                personal.add(new String[]{String.valueOf(r),p.name,p.fid,String.valueOf(p.might),p.alliance});
+                rank++;
+                if(personal.size()>=100)break;
+            }
+            XlsxExporter.write(out,personal);
+            Toast.makeText(this,tr("Excel tallennettu ✓","Excel saved ✓"),Toast.LENGTH_LONG).show();
+        }catch(Exception e){
+            Toast.makeText(this,tr("Excel-tallennus epäonnistui: ","Excel save failed: ")+e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+
     private String stringValue(JSONObject o,String...ks){for(String k:ks){Object v=o.opt(k);if(v!=null&&v!=JSONObject.NULL){String s=String.valueOf(v).trim();if(!s.isEmpty()&&!s.equals("{}")&&!s.equals("[]"))return s;}}return"";}
     private long longValue(JSONObject o,String...ks){for(String k:ks){Object v=o.opt(k);if(v==null||v==JSONObject.NULL)continue;try{String s=String.valueOf(v).replace(" ","").replace(",","");if(s.endsWith("B")||s.endsWith("b"))return(long)(Double.parseDouble(s.substring(0,s.length()-1))*1_000_000_000L);if(s.endsWith("M")||s.endsWith("m"))return(long)(Double.parseDouble(s.substring(0,s.length()-1))*1_000_000L);return(long)Double.parseDouble(s);}catch(Exception ignored){}}return 0;}
     private String normalize(String v){return v.replace("#","").replaceAll("[^0-9]","");}
