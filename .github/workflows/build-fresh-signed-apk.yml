@@ -27,7 +27,7 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Prepare artwork
+      - name: Prepare sources and artwork
         shell: bash
         run: |
           set -euo pipefail
@@ -42,6 +42,10 @@ jobs:
               Path(dst).write_bytes(base64.b64decode(s, validate=False))
           decode('app/src/main/splash_image.b64', 'app/src/main/res/drawable/wos_splash.jpg')
           decode('app/src/main/bunny_icon.b64', 'app/src/main/res/drawable/wos_bunny.jpg')
+          p = Path('app/src/main/java/com/hand33h/tulostaulu/MainActivity.java')
+          s = p.read_text()
+          s = s.replace("k.replace('_',' ').replace('.', ' › ')", "k.replace('_',' ').replace(\".\", \" › \")")
+          p.write_text(s)
           PY
           cp app/src/main/res/drawable/wos_bunny.jpg app/src/main/res/mipmap-xxxhdpi/ic_launcher.jpg
           cp app/src/main/res/drawable/wos_bunny.jpg app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.jpg
