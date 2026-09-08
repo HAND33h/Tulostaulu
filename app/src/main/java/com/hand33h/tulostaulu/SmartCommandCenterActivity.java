@@ -27,7 +27,7 @@ public class SmartCommandCenterActivity extends Activity {
         en="en".equals(p.getString("lang","fi"));
         ScrollView sc=new ScrollView(this);
         root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(18),dp(18),dp(18),dp(40));root.setBackgroundColor(Color.rgb(7,23,39));sc.addView(root);
-        cardTitle("👑  "+tr("WOS SMART COMMAND CENTER 4.0","WOS SMART COMMAND CENTER 4.0"),tr("Scan → data → strategy → planner → battle → export yhdestä paikasta.","Scan → data → strategy → planner → battle → export from one place."));
+        cardTitle("👑  "+tr("WOS SMART COMMAND CENTER 5.0","WOS SMART COMMAND CENTER 5.0"),tr("Scan → data → strategy → planner → event sniper → T12 → transfer → battle → export.","Scan → data → strategy → planner → event sniper → T12 → transfer → battle → export."));
 
         section(tr("PELAAJAPROFIILI","PLAYER PROFILE"));
         state=input(tr("State / server","State / server"),true);state.setText(p.getString("state","1674"));root.addView(state);
@@ -37,10 +37,11 @@ public class SmartCommandCenterActivity extends Activity {
         recommendation=info("");root.addView(recommendation);
         save.setOnClickListener(v->{p.edit().putString("state",state.getText().toString().trim()).putString("playstyle",playstyle.getSelectedItem().toString()).putString("strategy_goal",goal.getSelectedItem().toString()).apply();showRecommendation();});
 
-        section(tr("SMART FLOW","SMART FLOW"));
+        section(tr("SMART FLOW 5.0","SMART FLOW 5.0"));
         addLaunch("📸",tr("Smart Scan / OCR","Smart Scan / OCR"),tr("Tuo ranking- tai profiilikuvia ja vie tunnistettu data pelaajarekisteriin.","Import ranking/profile screenshots and push recognized data into the player registry."),ScreenshotImportActivity.class);
         addLaunch("🧊",tr("State & Player Data","State & Player Data"),tr("State 1674 oletuksena, FID-haku, paikallinen TOP100 ja Excel.","State 1674 default, FID lookup, local TOP100 and Excel."),DataSourcesActivity.class);
         addLaunch("👑","Master Upgrade Planner",tr("Gear, Charms, FC, speed-bonukset ja muut päivitykset yhdestä näkymästä.","Gear, Charms, FC, speed bonuses and upgrades in one view."),MasterUpgradePlannerActivity.class);
+        addLaunch("🚀",tr("Advanced Ops 5.0","Advanced Ops 5.0"),tr("Event Sniper, T12, State Age, Transfer, VIP, Territory ja Alliance Ops.","Event Sniper, T12, State Age, Transfer, VIP, Territory and Alliance Ops."),AdvancedOpsActivity.class);
         addLaunch("💬","Community Strategy",tr("Reddit-yhteisön strategiat erillään varmennetusta pelidatasta.","Reddit community strategies kept separate from verified game data."),CommunityStrategyActivity.class);
         addLaunch("⚔️","Battle Simulator",tr("Vertaa hyökkääjää ja puolustajaa sekä WOS-bonusprosentteja.","Compare attacker, defender and WOS bonus percentages."),BattleSimulatorActivity.class);
 
@@ -63,7 +64,7 @@ public class SmartCommandCenterActivity extends Activity {
 
         section(tr("PIKALASKURIT","QUICK CALCULATORS"));
         quick("🛡️ Chief Gear","chief_gear");quick("💠 Chief Charms","charms");quick("🔥 Fire Crystals","fire_crystals");quick("⚔️ Troops","troops");quickNative("🐾 Pets","pets");quickNative("🦸 Hero Gear","hero_gear");quickNative("🧠 Research","research");quickNative("👨‍🔬 Experts","experts");
-        root.addView(info(tr("Verified data ja Community Advice pidetään erillään. Tuntemattomia kustannuksia ei arvata.","Verified data and Community Advice stay separate. Unknown costs are not guessed.")),mp(0,12,0,0));
+        root.addView(info(tr("Verified data, OCR/FID-havainnot ja Community Advice pidetään erillään. Tuntemattomia kustannuksia, event-pisteitä tai unlock-päiviä ei arvata.","Verified data, OCR/FID observations and Community Advice stay separate. Unknown costs, event scores or unlock dates are not guessed.")),mp(0,12,0,0));
         setContentView(sc);showRecommendation();
     }
 
@@ -93,7 +94,7 @@ public class SmartCommandCenterActivity extends Activity {
     private long num(EditText e){try{return Long.parseLong(e.getText().toString().replace(" ","").trim());}catch(Exception x){return 0;}}
     private double dbl(EditText e){try{return Double.parseDouble(e.getText().toString().replace(',','.').trim());}catch(Exception x){return 0;}}
     private String fmt(long n){return NumberFormat.getIntegerInstance(en?Locale.US:new Locale("fi","FI")).format(n);}
-    private String tr(String fi,String en){return this.en?en:fi;}
+    private String tr(String fi,String eng){return en?eng:fi;}
     private void toast(String s){Toast.makeText(this,s,Toast.LENGTH_SHORT).show();}
     private int dp(int n){return(int)(n*getResources().getDisplayMetrics().density+.5f);}private LinearLayout.LayoutParams mp(int l,int t,int r,int b){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(dp(l),dp(t),dp(r),dp(b));return p;}
 }
