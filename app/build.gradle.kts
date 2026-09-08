@@ -10,8 +10,8 @@ android {
         applicationId = "com.hand33h.tulostaulu.installtest"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "2.8.1-installtest"
+        versionCode = 2
+        versionName = "2.9.0-ranking-import"
     }
 
     buildTypes {
@@ -32,4 +32,5 @@ android {
 }
 
 dependencies {
+    implementation("com.google.mlkit:text-recognition:16.0.1")
 }
