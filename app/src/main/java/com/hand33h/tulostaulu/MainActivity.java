@@ -39,6 +39,11 @@ public class MainActivity extends Activity {
     private static final String PREFS = "wos_tulostaulu";
     private static final String API_BASE = "https://woscontrol.com/api/v1";
 
+    private static final int BG = Color.rgb(234, 244, 251);
+    private static final int TEXT = Color.rgb(18, 43, 64);
+    private static final int MUTED = Color.rgb(68, 94, 113);
+    private static final int ACCENT = Color.rgb(20, 125, 190);
+
     private EditText stateInput;
     private EditText apiKeyInput;
     private TextView statusText;
@@ -54,16 +59,17 @@ public class MainActivity extends Activity {
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
 
         ScrollView scroll = new ScrollView(this);
+        scroll.setBackgroundColor(BG);
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(48, 72, 48, 72);
         root.setGravity(Gravity.CENTER_HORIZONTAL);
-        root.setBackgroundColor(Color.rgb(13, 20, 32));
+        root.setBackgroundColor(BG);
         scroll.addView(root);
 
         TextView title = new TextView(this);
         title.setText("WOS TULOSTAULU");
-        title.setTextColor(Color.WHITE);
+        title.setTextColor(TEXT);
         title.setTextSize(30);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setGravity(Gravity.CENTER);
@@ -71,8 +77,9 @@ public class MainActivity extends Activity {
 
         TextView subtitle = new TextView(this);
         subtitle.setText("Whiteout Survival – State / Server");
-        subtitle.setTextColor(Color.LTGRAY);
-        subtitle.setTextSize(16);
+        subtitle.setTextColor(MUTED);
+        subtitle.setTextSize(17);
+        subtitle.setTypeface(Typeface.DEFAULT_BOLD);
         subtitle.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams subParams = new LinearLayout.LayoutParams(-1, -2);
         subParams.setMargins(0, 12, 0, 36);
@@ -80,6 +87,10 @@ public class MainActivity extends Activity {
 
         stateInput = new EditText(this);
         stateInput.setHint("Serverinumero");
+        stateInput.setHintTextColor(Color.rgb(105, 120, 132));
+        stateInput.setTextColor(TEXT);
+        stateInput.setBackgroundColor(Color.WHITE);
+        stateInput.setPadding(24, 18, 24, 18);
         stateInput.setText(prefs.getString("state", "77"));
         stateInput.setTextSize(22);
         stateInput.setSingleLine(true);
@@ -89,6 +100,10 @@ public class MainActivity extends Activity {
 
         apiKeyInput = new EditText(this);
         apiKeyInput.setHint("WOS Control API key (wos_...)");
+        apiKeyInput.setHintTextColor(Color.rgb(105, 120, 132));
+        apiKeyInput.setTextColor(TEXT);
+        apiKeyInput.setBackgroundColor(Color.WHITE);
+        apiKeyInput.setPadding(24, 18, 24, 18);
         apiKeyInput.setText(prefs.getString("api_key", ""));
         apiKeyInput.setSingleLine(true);
         apiKeyInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -98,34 +113,45 @@ public class MainActivity extends Activity {
 
         Button loadButton = new Button(this);
         loadButton.setText("LATAA TULOSTAULU");
+        loadButton.setTextColor(Color.WHITE);
+        loadButton.setTextSize(17);
+        loadButton.setTypeface(Typeface.DEFAULT_BOLD);
+        loadButton.setBackgroundColor(ACCENT);
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(-1, -2);
         buttonParams.setMargins(0, 28, 0, 14);
         root.addView(loadButton, buttonParams);
 
         exportButton = new Button(this);
         exportButton.setText("VIE CSV / EXCEL");
+        exportButton.setTextColor(Color.WHITE);
+        exportButton.setTextSize(16);
+        exportButton.setTypeface(Typeface.DEFAULT_BOLD);
+        exportButton.setBackgroundColor(Color.rgb(48, 95, 130));
         exportButton.setEnabled(false);
         root.addView(exportButton, new LinearLayout.LayoutParams(-1, -2));
 
         statusText = new TextView(this);
         statusText.setText("Valitse serveri ja syötä oma WOS Control API-avain.");
-        statusText.setTextColor(Color.WHITE);
-        statusText.setTextSize(17);
+        statusText.setTextColor(TEXT);
+        statusText.setTextSize(18);
+        statusText.setTypeface(Typeface.DEFAULT_BOLD);
         statusText.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams statusParams = new LinearLayout.LayoutParams(-1, -2);
         statusParams.setMargins(0, 28, 0, 20);
         root.addView(statusText, statusParams);
 
         resultsText = new TextView(this);
-        resultsText.setTextColor(Color.LTGRAY);
-        resultsText.setTextSize(14);
+        resultsText.setTextColor(TEXT);
+        resultsText.setTextSize(16);
+        resultsText.setLineSpacing(0, 1.12f);
         resultsText.setText("Ei ladattua dataa.");
         root.addView(resultsText, new LinearLayout.LayoutParams(-1, -2));
 
         TextView credit = new TextView(this);
-        credit.setText("Data integration: WOS Control public API • App owner: HAND33h");
-        credit.setTextColor(Color.GRAY);
-        credit.setTextSize(12);
+        credit.setText("Powered by WOS Control • App owner: HAND33h");
+        credit.setTextColor(MUTED);
+        credit.setTextSize(13);
+        credit.setTypeface(Typeface.DEFAULT_BOLD);
         credit.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams creditParams = new LinearLayout.LayoutParams(-1, -2);
         creditParams.setMargins(0, 42, 0, 0);
