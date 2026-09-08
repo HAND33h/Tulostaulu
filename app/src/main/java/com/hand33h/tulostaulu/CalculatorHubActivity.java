@@ -30,9 +30,16 @@ public class CalculatorHubActivity extends Activity {
 
         LinearLayout hero=box(Color.rgb(13,48,76),22);
         hero.setPadding(dp(20),dp(20),dp(20),dp(20));
-        hero.addView(label("🧮  "+tr("WOS LASKUKESKUS 2.0","WOS CALCULATOR HUB 2.0"),26,true,Color.WHITE));
-        hero.addView(label(tr("Päivityslaskurit on uudistettu: current → target, kappalemäärä, oma varasto, puuttuvat materiaalit ja aika/teho.","Upgrade calculators rebuilt: current → target, quantity, inventory, shortages and time/power."),13,false,Color.rgb(202,224,238)));
+        hero.addView(label("🧮  "+tr("WOS LASKUKESKUS 3.0","WOS CALCULATOR HUB 3.0"),26,true,Color.WHITE));
+        hero.addView(label(tr("Parannettu current → target -suunnittelu, inventaario, puutteet, speed-bonukset, power/aika ja SvS-polut.","Improved current → target planning, inventory, shortages, speed bonuses, power/time and SvS paths."),13,false,Color.rgb(202,224,238)));
         root.addView(hero,mp(0,0,0,16));
+
+        LinearLayout master=box(Color.rgb(22,73,96),20);master.setPadding(dp(18),dp(16),dp(18),dp(16));
+        master.addView(label("👑  "+tr("MASTER UPGRADE PLANNER","MASTER UPGRADE PLANNER"),19,true,Color.WHITE));
+        master.addView(label(tr("Kaikki tärkeimmät päivitykset ja globaalit Construction / Research / Training Speed -bonukset yhdestä paikasta.","All core upgrades plus global Construction / Research / Training Speed bonuses in one place."),12,false,Color.rgb(218,236,245)),mp(0,4,0,8));
+        Button masterOpen=smallButton(tr("AVAA MASTER PLANNER 3.0  →","OPEN MASTER PLANNER 3.0  →"));
+        masterOpen.setOnClickListener(v->startActivity(new Intent(this,MasterUpgradePlannerActivity.class)));
+        master.addView(masterOpen);root.addView(master,mp(0,0,0,16));
 
         addSection(root,tr("PÄIVITETYT PÄÄLASKURIT","UPGRADED CORE CALCULATORS"));
         addUpgrade(root,"🛡️","Chief Gear",tr("1–6 osaa, Alloy, Polishing, Plans, Amber, power ja puutteet","1–6 pieces, Alloy, Polishing, Plans, Amber, power and shortages"),"chief_gear");
@@ -55,7 +62,7 @@ public class CalculatorHubActivity extends Activity {
         addNative(root,"🧊","KOI / King of Icefield",tr("Eventtiresurssit ja pistearvio","Event resources and score estimate"),"koi");
         addNative(root,"📦","Chests",tr("Arkkumäärät ja odotetut materiaalit","Chest counts and expected materials"),"chests");
 
-        root.addView(label(tr("Uudistuksen malli on otettu WOS-yhteisön parhaista käytännöistä: nykyinen taso → tavoite, inventaario → puute, nopeusbonus → todellinen aika. Ulkoisten sivujen koodia ei kopioida.","The redesign follows the best WOS community calculator patterns: current → target, inventory → shortage, speed bonus → effective time. No external site code is copied."),12,false,Color.rgb(140,170,188)),mp(0,10,0,0));
+        root.addView(label(tr("Tietomalli yhdistää WSCO:n koneelliset taulukot sekä WOS Forge / WOSCalculator / WoSTools -tyyppiset parhaat suunnittelukäytännöt. Ulkoisten sivujen koodia tai grafiikkaa ei kopioida.","The data model combines WSCO machine-readable tables with the strongest planning patterns from WOS Forge / WOSCalculator / WoSTools. No external site code or graphics are copied."),12,false,Color.rgb(140,170,188)),mp(0,10,0,0));
         setContentView(sc);
     }
 
@@ -72,7 +79,7 @@ public class CalculatorHubActivity extends Activity {
 
     private void addUpgrade(LinearLayout root,String icon,String title,String desc,String mode){
         LinearLayout card=box(Color.rgb(18,58,82),18);card.setPadding(dp(16),dp(14),dp(16),dp(14));
-        card.addView(label(icon+"  "+title+"  • 2.0",17,true,Color.WHITE));
+        card.addView(label(icon+"  "+title+"  • 3.0",17,true,Color.WHITE));
         card.addView(label(desc,12,false,Color.rgb(202,224,238)),mp(0,4,0,8));
         Button open=smallButton(tr("AVAA UUSI LASKURI  →","OPEN NEW CALCULATOR  →"));
         open.setOnClickListener(v->{Intent i=new Intent(this,UpgradePlannerActivity.class);i.putExtra("mode",mode);startActivity(i);});
