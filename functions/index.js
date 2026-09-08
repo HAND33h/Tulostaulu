@@ -1,14 +1,14 @@
 const { onRequest } = require("firebase-functions/v2/https");
-const { defineSecret, defineString } = require("firebase-functions/params");
+const { defineSecret } = require("firebase-functions/params");
 
 const WOS_API_KEY = defineSecret("WOS_API_KEY");
-const WOS_API_BASE_URL = defineString("WOS_API_BASE_URL");
-const WOS_API_HEADER = defineString("WOS_API_HEADER", { default: "x-api-key" });
+const WOS_API_BASE_URL = defineSecret("WOS_API_BASE_URL");
+const WOS_API_HEADER = defineSecret("WOS_API_HEADER");
 
 exports.wosProxy = onRequest(
   {
     region: "europe-north1",
-    secrets: [WOS_API_KEY],
+    secrets: [WOS_API_KEY, WOS_API_BASE_URL, WOS_API_HEADER],
     timeoutSeconds: 30,
     memory: "256MiB"
   },
@@ -28,6 +28,7 @@ exports.wosProxy = onRequest(
         return res.status(500).json({ error: "WOS_API_BASE_URL is not configured" });
       }
 
+      const headerName = WOS_API_HEADER.value() || "x-api-key";
       const url = new URL(`${baseUrl}/${endpoint}`);
       for (const [key, value] of Object.entries(req.query)) {
         if (key === "endpoint" || value == null) continue;
@@ -40,7 +41,7 @@ exports.wosProxy = onRequest(
 
       const response = await fetch(url, {
         headers: {
-          [WOS_API_HEADER.value()]: WOS_API_KEY.value(),
+          [headerName]: WOS_API_KEY.value(),
           "accept": "application/json",
           "user-agent": "WOSControl/1.0"
         }
