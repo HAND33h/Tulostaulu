@@ -17,6 +17,7 @@
         <activity android:name=".MyAccountActivity" android:exported="false" />
         <activity android:name=".BattleSimulatorActivity" android:exported="false" />
         <activity android:name=".WarAcademyActivity" android:exported="false" />
+        <activity android:name=".MasterUpgradePlannerActivity" android:exported="false" />
         <activity android:name=".UpgradePlannerActivity" android:exported="false" />
         <activity android:name=".NativeCalculatorActivity" android:exported="false" />
         <activity android:name=".CalculatorHubActivity" android:exported="false" />
