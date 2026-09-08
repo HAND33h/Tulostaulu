@@ -41,13 +41,13 @@ import java.util.List;
 public class MainActivity extends Activity {
     private static final int CREATE_CSV = 9001;
     private static final String PREFS = "wos_tulostaulu";
-    private static final String API_BASE = "https://woscontrol.com/api/v1";
+    private static final String PROXY_BASE = "https://europe-north1-bunny-king.cloudfunctions.net/wosProxy";
     private static final int BG = Color.rgb(234, 244, 251);
     private static final int TEXT = Color.rgb(18, 43, 64);
     private static final int MUTED = Color.rgb(68, 94, 113);
     private static final int ACCENT = Color.rgb(20, 125, 190);
 
-    private EditText stateInput, fidInput, apiKeyInput;
+    private EditText stateInput, fidInput;
     private TextView statusText, resultsText;
     private Button exportButton;
     private final List<PlayerRow> rows = new ArrayList<>();
@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        prefs.edit().remove("api_key").apply();
         english = "en".equals(prefs.getString("lang", "fi"));
 
         ScrollView scroll = new ScrollView(this);
@@ -75,71 +76,71 @@ public class MainActivity extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new String[]{"🇫🇮 Suomi", "🇬🇧 English"});
         language.setAdapter(adapter); language.setSelection(english ? 1 : 0); root.addView(language, new LinearLayout.LayoutParams(-1,-2));
         language.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-            public void onItemSelected(AdapterView<?> p, View v, int pos, long id){ boolean next=pos==1; if(next!=english){getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("lang",next?"en":"fi").apply();recreate();}}
+            public void onItemSelected(AdapterView<?> p, View v, int pos, long id){boolean next=pos==1;if(next!=english){getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("lang",next?"en":"fi").apply();recreate();}}
             public void onNothingSelected(AdapterView<?> p){}
         });
 
-        stateInput = input(tr("Serverinumero", "Server number"), prefs.getString("state","77"), true, false);
+        stateInput = input(tr("Serverinumero", "Server number"), prefs.getString("state","77"), true);
         root.addView(stateInput, lp(0,16,0,0));
-        fidInput = input(tr("Pelaajan FID (valinnainen)", "Player FID (optional)"), prefs.getString("fid",""), true, false);
+        fidInput = input(tr("Pelaajan FID (valinnainen)", "Player FID (optional)"), prefs.getString("fid",""), true);
         root.addView(fidInput, lp(0,14,0,0));
-        apiKeyInput = input("WOS Control API key (wos_...)", prefs.getString("api_key",""), false, true);
-        root.addView(apiKeyInput, lp(0,14,0,0));
 
-        Button loadButton = button(tr("HAE PARAS SAATAVILLA OLEVA DATA", "LOAD BEST AVAILABLE DATA"), ACCENT, 16);
+        root.addView(text(tr("API-avain säilytetään palvelimella eikä APK:ssa.", "The API key is stored on the server, not inside the APK."), 13, true, MUTED, Gravity.CENTER), lp(0,12,0,0));
+
+        Button loadButton = button(tr("HAE WOS CONTROL -DATA", "LOAD WOS CONTROL DATA"), ACCENT, 16);
         root.addView(loadButton, lp(0,24,0,10));
-        Button keyButton = button(tr("HANKI WOS CONTROL API-AVAIN", "GET WOS CONTROL API KEY"), Color.rgb(64,107,139), 14);
-        root.addView(keyButton, lp(0,0,0,10));
         exportButton = button(tr("VIE CSV / EXCEL", "EXPORT CSV / EXCEL"), Color.rgb(48,95,130), 15);
         exportButton.setEnabled(false); root.addView(exportButton, new LinearLayout.LayoutParams(-1,-2));
 
-        statusText = text(tr("Syötä serveri. Jos annat FID:n, haetaan pelaajatiedot. Ilman FID:tä haetaan serveritiedot ja mahdollinen Might-ranking.",
-                "Enter a server. With a FID, player data is loaded. Without a FID, state data and any available Might ranking are loaded."), 16, true, TEXT, Gravity.CENTER);
+        statusText = text(tr("Syötä serveri. FID:llä haetaan pelaajatiedot; ilman FID:tä serveritiedot.", "Enter a server. With a FID, player data is loaded; without one, state data is loaded."), 16, true, TEXT, Gravity.CENTER);
         root.addView(statusText, lp(0,24,0,16));
         resultsText = text(tr("Ei ladattua dataa.", "No data loaded."), 15, false, TEXT, Gravity.START);
         resultsText.setLineSpacing(0,1.12f); root.addView(resultsText, new LinearLayout.LayoutParams(-1,-2));
         root.addView(text("Powered by WOS Control • App owner: HAND33h", 13, true, MUTED, Gravity.CENTER), lp(0,36,0,0));
 
         loadButton.setOnClickListener(v -> loadBestData());
-        keyButton.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://woscontrol.com/api-docs"))));
         exportButton.setOnClickListener(v -> chooseCsvLocation());
         setContentView(scroll);
     }
 
     private LinearLayout.LayoutParams lp(int l,int t,int r,int b){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(l,t,r,b);return p;}
     private TextView text(String s,int size,boolean bold,int color,int gravity){TextView v=new TextView(this);v.setText(s);v.setTextSize(size);v.setTextColor(color);v.setGravity(gravity);if(bold)v.setTypeface(Typeface.DEFAULT_BOLD);return v;}
-    private EditText input(String hint,String value,boolean numeric,boolean password){EditText e=new EditText(this);e.setHint(hint);e.setHintTextColor(Color.rgb(105,120,132));e.setTextColor(TEXT);e.setBackgroundColor(Color.WHITE);e.setPadding(22,16,22,16);e.setText(value);e.setSingleLine(true);if(numeric)e.setInputType(InputType.TYPE_CLASS_NUMBER);else if(password)e.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);else e.setInputType(InputType.TYPE_CLASS_TEXT);return e;}
+    private EditText input(String hint,String value,boolean numeric){EditText e=new EditText(this);e.setHint(hint);e.setHintTextColor(Color.rgb(105,120,132));e.setTextColor(TEXT);e.setBackgroundColor(Color.WHITE);e.setPadding(22,16,22,16);e.setText(value);e.setSingleLine(true);e.setInputType(numeric?InputType.TYPE_CLASS_NUMBER:InputType.TYPE_CLASS_TEXT);return e;}
     private Button button(String label,int color,int size){Button b=new Button(this);b.setText(label);b.setTextColor(Color.WHITE);b.setTextSize(size);b.setTypeface(Typeface.DEFAULT_BOLD);b.setBackgroundColor(color);return b;}
     private String tr(String fi,String en){return english?en:fi;}
 
     private void loadBestData(){
-        String state=stateInput.getText().toString().trim(), fid=fidInput.getText().toString().trim(), key=apiKeyInput.getText().toString().trim();
+        String state=stateInput.getText().toString().trim(), fid=fidInput.getText().toString().trim();
         if(state.isEmpty()){Toast.makeText(this,tr("Anna serverinumero","Enter a server number"),Toast.LENGTH_SHORT).show();return;}
-        if(key.isEmpty()){Toast.makeText(this,tr("Syötä oma WOS Control API-avain","Enter your WOS Control API key"),Toast.LENGTH_LONG).show();return;}
         currentState=state;
-        getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",state).putString("fid",fid).putString("api_key",key).apply();
+        getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",state).putString("fid",fid).apply();
         rows.clear(); exportButton.setEnabled(false); resultsText.setText(tr("Haetaan...","Loading...")); hideKeyboard();
         if(!fid.isEmpty()){
             statusText.setText(tr("Haetaan pelaaja FID "+fid+"…","Loading player FID "+fid+"…"));
-            new Thread(() -> fetchPlayer(fid,key)).start();
+            new Thread(() -> fetchPlayer(fid)).start();
         } else {
-            statusText.setText(tr("Haetaan serverin "+state+" parhaat saatavilla olevat tiedot…","Loading best available data for server "+state+"…"));
-            new Thread(() -> fetchStateAndRanking(state,key)).start();
+            statusText.setText(tr("Haetaan serverin "+state+" tiedot…","Loading state "+state+" data…"));
+            new Thread(() -> fetchState(state)).start();
         }
     }
 
-    private ApiResponse get(String path,String key){
+    private ApiResponse get(String path){
         HttpURLConnection c=null;
         try{
-            URL url=new URL(API_BASE+path); c=(HttpURLConnection)url.openConnection(); c.setRequestMethod("GET"); c.setConnectTimeout(15000); c.setReadTimeout(25000);
-            c.setRequestProperty("Accept","application/json"); c.setRequestProperty("X-API-Key",key); c.setRequestProperty("Authorization","Bearer "+key);
+            String clean=path.startsWith("/")?path.substring(1):path;
+            String endpoint=clean, query="";
+            int q=clean.indexOf('?');
+            if(q>=0){endpoint=clean.substring(0,q);query=clean.substring(q+1);}
+            StringBuilder u=new StringBuilder(PROXY_BASE).append("?endpoint=").append(URLEncoder.encode(endpoint,"UTF-8"));
+            if(!query.isEmpty())u.append('&').append(query);
+            URL url=new URL(u.toString()); c=(HttpURLConnection)url.openConnection(); c.setRequestMethod("GET"); c.setConnectTimeout(15000); c.setReadTimeout(25000); c.setRequestProperty("Accept","application/json");
             int code=c.getResponseCode(); BufferedReader r=new BufferedReader(new InputStreamReader(code>=200&&code<300?c.getInputStream():c.getErrorStream(),StandardCharsets.UTF_8));
             StringBuilder body=new StringBuilder();String line;while((line=r.readLine())!=null)body.append(line);r.close();return new ApiResponse(code,body.toString());
         }catch(Exception e){return new ApiResponse(-1,e.getMessage()==null?"Network error":e.getMessage());}finally{if(c!=null)c.disconnect();}
     }
 
-    private void fetchPlayer(String fid,String key){
-        ApiResponse a=get("/player/"+Uri.encode(fid),key);
+    private void fetchPlayer(String fid){
+        ApiResponse a=get("/player/"+Uri.encode(fid));
         if(!ok(a))return;
         try{
             JSONObject root=new JSONObject(a.body); JSONObject p=findBestPlayerObject(root);
@@ -148,39 +149,36 @@ public class MainActivity extends Activity {
             String alliance=stringValue(p,"alliance","alliance_name","alliance_tag","tag");
             String furnace=stringValue(p,"furnace","furnace_level","stove_lv","level");
             long might=longValue(p,"might","power","total_power","player_power");
-            StringBuilder sb=new StringBuilder();
-            sb.append(tr("PELAAJATIEDOT","PLAYER DATA")).append("\n\n");
+            StringBuilder sb=new StringBuilder();sb.append(tr("PELAAJATIEDOT","PLAYER DATA")).append("\n\n");
             sb.append(tr("Nimi: ","Name: ")).append(name.isEmpty()?"-":name).append("\nFID: ").append(fid).append("\n");
             if(!state.isEmpty())sb.append(tr("Serveri: ","Server: ")).append(state).append("\n");
-            if(!alliance.isEmpty())sb.append(tr("Alliance: ","Alliance: ")).append(alliance).append("\n");
+            if(!alliance.isEmpty())sb.append("Alliance: ").append(alliance).append("\n");
             if(might>0)sb.append("Might: ").append(formatNumber(might)).append("\n");
-            if(!furnace.isEmpty())sb.append(tr("Furnace: ","Furnace: ")).append(furnace).append("\n");
-            sb.append("\n").append(tr("API vastasi onnistuneesti. Näytetään vain kentät, jotka palvelu palauttaa.","API request succeeded. Only fields returned by the service are shown."));
+            if(!furnace.isEmpty())sb.append("Furnace: ").append(furnace).append("\n");
             runOnUiThread(() -> {statusText.setText(tr("Pelaajatiedot ladattu ✓","Player data loaded ✓"));resultsText.setText(sb.toString());});
         }catch(Exception e){showError(tr("Pelaajavastauksen käsittely epäonnistui: ","Could not parse player response: ")+e.getMessage());}
     }
 
-    private void fetchStateAndRanking(String state,String key){
-        ApiResponse s=get("/state/"+Uri.encode(state),key);
+    private void fetchState(String state){
+        ApiResponse s=get("/state/"+Uri.encode(state));
         if(!ok(s))return;
-        String stateText=tr("SERVERITIEDOT","STATE DATA")+"\n\n"+summarizeJson(s.body,28);
-        ApiResponse l=get("/leaderboard?state_id="+Uri.encode(state),key);
+        String stateText=tr("SERVERITIEDOT","STATE DATA")+"\n\n"+summarizeJson(s.body,40);
+        ApiResponse l=get("/leaderboard");
         List<PlayerRow> parsed=new ArrayList<>();
         if(l.code>=200&&l.code<300){try{parsed=parsePlayers(l.body,state);}catch(Exception ignored){}}
         if(!parsed.isEmpty()){
-            Collections.sort(parsed, Comparator.comparingLong((PlayerRow p)->p.might).reversed()); for(int i=0;i<parsed.size();i++)if(parsed.get(i).rank<=0)parsed.get(i).rank=i+1;
+            Collections.sort(parsed, Comparator.comparingLong((PlayerRow p)->p.might).reversed());for(int i=0;i<parsed.size();i++)if(parsed.get(i).rank<=0)parsed.get(i).rank=i+1;
             rows.clear();rows.addAll(parsed);
             String both=stateText+"\n\n"+tr("MIGHT-RANKING","MIGHT RANKING")+"\n\n"+renderRows(rows);
             runOnUiThread(() -> {statusText.setText(tr("Serveridata + Might-ranking ladattu ✓","State data + Might ranking loaded ✓"));resultsText.setText(both);exportButton.setEnabled(true);});
         }else{
-            String note=stateText+"\n\n"+tr("Huom: WOS Controlin /leaderboard ei tällä hetkellä palauttanut serverikohtaista Might-listaa. Sovellus ei näytä API:n yleistä käyttöleaderboardia pelaajalistana.",
-                    "Note: WOS Control /leaderboard did not return a server-specific Might list. The app will not present the API usage leaderboard as player rankings.");
+            String note=stateText+"\n\n"+tr("WOS Controlin julkinen API ei dokumentoi serverikohtaista pelaajien Might-listaa. /leaderboardia ei näytetä pelaajarankingina, ellei vastaus sisällä oikeita pelaajatietoja tälle serverille.","WOS Control's public API does not document a state-specific player Might list. /leaderboard is not shown as a player ranking unless it actually contains player records for this state.");
             runOnUiThread(() -> {statusText.setText(tr("Serveridata ladattu ✓","State data loaded ✓"));resultsText.setText(note);exportButton.setEnabled(false);});
         }
     }
 
     private boolean ok(ApiResponse a){
-        if(a.code==401||a.code==403){showError(tr("API-avain ei kelpaa tai sillä ei ole oikeutta","API key is invalid or unauthorized")+" (HTTP "+a.code+").");return false;}
+        if(a.code==401||a.code==403){showError(tr("Palvelimen WOS API-avain puuttuu tai ei kelpaa","Server WOS API key is missing or unauthorized")+" (HTTP "+a.code+").");return false;}
         if(a.code==429){showError(tr("API-kutsujen raja tuli vastaan. Yritä myöhemmin uudelleen.","API rate limit reached. Try again later."));return false;}
         if(a.code<200||a.code>=300){showError("WOS Control HTTP "+a.code+(a.body.isEmpty()?"":": "+shortText(a.body)));return false;}return true;
     }
@@ -191,8 +189,7 @@ public class MainActivity extends Activity {
     private int lineCount(StringBuilder sb){int c=0;for(int i=0;i<sb.length();i++)if(sb.charAt(i)=='\n')c++;return c;}
     private String prettyKey(String k){return k.replace('_',' ').replace('.', ' › ');}
     private String shortText(String s){if(s==null)return"";s=s.trim();return s.length()>220?s.substring(0,220)+"…":s;}
-
-    private List<PlayerRow> parsePlayers(String body,String state)throws Exception{Object root=body.trim().startsWith("[")?new JSONArray(body):new JSONObject(body);List<JSONObject> objs=new ArrayList<>();collect(root,objs,0);List<PlayerRow> out=new ArrayList<>();for(JSONObject o:objs){long might=longValue(o,"might","power","total_power","player_power");if(might<=0)continue;String rs=stringValue(o,"state_id","state","kid","server","server_id");if(!rs.isEmpty()&&!normalize(rs).equals(normalize(state)))continue;String name=stringValue(o,"nickname","name","player_name","username"),fid=stringValue(o,"fid","player_id","id"),alliance=stringValue(o,"alliance","alliance_name","alliance_tag","tag");if(name.isEmpty()&&fid.isEmpty())continue;out.add(new PlayerRow((int)longValue(o,"rank","ranking","position"),name,fid,alliance,might));}List<PlayerRow>d=new ArrayList<>();for(PlayerRow p:out){boolean ex=false;for(PlayerRow q:d)if((!p.fid.isEmpty()&&p.fid.equals(q.fid))||(p.fid.isEmpty()&&!p.name.isEmpty()&&p.name.equals(q.name)&&p.might==q.might)){ex=true;break;}if(!ex)d.add(p);}return d;}
+    private List<PlayerRow> parsePlayers(String body,String state)throws Exception{Object root=body.trim().startsWith("[")?new JSONArray(body):new JSONObject(body);List<JSONObject> objs=new ArrayList<>();collect(root,objs,0);List<PlayerRow> out=new ArrayList<>();for(JSONObject o:objs){long might=longValue(o,"might","power","total_power","player_power");if(might<=0)continue;String rs=stringValue(o,"state_id","state","kid","server","server_id");if(rs.isEmpty()||!normalize(rs).equals(normalize(state)))continue;String name=stringValue(o,"nickname","name","player_name","username"),fid=stringValue(o,"fid","player_id","id"),alliance=stringValue(o,"alliance","alliance_name","alliance_tag","tag");if(name.isEmpty()&&fid.isEmpty())continue;out.add(new PlayerRow((int)longValue(o,"rank","ranking","position"),name,fid,alliance,might));}return out;}
     private void collect(Object n,List<JSONObject> out,int d)throws Exception{if(n==null||d>6)return;if(n instanceof JSONObject){JSONObject o=(JSONObject)n;out.add(o);Iterator<String>k=o.keys();while(k.hasNext()){Object x=o.opt(k.next());if(x instanceof JSONObject||x instanceof JSONArray)collect(x,out,d+1);}}else if(n instanceof JSONArray){JSONArray a=(JSONArray)n;for(int i=0;i<a.length();i++){Object x=a.opt(i);if(x instanceof JSONObject||x instanceof JSONArray)collect(x,out,d+1);}}}
     private String renderRows(List<PlayerRow> list){StringBuilder sb=new StringBuilder();int limit=Math.min(list.size(),100);for(int i=0;i<limit;i++){PlayerRow p=list.get(i);sb.append(p.rank).append(". ").append(p.name.isEmpty()?"FID "+p.fid:p.name).append("\nMight: ").append(formatNumber(p.might));if(!p.alliance.isEmpty())sb.append(" • ").append(p.alliance);if(!p.fid.isEmpty())sb.append(" • FID ").append(p.fid);sb.append("\n\n");}return sb.toString();}
     private void chooseCsvLocation(){if(rows.isEmpty())return;Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT);i.addCategory(Intent.CATEGORY_OPENABLE);i.setType("text/csv");i.putExtra(Intent.EXTRA_TITLE,"WOS_state_"+currentState+"_might.csv");startActivityForResult(i,CREATE_CSV);}
