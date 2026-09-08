@@ -1,0 +1,57 @@
+name: Deploy Firebase Functions
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "functions/**"
+      - "firebase.json"
+      - ".github/workflows/deploy-firebase-functions.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUNNY_KING != '' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Firebase CLI
+        run: npm install --global firebase-tools
+
+      - name: Install function dependencies
+        working-directory: functions
+        run: npm install --omit=dev
+
+      - name: Write service account
+        shell: bash
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUNNY_KING }}
+        run: |
+          set -euo pipefail
+          umask 077
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-service-account.json" >> "$GITHUB_ENV"
+
+      - name: Validate Firebase project
+        run: firebase projects:list --json >/dev/null
+
+      - name: Deploy WOS proxy function
+        run: firebase deploy --project bunny-king --only functions:wosProxy --non-interactive
+
+      - name: Remove service account file
+        if: ${{ always() }}
+        run: rm -f "$RUNNER_TEMP/firebase-service-account.json"
