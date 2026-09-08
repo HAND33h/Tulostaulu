@@ -1,0 +1,10 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Storage is not currently used by the Android app. Keep it closed until
+    // an authenticated upload/download path is explicitly designed.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
