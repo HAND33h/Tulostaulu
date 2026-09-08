@@ -17,3 +17,8 @@ Avaa GitHubissa **Actions → Build Android APK → uusin onnistunut ajo → Art
 - TOP 10 / TOP 50 / TOP 100
 - CSV/Excel-vienti
 - serverin vaihto yhdellä kentällä
+
+## Data / API
+Ranking- ja pelidatan integraatiossa hyödynnetään WOS Control API:a.
+
+Powered by [WOS Control](https://woscontrol.com/)
