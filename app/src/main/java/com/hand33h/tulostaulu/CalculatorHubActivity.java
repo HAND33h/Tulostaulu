@@ -47,16 +47,27 @@ public class CalculatorHubActivity extends Activity {
         addNative(root,"👨‍🔬","Experts",tr("Expert XP, manuals ja materiaalit","Expert XP, manuals and materials"),"experts");
 
         addSection(root,tr("EVENTIT JA TAISTELU","EVENTS & COMBAT"));
+        addBattle(root);
         addNative(root,"⚔️","SvS Prep",tr("Yhdistä prep-resurssit ja arvioi puutteet","Combine prep resources and estimate shortages"),"svs");
         addNative(root,"🐻","Bear Trap / Rally",tr("Infantry, Lancers, Marksmen ja rally-kapasiteetti","Infantry, Lancers, Marksmen and rally capacity"),"bear");
         addNative(root,"🧊","KOI / King of Icefield",tr("Eventtiresurssit ja pistearvio","Event resources and score estimate"),"koi");
         addNative(root,"📦","Chests",tr("Arkkumäärät ja odotetut materiaalit","Chest counts and expected materials"),"chests");
 
-        root.addView(label(tr("Kaikki yllä olevat kortit avautuvat sovelluksen omana laskurina. War Academylla on nyt oma erikoislaskuri T11/T12-suunnitteluun.","All cards above open native in-app calculators. War Academy now has a dedicated T11/T12 planner."),12,false,Color.rgb(140,170,188)),mp(0,10,0,0));
+        root.addView(label(tr("Battle Simulator on ensimmäinen kalibroitava taistelumalli. Se käyttää troop-määrää, troop-jakaumaa sekä ATK/DEF/Health/Lethality-arvoja ja näyttää voittaja-arvion, suhteellisen combat scoren ja tappioarvion.","Battle Simulator is the first calibratable combat model. It uses troop count, troop split and ATK/DEF/Health/Lethality values to estimate winner, relative combat score and losses."),12,false,Color.rgb(140,170,188)),mp(0,10,0,0));
         setContentView(sc);
     }
 
     private void addSection(LinearLayout root,String s){root.addView(label(s,13,true,Color.rgb(119,205,255)),mp(0,4,0,7));}
+
+    private void addBattle(LinearLayout root){
+        LinearLayout card=box(Color.rgb(18,48,70),18); card.setPadding(dp(16),dp(14),dp(16),dp(14));
+        card.addView(label("⚔️  Battle Simulator",17,true,Color.WHITE));
+        card.addView(label(tr("Attacker vs Defender, troop-jakauma, WOS bonusprosentit ja tappioarvio","Attacker vs Defender, troop split, WOS bonus stats and loss estimate"),12,false,Color.rgb(202,224,238)),mp(0,4,0,8));
+        Button open=smallButton(tr("AVAA TAISTELUSIMULAATTORI  →","OPEN BATTLE SIMULATOR  →"));
+        open.setOnClickListener(v->startActivity(new Intent(this,BattleSimulatorActivity.class)));
+        card.addView(open); root.addView(card,mp(0,0,0,10));
+    }
+
     private void addNative(LinearLayout root,String icon,String title,String desc,String mode){
         LinearLayout card=box(Color.rgb(18,48,70),18); card.setPadding(dp(16),dp(14),dp(16),dp(14));
         card.addView(label(icon+"  "+title,17,true,Color.WHITE));
