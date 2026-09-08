@@ -1,49 +1,24 @@
-# WOS API setup
+# WOS Control API setup
 
-The Android APK must not contain the WOS API key. The key is stored as a Firebase Functions secret and the app calls the `wosProxy` backend.
+The Android APK must not contain the WOS Control API key. The app uses the Firebase Function `wosProxy`, and the API key is stored only as a Firebase Functions secret.
 
-## 1. Add the WOS API key
+The proxy is configured for:
 
-From a computer with Firebase CLI installed and logged in to the `bunny-king` Firebase project, run:
+- Base URL: `https://woscontrol.com/api/v1`
+- Authentication: `Authorization: Bearer <WOS_API_KEY>`
+
+## 1. Add the API key as a Firebase secret
+
+From a computer with Firebase CLI installed and logged in to the `bunny-king` project, run:
 
 ```bash
 firebase use bunny-king
 firebase functions:secrets:set WOS_API_KEY
 ```
 
-When Firebase asks for the value, paste the WOS API key there. Do not commit the key to GitHub.
+When Firebase asks for the value, paste the approved WOS Control API key. Do not commit the key to GitHub or include it in the Android APK.
 
-## 2. Add the WOS API base URL
-
-Run:
-
-```bash
-firebase functions:secrets:set WOS_API_BASE_URL
-```
-
-Paste the API base URL when prompted, for example:
-
-```text
-https://api.example.com
-```
-
-## 3. Add the authentication header name
-
-Run:
-
-```bash
-firebase functions:secrets:set WOS_API_HEADER
-```
-
-For most API-key based services the value is:
-
-```text
-x-api-key
-```
-
-If your WOS API provider documents another header name, use that exact name instead.
-
-## 4. Deploy
+## 2. Deploy the proxy
 
 ```bash
 cd functions
@@ -52,12 +27,14 @@ cd ..
 firebase deploy --only functions:wosProxy
 ```
 
-The deployed function will be in region `europe-north1`.
+The function is deployed in region `europe-north1`.
 
-## 5. Example request
+## 3. Test
+
+Example for the documented `codes` endpoint:
 
 ```text
-https://europe-north1-bunny-king.cloudfunctions.net/wosProxy?endpoint=YOUR_ENDPOINT&state=1674
+https://europe-north1-bunny-king.cloudfunctions.net/wosProxy?endpoint=codes
 ```
 
-The exact endpoint names and authentication format depend on the WOS API provider.
+The Firebase Function adds the Bearer token on the server, so the Android app never needs to know the API key.
