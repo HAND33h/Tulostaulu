@@ -44,6 +44,7 @@ exports.wosProxy = onRequest(
       res.status(response.status);
       res.set("content-type", response.headers.get("content-type") || "application/json; charset=utf-8");
       res.set("cache-control", "no-store");
+      res.set("x-wos-proxy", "bunny-king");
       return res.send(body);
     } catch (error) {
       console.error("WOS proxy error", error);
