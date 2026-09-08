@@ -3,6 +3,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application android:allowBackup="false" android:fullBackupContent="false" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:label="WOS Bunny King" android:theme="@style/Theme.Tulostaulu" android:usesCleartextTraffic="false" android:networkSecurityConfig="@xml/network_security_config">
         <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:exported="false" android:grantUriPermissions="true"><meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/share_paths" /></provider>
+        <activity android:name=".Wos73Activity" android:exported="false" />
         <activity android:name=".Wos72UpdateActivity" android:exported="false" />
         <activity android:name=".Wos7ExpansionActivity" android:exported="false" />
         <activity android:name=".Wos7IntelligenceActivity" android:exported="false" />
