@@ -6,6 +6,9 @@ service cloud.firestore {
     function helperAdmin() { return role() == 'helper_admin' || role() == 'admin' || role() == 'owner'; }
     function admin() { return role() == 'admin' || role() == 'owner'; }
     function owner() { return role() == 'owner'; }
+    function noPrivilegeFields(data) {
+      return !data.keys().hasAny(['role','isAdmin','isOwner','helperAdmin','permissions','claims']);
+    }
 
     match /forum_posts/{postId} {
       allow read: if true;
@@ -16,35 +19,61 @@ service cloud.firestore {
         && request.resource.data.hidden == false
         && request.resource.data.likeCount == 0
         && request.resource.data.replyCount == 0;
+
       allow update: if signedIn() && (
         helperAdmin() ||
         (resource.data.authorUid == request.auth.uid
           && request.resource.data.authorUid == resource.data.authorUid
+          && request.resource.data.createdAt == resource.data.createdAt
           && request.resource.data.locked == resource.data.locked
-          && request.resource.data.hidden == resource.data.hidden)
+          && request.resource.data.hidden == resource.data.hidden
+          && request.resource.data.likeCount == resource.data.likeCount
+          && request.resource.data.replyCount == resource.data.replyCount
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','anonymous','category','title','body','updatedAt']))
       );
       allow delete: if signedIn() && (resource.data.authorUid == request.auth.uid || helperAdmin());
 
       match /replies/{replyId} {
         allow read: if true;
-        allow create: if signedIn() && request.resource.data.authorUid == request.auth.uid;
-        allow update, delete: if signedIn() && (resource.data.authorUid == request.auth.uid || helperAdmin());
+        allow create: if signedIn()
+          && request.resource.data.authorUid == request.auth.uid
+          && request.resource.data.keys().hasOnly(['authorUid','displayName','anonymous','body','createdAt','updatedAt','hidden']);
+        allow update: if signedIn() && (
+          helperAdmin() ||
+          (resource.data.authorUid == request.auth.uid
+            && request.resource.data.authorUid == resource.data.authorUid
+            && request.resource.data.createdAt == resource.data.createdAt
+            && request.resource.data.hidden == resource.data.hidden
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','anonymous','body','updatedAt']))
+        );
+        allow delete: if signedIn() && (resource.data.authorUid == request.auth.uid || helperAdmin());
       }
+
       match /likes/{uid} {
         allow read: if true;
         allow create, delete: if signedIn() && uid == request.auth.uid;
         allow update: if false;
       }
+
       match /reports/{reportId} {
-        allow create: if signedIn() && request.resource.data.reporterUid == request.auth.uid;
+        allow create: if signedIn()
+          && request.resource.data.reporterUid == request.auth.uid
+          && noPrivilegeFields(request.resource.data);
         allow read, update, delete: if helperAdmin();
       }
     }
 
     match /forum_users/{uid} {
       allow read: if signedIn();
-      allow create: if signedIn() && uid == request.auth.uid;
-      allow update: if signedIn() && (uid == request.auth.uid || admin());
+      allow create: if signedIn()
+        && uid == request.auth.uid
+        && noPrivilegeFields(request.resource.data);
+      allow update: if signedIn() && (
+        admin() ||
+        (uid == request.auth.uid
+          && noPrivilegeFields(request.resource.data)
+          && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role','isAdmin','isOwner','helperAdmin','permissions','claims']))
+      );
       allow delete: if admin();
     }
 
@@ -59,5 +88,7 @@ service cloud.firestore {
     match /owner/{doc=**} {
       allow read, write: if owner();
     }
+
+    // Everything not explicitly matched above is denied by default.
   }
 }
