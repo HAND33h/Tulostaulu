@@ -11,30 +11,69 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.*;
-import org.json.*;
-import java.io.*;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class UnifiedActivity extends Activity {
- private static final String API="https://woscontrol.com/api/v1", PREFS="wos_tulostaulu";
- private EditText server,key; private TextView status,result; private boolean english,anonymous; private final List<Row> rows=new ArrayList<>();
- @Override protected void onCreate(Bundle b){super.onCreate(b); SharedPreferences p=getSharedPreferences(PREFS,MODE_PRIVATE); english="en".equals(p.getString("lang","fi"));anonymous=p.getBoolean("anonymous_mode",false);
+ private static final String PREFS="wos_tulostaulu";
+ private EditText server,key; private TextView status,result; private boolean english,anonymous;
+
+ @Override protected void onCreate(Bundle b){
+  super.onCreate(b);
+  SharedPreferences p=getSharedPreferences(PREFS,MODE_PRIVATE);
+  english="en".equals(p.getString("lang","fi"));anonymous=p.getBoolean("anonymous_mode",false);
+  String savedState=p.getString("state","1674").trim();if(savedState.isEmpty())savedState="1674";
+
   ScrollView sc=new ScrollView(this); LinearLayout root=new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(18),dp(20),dp(18),dp(40));root.setBackgroundColor(Color.rgb(7,23,39));sc.addView(root);
   LinearLayout hero=box(Color.rgb(13,48,76),22); hero.setPadding(dp(22),dp(22),dp(22),dp(22)); hero.addView(label("👑  BUNNY KING",30,true,Color.WHITE));hero.addView(label(tr("WOS KOMENTOKESKUS","WOS COMMAND CENTER"),15,true,Color.rgb(130,211,255)));hero.addView(label(tr("Kaikki tärkeät WOS-työkalut yhdessä paikassa","Your WOS tools, intel and creative studio in one place"),13,false,Color.rgb(202,224,238)));if(anonymous)hero.addView(label(tr("🕶️ ANONYYMI TILA KÄYTÖSSÄ","🕶️ ANONYMOUS MODE ON"),12,true,Color.rgb(145,230,255)));root.addView(hero,mp(0,0,0,14));
+
   Spinner lang=new Spinner(this);ArrayAdapter<String> la=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"🇫🇮 Suomi","🇬🇧 English"});lang.setAdapter(la);lang.setSelection(english?1:0);root.addView(lang,mp(0,0,0,14));lang.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener(){public void onItemSelected(android.widget.AdapterView<?> a,View v,int pos,long id){boolean n=pos==1;if(n!=english){getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("lang",n?"en":"fi").apply();recreate();}}public void onNothingSelected(android.widget.AdapterView<?> a){}});
+
   Button account=primary("👤  "+tr("OMA TILI / ANONYYMI TILA","MY ACCOUNT / ANONYMOUS MODE"));root.addView(account,mp(0,0,0,9));
   Button forum=primary("💬  "+tr("WOS FOORUMI","WOS FORUM"));root.addView(forum,mp(0,0,0,16));
+
   root.addView(section(tr("OMA SERVERI","YOUR STATE")));
-  LinearLayout state=box(Color.rgb(18,42,61),18);state.setPadding(dp(16),dp(16),dp(16),dp(16));server=input(tr("Serverinumero","Server number"),p.getString("state","77"),true);key=input("WOS Control API key (wos_...)",anonymous?"":p.getString("api_key",""),false);state.addView(server);state.addView(key,mp(0,8,0,10));Button top=primary("🏆  "+tr("HAE SERVERIN TOP 100","LOAD SERVER TOP 100"));state.addView(top);root.addView(state,mp(0,7,0,18));if(anonymous){key.setEnabled(false);key.setAlpha(.45f);top.setEnabled(false);top.setAlpha(.45f);}
-  root.addView(section(tr("SOVELLUKSET","GAME APPS"))); LinearLayout grid=new LinearLayout(this);grid.setOrientation(LinearLayout.HORIZONTAL);Button player=card("🔎\n"+tr("PELAAJAHAKU","PLAYER SEARCH")+"\n"+tr("FID / profiili","FID / profile"));Button meme=card("😂\nMEME STUDIO\n"+tr("Luo ja tallenna","Create & save"));grid.addView(player,new LinearLayout.LayoutParams(0,dp(126),1));grid.addView(meme,mpw(0,dp(126),1,10));root.addView(grid,mp(0,7,0,10));
+  LinearLayout state=box(Color.rgb(18,42,61),18);state.setPadding(dp(16),dp(16),dp(16),dp(16));
+  server=input(tr("Serverinumero","Server number"),savedState,true);
+  key=input("WOS Control API key (wos_...)",anonymous?"":p.getString("api_key",""),false);
+  state.addView(server);state.addView(key,mp(0,8,0,10));
+  Button top=primary("🏆  "+tr("AVAA SERVERIN DATA / TOP 100","OPEN STATE DATA / TOP 100"));state.addView(top);root.addView(state,mp(0,7,0,18));
+  if(anonymous){key.setEnabled(false);key.setAlpha(.45f);}
+
+  root.addView(section(tr("SOVELLUKSET","GAME APPS")));
+  LinearLayout grid=new LinearLayout(this);grid.setOrientation(LinearLayout.HORIZONTAL);Button player=card("🔎\n"+tr("PELAAJAHAKU","PLAYER SEARCH")+"\n"+tr("FID / profiili","FID / profile"));Button meme=card("😂\nMEME STUDIO\n"+tr("Luo ja tallenna","Create & save"));grid.addView(player,new LinearLayout.LayoutParams(0,dp(126),1));grid.addView(meme,mpw(0,dp(126),1,10));root.addView(grid,mp(0,7,0,10));
   LinearLayout grid2=new LinearLayout(this);grid2.setOrientation(LinearLayout.HORIZONTAL);Button intel=card("📊\nSTATE INTEL\n"+tr("Serverityökalut","State tools"));Button calc=card("🧮\nCALCULATORS\n"+tr("Suunnittelu","Planning"));grid2.addView(intel,new LinearLayout.LayoutParams(0,dp(126),1));grid2.addView(calc,mpw(0,dp(126),1,10));root.addView(grid2);
+
   root.addView(section(tr("PIKATOIMINNOT","QUICK ACCESS")),mp(0,18,0,7));LinearLayout quick=new LinearLayout(this);quick.setOrientation(LinearLayout.HORIZONTAL);Button gifts=mini("🎁\n"+tr("Koodit","Codes")),svs=mini("⚔️\nSvS"),data=mini("🧊\nData"),tools=mini("🗺️\nTools");quick.addView(gifts,new LinearLayout.LayoutParams(0,dp(78),1));quick.addView(svs,new LinearLayout.LayoutParams(0,dp(78),1));quick.addView(data,new LinearLayout.LayoutParams(0,dp(78),1));quick.addView(tools,new LinearLayout.LayoutParams(0,dp(78),1));root.addView(quick);
-  status=label(anonymous?tr("Anonyymi tila • paikalliset työkalut käytössä","Anonymous mode • local tools enabled"):tr("Valmis • State #","Ready • State #")+p.getString("state","77"),14,true,Color.rgb(126,211,255));result=label(tr("Valitse toiminto yllä.","Choose a tool above."),13,false,Color.rgb(210,225,235));root.addView(status,mp(0,20,0,5));root.addView(result);root.addView(label("Powered by WOS community  •  HAND33h",11,true,Color.rgb(120,150,170)),mp(0,28,0,0));
-  account.setOnClickListener(v->startActivity(new Intent(this,MyAccountActivity.class)));forum.setOnClickListener(v->startActivity(new Intent(this,ForumActivity.class)));top.setOnClickListener(v->load());player.setOnClickListener(v->startActivity(new Intent(this,MainActivity.class)));meme.setOnClickListener(v->startActivity(new Intent(this,MemeActivity.class)));intel.setOnClickListener(v->open("https://wosguru.com/svs-intel"));calc.setOnClickListener(v->startActivity(new Intent(this,CalculatorHubActivity.class)));gifts.setOnClickListener(v->open("https://www.whiteoutsurvival-community.com/en/gift-codes.html"));svs.setOnClickListener(v->open("https://wosguru.com/svs-intel"));data.setOnClickListener(v->open("https://wos-observer.com/"));tools.setOnClickListener(v->open("https://www.whiteoutsurvival-community.com/tools/wosc-index.html"));setContentView(sc);
+
+  status=label(anonymous?tr("Anonyymi tila • paikalliset työkalut käytössä","Anonymous mode • local tools enabled"):tr("Valmis • State #","Ready • State #")+savedState,14,true,Color.rgb(126,211,255));result=label(tr("Serverin TOP 100 muodostetaan omasta WOS-pelaajarekisteristä. FID-haut ja OCR kasvattavat dataa.","State TOP 100 is built from the local WOS player registry. FID lookups and OCR grow the data."),13,false,Color.rgb(210,225,235));root.addView(status,mp(0,20,0,5));root.addView(result);root.addView(label("Powered by WOS community  •  HAND33h",11,true,Color.rgb(120,150,170)),mp(0,28,0,0));
+
+  account.setOnClickListener(v->startActivity(new Intent(this,MyAccountActivity.class)));
+  forum.setOnClickListener(v->startActivity(new Intent(this,ForumActivity.class)));
+  top.setOnClickListener(v->openStateData());
+  player.setOnClickListener(v->{saveStateAndKey();startActivity(new Intent(this,MainActivity.class));});
+  meme.setOnClickListener(v->startActivity(new Intent(this,MemeActivity.class)));
+  intel.setOnClickListener(v->open("https://wosguru.com/svs-intel"));
+  calc.setOnClickListener(v->startActivity(new Intent(this,CalculatorHubActivity.class)));
+  gifts.setOnClickListener(v->open("https://www.whiteoutsurvival-community.com/en/gift-codes.html"));
+  svs.setOnClickListener(v->open("https://wosguru.com/svs-intel"));
+  data.setOnClickListener(v->{saveStateAndKey();startActivity(new Intent(this,DataSourcesActivity.class));});
+  tools.setOnClickListener(v->open("https://www.whiteoutsurvival-community.com/tools/wosc-index.html"));
+  setContentView(sc);
  }
+
+ private void saveStateAndKey(){
+  String s=server.getText().toString().trim();if(s.isEmpty())s="1674";
+  SharedPreferences.Editor e=getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s);
+  if(!anonymous){String k=key.getText().toString().trim();if(!k.isEmpty())e.putString("api_key",k);}e.apply();
+ }
+
+ private void openStateData(){saveStateAndKey();String s=server.getText().toString().trim();if(s.isEmpty())s="1674";status.setText(tr("Avataan State #","Opening State #")+s+"…");startActivity(new Intent(this,MainActivity.class));}
  @Override protected void onResume(){super.onResume();if(getSharedPreferences(PREFS,MODE_PRIVATE).getBoolean("anonymous_mode",false)!=anonymous)recreate();}
  private String tr(String fi,String en){return english?en:fi;} private TextView section(String s){return label(s,13,true,Color.rgb(119,205,255));}
  private LinearLayout box(int c,int r){LinearLayout l=new LinearLayout(this);l.setOrientation(LinearLayout.VERTICAL);GradientDrawable g=new GradientDrawable();g.setColor(c);g.setCornerRadius(dp(r));g.setStroke(dp(1),Color.rgb(37,78,105));l.setBackground(g);return l;}
@@ -43,10 +82,5 @@ public class UnifiedActivity extends Activity {
  private Button primary(String s){Button b=new Button(this);b.setText(s);b.setTextColor(Color.WHITE);b.setTypeface(Typeface.DEFAULT_BOLD);GradientDrawable g=new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,new int[]{Color.rgb(20,126,196),Color.rgb(43,170,213)});g.setCornerRadius(dp(14));b.setBackground(g);return b;}
  private Button card(String s){Button b=new Button(this);b.setText(s);b.setTextColor(Color.WHITE);b.setTextSize(14);b.setGravity(Gravity.CENTER);b.setAllCaps(false);b.setTypeface(Typeface.DEFAULT_BOLD);GradientDrawable g=new GradientDrawable();g.setColor(Color.rgb(18,48,70));g.setCornerRadius(dp(18));g.setStroke(dp(1),Color.rgb(42,86,112));b.setBackground(g);return b;}
  private Button mini(String s){Button b=card(s);b.setTextSize(11);return b;} private void open(String u){startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(u)));}
- private void load(){if(getSharedPreferences(PREFS,MODE_PRIVATE).getBoolean("anonymous_mode",false)){Toast.makeText(this,tr("Anonyymitilassa tilikohtaiset API-haut ovat pois käytöstä.","Account API requests are disabled in anonymous mode."),Toast.LENGTH_LONG).show();return;}String s=server.getText().toString().trim(),k=key.getText().toString().trim();if(s.isEmpty()||k.isEmpty()){Toast.makeText(this,tr("Anna serveri ja API-avain","Enter server and API key"),Toast.LENGTH_LONG).show();return;}getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s).putString("api_key",k).apply();status.setText(tr("Haetaan State #","Loading State #")+s+" TOP 100…");result.setText(tr("Haetaan…","Loading…"));new Thread(()->fetch(s,k)).start();}
- private void fetch(String state,String key){Resp lr=get("/leaderboard?state_id="+Uri.encode(state),key);if(lr.code<200||lr.code>=300){err("HTTP "+lr.code+": "+lr.body);return;}try{rows.clear();Object root=lr.body.trim().startsWith("[")?new JSONArray(lr.body):new JSONObject(lr.body);List<JSONObject> all=new ArrayList<>();collect(root,all,0);for(JSONObject o:all){long p=num(o,"might","power","total_power","player_power");if(p<=0)continue;String rs=str(o,"state_id","state","server","server_id","kingdom");if(!rs.isEmpty()&&!digits(rs).equals(digits(state)))continue;String n=str(o,"nickname","name","player_name","username"),f=str(o,"fid","player_id","chief_id"),a=str(o,"alliance","alliance_name","alliance_tag","tag");if(!n.isEmpty()||!f.isEmpty())rows.add(new Row(n,f,a,p));}rows.sort(Comparator.comparingLong((Row r)->r.power).reversed());if(rows.size()>100)rows.subList(100,rows.size()).clear();StringBuilder out=new StringBuilder();for(int i=0;i<rows.size();i++){Row r=rows.get(i);out.append(i+1).append(". ").append(r.name.isEmpty()?r.fid:r.name).append("  •  ").append(String.format(Locale.US,"%,d",r.power));if(!r.alliance.isEmpty())out.append("  [").append(r.alliance).append("]");out.append('\n');}runOnUiThread(()->{status.setText(rows.isEmpty()?tr("TOP100-dataa ei saatu","No TOP100 data returned"):"TOP "+rows.size()+" ✓");result.setText(rows.isEmpty()?tr("Kokeile Data/State Intel -lähteitä.","Try Data/State Intel sources."):out.toString());});}catch(Exception e){err(e.getMessage());}}
- private Resp get(String path,String key){HttpURLConnection c=null;try{c=(HttpURLConnection)new URL(API+path).openConnection();c.setConnectTimeout(15000);c.setReadTimeout(25000);c.setRequestProperty("X-API-Key",key);c.setRequestProperty("Authorization","Bearer "+key);int code=c.getResponseCode();BufferedReader r=new BufferedReader(new InputStreamReader(code>=200&&code<300?c.getInputStream():c.getErrorStream(),StandardCharsets.UTF_8));StringBuilder b=new StringBuilder();String x;while((x=r.readLine())!=null)b.append(x);r.close();return new Resp(code,b.toString());}catch(Exception e){return new Resp(-1,e.getMessage());}finally{if(c!=null)c.disconnect();}}
- private void collect(Object n,List<JSONObject> o,int d){if(n==null||d>6)return;if(n instanceof JSONObject){JSONObject j=(JSONObject)n;o.add(j);Iterator<String> i=j.keys();while(i.hasNext())collect(j.opt(i.next()),o,d+1);}else if(n instanceof JSONArray){JSONArray a=(JSONArray)n;for(int i=0;i<a.length();i++)collect(a.opt(i),o,d+1);}}
- private String str(JSONObject o,String...k){for(String x:k){Object v=o.opt(x);if(v!=null&&v!=JSONObject.NULL&&!String.valueOf(v).trim().isEmpty())return String.valueOf(v).trim();}return"";}private long num(JSONObject o,String...k){for(String x:k)try{Object v=o.opt(x);if(v instanceof Number)return((Number)v).longValue();String s=String.valueOf(v).replaceAll("[^0-9]","");if(!s.isEmpty())return Long.parseLong(s);}catch(Exception ignored){}return 0;}private String digits(String s){return s==null?"":s.replaceAll("[^0-9]","");}private void err(String s){runOnUiThread(()->{status.setText(tr("Virhe","Error"));result.setText(s);});}
- private int dp(int n){return(int)(n*getResources().getDisplayMetrics().density+.5f);}private LinearLayout.LayoutParams mp(int l,int t,int r,int b){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(dp(l),dp(t),dp(r),dp(b));return p;}private LinearLayout.LayoutParams mpw(int w,int h,float wt,int left){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(w,h,wt);p.setMargins(dp(left),0,0,0);return p;}static class Resp{int code;String body;Resp(int c,String b){code=c;body=b==null?"":b;}}static class Row{String name,fid,alliance;long power;Row(String n,String f,String a,long p){name=n;fid=f;alliance=a;power=p;}}
+ private int dp(int n){return(int)(n*getResources().getDisplayMetrics().density+.5f);}private LinearLayout.LayoutParams mp(int l,int t,int r,int b){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(dp(l),dp(t),dp(r),dp(b));return p;}private LinearLayout.LayoutParams mpw(int w,int h,float wt,int left){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(w,h,wt);p.setMargins(dp(left),0,0,0);return p;}
 }
