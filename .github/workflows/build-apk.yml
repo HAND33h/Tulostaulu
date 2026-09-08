@@ -8,6 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
     steps:
       - name: Checkout
@@ -24,20 +29,28 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      - name: Build debug APK
+        run: gradle assembleDebug
+
+      - name: Upload test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: WOS-Tulostaulu-Test-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
       - name: Restore release keystore
+        if: ${{ env.KEYSTORE_B64 != '' }}
         shell: bash
-        run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > release.jks
+        run: echo "$KEYSTORE_B64" | base64 --decode > release.jks
 
       - name: Build unsigned release APK
+        if: ${{ env.KEYSTORE_B64 != '' }}
         run: gradle assembleRelease
 
       - name: Sign release APK
+        if: ${{ env.KEYSTORE_B64 != '' }}
         shell: bash
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           BUILD_TOOLS="$(ls -1 "$ANDROID_HOME/build-tools" | sort -V | tail -1)"
           ZIPALIGN="$ANDROID_HOME/build-tools/$BUILD_TOOLS/zipalign"
@@ -58,6 +71,7 @@ jobs:
           "$APKSIGNER" verify --verbose --print-certs WOS-Tulostaulu.apk
 
       - name: Upload signed APK
+        if: ${{ env.KEYSTORE_B64 != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: WOS-Tulostaulu-APK
