@@ -33,3 +33,17 @@ jobs:
           name: WOS-Tulostaulu-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+
+      - name: Prepare Android signing tools
+        run: |
+          BUILD_TOOLS="$(ls -1 "$ANDROID_HOME/build-tools" | sort -V | tail -1)"
+          mkdir -p signing-tools/lib
+          cp "$ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner" signing-tools/apksigner
+          cp "$ANDROID_HOME/build-tools/$BUILD_TOOLS/lib/apksigner.jar" signing-tools/lib/apksigner.jar
+
+      - name: Upload Android signing tools
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android-Signing-Tools
+          path: signing-tools
+          if-no-files-found: error
