@@ -27,7 +27,7 @@ public class SmartCommandCenterActivity extends Activity {
         en="en".equals(p.getString("lang","fi"));
         ScrollView sc=new ScrollView(this);
         root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(18),dp(18),dp(18),dp(40));root.setBackgroundColor(Color.rgb(7,23,39));sc.addView(root);
-        cardTitle("👑  "+tr("WOS SMART COMMAND CENTER 6.0","WOS SMART COMMAND CENTER 6.0"),tr("Scan → data → inventory → upgrades → battle reports → formations → alliance ops → events → export.","Scan → data → inventory → upgrades → battle reports → formations → alliance ops → events → export."));
+        cardTitle("👑  "+tr("WOS SMART COMMAND CENTER 7.1","WOS SMART COMMAND CENTER 7.1"),tr("Scan → data → inventory → upgrades → heroes → battle → alliance ops → events → share.","Scan → data → inventory → upgrades → heroes → battle → alliance ops → events → share."));
 
         section(tr("PELAAJAPROFIILI","PLAYER PROFILE"));
         state=input(tr("State / server","State / server"),true);state.setText(p.getString("state","1674"));root.addView(state);
@@ -37,7 +37,8 @@ public class SmartCommandCenterActivity extends Activity {
         recommendation=info("");root.addView(recommendation);
         save.setOnClickListener(v->{p.edit().putString("state",state.getText().toString().trim()).putString("playstyle",playstyle.getSelectedItem().toString()).putString("strategy_goal",goal.getSelectedItem().toString()).apply();showRecommendation();});
 
-        section(tr("SMART FLOW 6.0","SMART FLOW 6.0"));
+        section(tr("SMART FLOW 7.1","SMART FLOW 7.1"));
+        addLaunch("⭐",tr("Expansion 7.1","Expansion 7.1"),tr("Hero Tracker, Bear Optimizer, Championship lanes, Crazy Joe, IWL Guard, Alliance Map, History ja share-card.","Hero Tracker, Bear Optimizer, Championship lanes, Crazy Joe, IWL Guard, Alliance Map, History and share card."),Wos7ExpansionActivity.class);
         addLaunch("📸",tr("Smart Scan / OCR","Smart Scan / OCR"),tr("Tuo ranking- tai profiilikuvia ja vie tunnistettu data pelaajarekisteriin.","Import ranking/profile screenshots and push recognized data into the player registry."),ScreenshotImportActivity.class);
         addLaunch("🧊",tr("State & Player Data","State & Player Data"),tr("State 1674 oletuksena, FID-haku, paikallinen TOP100 ja Excel.","State 1674 default, FID lookup, local TOP100 and Excel."),DataSourcesActivity.class);
         addLaunch("👑","Master Upgrade Planner",tr("Gear, Charms, FC, speed-bonukset ja muut päivitykset yhdestä näkymästä.","Gear, Charms, FC, speed bonuses and upgrades in one view."),MasterUpgradePlannerActivity.class);
