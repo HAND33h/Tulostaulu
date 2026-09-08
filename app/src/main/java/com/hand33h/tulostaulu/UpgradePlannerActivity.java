@@ -1,6 +1,7 @@
 package com.hand33h.tulostaulu;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -18,6 +19,7 @@ public class UpgradePlannerActivity extends Activity {
     private String mode;
     private LinearLayout root;
     private TextView result;
+    private SharedPreferences prefs;
 
     private static final long[] CH_GUIDE={0,5,40,60,80,100,120,140,200,300,420,560,580,580,600,600,650,765,1300};
     private static final long[] CH_DESIGN={0,5,15,40,100,200,300,400,400,400,420,420,450,450,500,500,550,630,1130};
@@ -48,95 +50,26 @@ public class UpgradePlannerActivity extends Activity {
     private static final long[] T_POWER={0,3,4,6,9,13,20,28,38,50,66,80};
 
     @Override protected void onCreate(Bundle b){
-        super.onCreate(b);
-        en="en".equals(getSharedPreferences(PREFS,MODE_PRIVATE).getString("lang","fi"));
+        super.onCreate(b);prefs=getSharedPreferences(PREFS,MODE_PRIVATE);en="en".equals(prefs.getString("lang","fi"));
         mode=getIntent().getStringExtra("mode"); if(mode==null)mode="chief_gear";
-        ScrollView sc=new ScrollView(this);
-        root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(18),dp(20),dp(18),dp(40));root.setBackgroundColor(Color.rgb(7,23,39));sc.addView(root);
-        LinearLayout hero=card(13,48,76);hero.setPadding(dp(18),dp(18),dp(18),dp(18));
-        hero.addView(txt(icon()+"  "+title()+" 2.0",25,true,Color.WHITE));
-        hero.addView(txt(tr("Nopea tavoite → materiaalit → omat varastot → puuttuvat → teho/aika","Fast target → materials → inventory → shortages → power/time"),12,false,Color.rgb(205,228,241)));
-        root.addView(hero,mp(0,0,0,14));
-        addSourceNote();
-        if("chief_gear".equals(mode))buildGear();
-        else if("charms".equals(mode))buildCharms();
-        else if("fire_crystals".equals(mode)||"buildings".equals(mode))buildFire();
-        else if("troops".equals(mode))buildTroops();
-        else buildFallback();
-        setContentView(sc);
+        ScrollView sc=new ScrollView(this);root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(18),dp(20),dp(18),dp(40));root.setBackgroundColor(Color.rgb(7,23,39));sc.addView(root);
+        LinearLayout hero=card(13,48,76);hero.setPadding(dp(18),dp(18),dp(18),dp(18));hero.addView(txt(icon()+"  "+title()+" 6.1",25,true,Color.WHITE));hero.addView(txt(tr("Tavoite → Inventory Vault → puuttuvat → teho/aika","Target → Inventory Vault → shortages → power/time"),12,false,Color.rgb(205,228,241)));root.addView(hero,mp(0,0,0,14));
+        addSourceNote();if("chief_gear".equals(mode))buildGear();else if("charms".equals(mode))buildCharms();else if("fire_crystals".equals(mode)||"buildings".equals(mode))buildFire();else if("troops".equals(mode))buildTroops();else buildFallback();setContentView(sc);
     }
 
-    private void addSourceNote(){
-        root.addView(txt(tr("Mallinnus: WSCO / WOS Forge / Whiteout Survival Wiki -tyylinen current→target + inventory-gap. Sovellus käyttää vain omia vahvistettuja WOS-taulukoita eikä kopioi ulkoisten sivujen koodia.","Model: WSCO / WOS Forge / Whiteout Survival Wiki style current→target + inventory gap. The app uses its own verified WOS tables and does not copy external site code."),11,false,Color.rgb(143,174,193)),mp(0,0,0,12));
-    }
+    private void addSourceNote(){root.addView(txt(tr("Inventory-kentät esitäytetään Operations Suite 6.1:n paikallisesta Inventory Vaultista. Puuttuvia WOS-kuluja tai power-arvoja ei arvata.","Inventory fields are prefilled from the local Operations Suite 6.1 Inventory Vault. Missing WOS costs or power values are not guessed."),11,false,Color.rgb(143,174,193)),mp(0,0,0,12));}
 
-    private void buildGear(){
-        section(tr("TAVOITE","TARGET"));
-        Spinner current=spin(GEAR_LEVEL),target=spin(GEAR_LEVEL);target.setSelection(GEAR_LEVEL.length-1);
-        root.addView(label(tr("Nykyinen taso","Current level")));root.addView(current);
-        root.addView(label(tr("Tavoitetaso","Target level")));root.addView(target);
-        Spinner qty=spin(new String[]{"1","2","3","4","5","6"});qty.setSelection(5);
-        root.addView(label(tr("Kuinka monta gear-osaa päivitetään","How many gear pieces")));root.addView(qty);
-        section(tr("OMA VARASTO","INVENTORY"));
-        EditText alloy=input("Hardened Alloy"),polish=input("Polishing Solution"),plans=input("Design Plans"),amber=input("Lunar Amber");
-        root.addView(alloy);root.addView(polish);root.addView(plans);root.addView(amber);
-        result=resultBox();Button calc=button(tr("LASKE PÄIVITYS","CALCULATE UPGRADE"));root.addView(calc);root.addView(result,mp(0,12,0,0));
-        calc.setOnClickListener(v->{
-            int a=current.getSelectedItemPosition(),z=target.getSelectedItemPosition(),n=qty.getSelectedItemPosition()+1;
-            if(z<=a){toast(tr("Valitse nykyistä korkeampi tavoite.","Choose a target above current."));return;}
-            long al=0,po=0,pl=0,am=0,pw=0;
-            if(z==GEAR_LEVEL.length-1){
-                long fullAl=MAX6_ALLOY/6,fullPo=MAX6_POLISH/6,fullPl=MAX6_PLAN/6,fullAm=MAX6_AMBER/6,fullPw=MAX6_POWER/6;
-                long ua=0,up=0,ud=0,um=0;
-                if(a>=G_ALLOY.length){toast(tr("T5/T6 välitasoja ei arvata.","T5/T6 intermediate levels are not guessed."));return;}
-                for(int i=1;i<=a;i++){ua+=G_ALLOY[i];up+=G_POLISH[i];ud+=G_PLAN[i];um+=G_AMBER[i];}
-                al=(fullAl-ua)*n;po=(fullPo-up)*n;pl=(fullPl-ud)*n;am=(fullAm-um)*n;pw=(fullPw-G_POWER[a])*n;
-            }else{
-                for(int i=a+1;i<=z;i++){al+=G_ALLOY[i];po+=G_POLISH[i];pl+=G_PLAN[i];am+=G_AMBER[i];}
-                al*=n;po*=n;pl*=n;am*=n;pw=(G_POWER[z]-G_POWER[a])*n;
-            }
-            result.setText(summaryHeader(n)+line("Hardened Alloy",al,val(alloy))+line("Polishing Solution",po,val(polish))+line("Design Plans",pl,val(plans))+line("Lunar Amber",am,val(amber))+"\n⚡ Power +"+fmt(Math.max(0,pw)));
-        });
-    }
+    private void buildGear(){section(tr("TAVOITE","TARGET"));Spinner current=spin(GEAR_LEVEL),target=spin(GEAR_LEVEL);target.setSelection(GEAR_LEVEL.length-1);root.addView(label(tr("Nykyinen taso","Current level")));root.addView(current);root.addView(label(tr("Tavoitetaso","Target level")));root.addView(target);Spinner qty=spin(new String[]{"1","2","3","4","5","6"});qty.setSelection(5);root.addView(label(tr("Kuinka monta gear-osaa päivitetään","How many gear pieces")));root.addView(qty);section(tr("INVENTORY VAULT","INVENTORY VAULT"));EditText alloy=vaultInput("Hardened Alloy","vault_alloy"),polish=vaultInput("Polishing Solution","vault_polish"),plans=vaultInput("Design Plans","vault_plans"),amber=vaultInput("Lunar Amber","vault_amber");root.addView(alloy);root.addView(polish);root.addView(plans);root.addView(amber);result=resultBox();Button calc=button(tr("LASKE PÄIVITYS","CALCULATE UPGRADE"));root.addView(calc);root.addView(result,mp(0,12,0,0));calc.setOnClickListener(v->{int a=current.getSelectedItemPosition(),z=target.getSelectedItemPosition(),n=qty.getSelectedItemPosition()+1;if(z<=a){toast(tr("Valitse nykyistä korkeampi tavoite.","Choose a target above current."));return;}long al=0,po=0,pl=0,am=0,pw=0;if(z==GEAR_LEVEL.length-1){long fullAl=MAX6_ALLOY/6,fullPo=MAX6_POLISH/6,fullPl=MAX6_PLAN/6,fullAm=MAX6_AMBER/6,fullPw=MAX6_POWER/6;long ua=0,up=0,ud=0,um=0;if(a>=G_ALLOY.length){toast(tr("T5/T6 välitasoja ei arvata.","T5/T6 intermediate levels are not guessed."));return;}for(int i=1;i<=a;i++){ua+=G_ALLOY[i];up+=G_POLISH[i];ud+=G_PLAN[i];um+=G_AMBER[i];}al=(fullAl-ua)*n;po=(fullPo-up)*n;pl=(fullPl-ud)*n;am=(fullAm-um)*n;pw=(fullPw-G_POWER[a])*n;}else{for(int i=a+1;i<=z;i++){al+=G_ALLOY[i];po+=G_POLISH[i];pl+=G_PLAN[i];am+=G_AMBER[i];}al*=n;po*=n;pl*=n;am*=n;pw=(G_POWER[z]-G_POWER[a])*n;}String s=summaryHeader(n)+line("Hardened Alloy",al,val(alloy))+line("Polishing Solution",po,val(polish))+line("Design Plans",pl,val(plans))+line("Lunar Amber",am,val(amber))+"\n⚡ Power +"+fmt(Math.max(0,pw));result.setText(s);saveResult(s);});}
 
-    private void buildCharms(){
-        section(tr("TAVOITE","TARGET"));
-        Spinner current=spin(levels(0,18)),target=spin(levels(0,18));target.setSelection(18);
-        root.addView(label(tr("Nykyinen charm-taso","Current charm level")));root.addView(current);
-        root.addView(label(tr("Tavoitetaso","Target level")));root.addView(target);
-        String[] q=new String[18];for(int i=0;i<18;i++)q[i]=String.valueOf(i+1);Spinner qty=spin(q);qty.setSelection(17);
-        root.addView(label(tr("Kuinka monta 18 charm-slotista päivitetään","How many of 18 charm slots")));root.addView(qty);
-        section(tr("OMA VARASTO","INVENTORY"));
-        EditText guides=input("Charm Guides"),designs=input("Charm Designs"),secrets=input("Jewel Secrets");root.addView(guides);root.addView(designs);root.addView(secrets);
-        result=resultBox();Button calc=button(tr("LASKE CHARMIT","CALCULATE CHARMS"));root.addView(calc);root.addView(result,mp(0,12,0,0));
-        calc.setOnClickListener(v->{
-            int a=current.getSelectedItemPosition(),z=target.getSelectedItemPosition(),n=qty.getSelectedItemPosition()+1;
-            if(z<=a){toast(tr("Valitse nykyistä korkeampi tavoite.","Choose a target above current."));return;}
-            long g=0,d=0,s=0;for(int i=a+1;i<=z;i++){g+=CH_GUIDE[i];d+=CH_DESIGN[i];s+=CH_SECRET[i];}g*=n;d*=n;s*=n;
-            String power=(z<=16)?"\n⚡ Power +"+fmt((CH_POWER[z]-CH_POWER[a])*n):"\n⚠ "+tr("Lv17–18 power jätetään näyttämättä, koska sitä ei arvata.","Lv17–18 power is hidden rather than guessed.");
-            result.setText(summaryHeader(n)+line("Charm Guides",g,val(guides))+line("Charm Designs",d,val(designs))+line("Jewel Secrets",s,val(secrets))+power);
-        });
-    }
+    private void buildCharms(){section(tr("TAVOITE","TARGET"));Spinner current=spin(levels(0,18)),target=spin(levels(0,18));target.setSelection(18);root.addView(label(tr("Nykyinen charm-taso","Current charm level")));root.addView(current);root.addView(label(tr("Tavoitetaso","Target level")));root.addView(target);String[] q=new String[18];for(int i=0;i<18;i++)q[i]=String.valueOf(i+1);Spinner qty=spin(q);qty.setSelection(17);root.addView(label(tr("Kuinka monta 18 charm-slotista päivitetään","How many of 18 charm slots")));root.addView(qty);section(tr("INVENTORY VAULT","INVENTORY VAULT"));EditText guides=vaultInput("Charm Guides","vault_guides"),designs=vaultInput("Charm Designs","vault_designs"),secrets=vaultInput("Jewel Secrets","vault_secrets");root.addView(guides);root.addView(designs);root.addView(secrets);result=resultBox();Button calc=button(tr("LASKE CHARMIT","CALCULATE CHARMS"));root.addView(calc);root.addView(result,mp(0,12,0,0));calc.setOnClickListener(v->{int a=current.getSelectedItemPosition(),z=target.getSelectedItemPosition(),n=qty.getSelectedItemPosition()+1;if(z<=a){toast(tr("Valitse nykyistä korkeampi tavoite.","Choose a target above current."));return;}long g=0,d=0,s=0;for(int i=a+1;i<=z;i++){g+=CH_GUIDE[i];d+=CH_DESIGN[i];s+=CH_SECRET[i];}g*=n;d*=n;s*=n;String power=(z<=16)?"\n⚡ Power +"+fmt((CH_POWER[z]-CH_POWER[a])*n):"\n⚠ "+tr("Lv17–18 power jätetään näyttämättä, koska sitä ei arvata.","Lv17–18 power is hidden rather than guessed.");String out=summaryHeader(n)+line("Charm Guides",g,val(guides))+line("Charm Designs",d,val(designs))+line("Jewel Secrets",s,val(secrets))+power;result.setText(out);saveResult(out);});}
 
-    private void buildFire(){
-        section(tr("FURNACE / FIRE CRYSTAL","FURNACE / FIRE CRYSTAL"));
-        Spinner current=spin(FC_LEVEL),target=spin(FC_LEVEL);target.setSelection(10);root.addView(label(tr("Nykyinen Furnace","Current Furnace")));root.addView(current);root.addView(label(tr("Tavoite","Target")));root.addView(target);
-        EditText fc=input("Fire Crystals"),rfc=input("Refined Fire Crystals");root.addView(fc);root.addView(rfc);
-        result=resultBox();Button calc=button(tr("LASKE FC-PÄIVITYS","CALCULATE FC UPGRADE"));root.addView(calc);root.addView(result,mp(0,12,0,0));
-        calc.setOnClickListener(v->{int a=current.getSelectedItemPosition(),z=target.getSelectedItemPosition();if(z<=a){toast(tr("Valitse korkeampi tavoite.","Choose a higher target."));return;}long f=0,r=0;for(int i=a+1;i<=z;i++){f+=FC_COST[i];r+=RFC_COST[i];}result.setText(line("Fire Crystals",f,val(fc))+line("Refined Fire Crystals",r,val(rfc))+"\n"+tr("Huom: nämä ovat Furnace-tierien kokonaiskulut. Muiden rakennusten kulut pidetään erillään, kunnes niiden taulukko on vahvistettu.","Note: these are Furnace tier totals. Other building costs stay separate until their table is verified."));});
-    }
+    private void buildFire(){section(tr("FURNACE / FIRE CRYSTAL","FURNACE / FIRE CRYSTAL"));Spinner current=spin(FC_LEVEL),target=spin(FC_LEVEL);target.setSelection(10);root.addView(label(tr("Nykyinen Furnace","Current Furnace")));root.addView(current);root.addView(label(tr("Tavoite","Target")));root.addView(target);EditText fc=vaultInput("Fire Crystals","vault_fc"),rfc=vaultInput("Refined Fire Crystals","vault_rfc");root.addView(fc);root.addView(rfc);result=resultBox();Button calc=button(tr("LASKE FC-PÄIVITYS","CALCULATE FC UPGRADE"));root.addView(calc);root.addView(result,mp(0,12,0,0));calc.setOnClickListener(v->{int a=current.getSelectedItemPosition(),z=target.getSelectedItemPosition();if(z<=a){toast(tr("Valitse korkeampi tavoite.","Choose a higher target."));return;}long f=0,r=0;for(int i=a+1;i<=z;i++){f+=FC_COST[i];r+=RFC_COST[i];}String out=line("Fire Crystals",f,val(fc))+line("Refined Fire Crystals",r,val(rfc))+"\n"+tr("Huom: nämä ovat Furnace-tierien varmennetut kokonaiskulut. Muiden rakennusten kulut pidetään erillään.","Note: these are verified Furnace tier totals. Other building costs remain separate.");result.setText(out);saveResult(out);});}
 
-    private void buildTroops(){
-        section(tr("KOULUTUS / PROMOTION","TRAINING / PROMOTION"));
-        String[] tiers=new String[11];for(int i=0;i<11;i++)tiers[i]="T"+(i+1);Spinner from=spin(tiers),to=spin(tiers);to.setSelection(9);
-        CheckBox promo=new CheckBox(this);promo.setTextColor(Color.WHITE);promo.setText(tr("Promotoi nykyisestä tieristä","Promote from current tier"));root.addView(label(tr("Nykyinen tier","Current tier")));root.addView(from);root.addView(label(tr("Tavoitetier","Target tier")));root.addView(to);root.addView(promo);
-        EditText count=input(tr("Sotilaiden määrä","Troop count")),speed=input(tr("Training Speed %","Training Speed %"));speed.setText("0");root.addView(count);root.addView(speed);
-        result=resultBox();Button calc=button(tr("LASKE TROOPIT","CALCULATE TROOPS"));root.addView(calc);root.addView(result,mp(0,12,0,0));
-        calc.setOnClickListener(v->{int a=from.getSelectedItemPosition()+1,z=to.getSelectedItemPosition()+1;long n=val(count);if(n<=0){toast(tr("Anna sotilaiden määrä.","Enter troop count."));return;}if(promo.isChecked()&&z<=a){toast(tr("Promotion-tavoitteen pitää olla korkeampi.","Promotion target must be higher."));return;}long m=T_MEAT[z],w=T_WOOD[z],c=T_COAL[z],ir=T_IRON[z],sec=T_TIME[z],pw=T_POWER[z];if(promo.isChecked()){m-=T_MEAT[a];w-=T_WOOD[a];c-=T_COAL[a];ir-=T_IRON[a];sec-=T_TIME[a];pw-=T_POWER[a];}double sp=Math.max(0,val(speed));long adjusted=(long)Math.ceil((sec*n)/(1.0+sp/100.0));result.setText("Meat: "+fmt(m*n)+"\nWood: "+fmt(w*n)+"\nCoal: "+fmt(c*n)+"\nIron: "+fmt(ir*n)+"\n\n⏱ "+tr("Base aika: ","Base time: ")+formatSeconds(sec*n)+"\n⚡ "+tr("Speed huomioitu: ","With speed: ")+formatSeconds(adjusted)+"\nPower: +"+fmt(pw*n));});
-    }
+    private void buildTroops(){section(tr("KOULUTUS / PROMOTION","TRAINING / PROMOTION"));String[] tiers=new String[11];for(int i=0;i<11;i++)tiers[i]="T"+(i+1);Spinner from=spin(tiers),to=spin(tiers);to.setSelection(9);CheckBox promo=new CheckBox(this);promo.setTextColor(Color.WHITE);promo.setText(tr("Promotoi nykyisestä tieristä","Promote from current tier"));root.addView(label(tr("Nykyinen tier","Current tier")));root.addView(from);root.addView(label(tr("Tavoitetier","Target tier")));root.addView(to);root.addView(promo);EditText count=input(tr("Sotilaiden määrä","Troop count")),speed=input(tr("Training Speed %","Training Speed %"));speed.setText(prefs.getString("planner_training_speed","0"));root.addView(count);root.addView(speed);result=resultBox();Button calc=button(tr("LASKE TROOPIT","CALCULATE TROOPS"));root.addView(calc);root.addView(result,mp(0,12,0,0));calc.setOnClickListener(v->{int a=from.getSelectedItemPosition()+1,z=to.getSelectedItemPosition()+1;long n=val(count);if(n<=0){toast(tr("Anna sotilaiden määrä.","Enter troop count."));return;}if(promo.isChecked()&&z<=a){toast(tr("Promotion-tavoitteen pitää olla korkeampi.","Promotion target must be higher."));return;}long m=T_MEAT[z],w=T_WOOD[z],c=T_COAL[z],ir=T_IRON[z],sec=T_TIME[z],pw=T_POWER[z];if(promo.isChecked()){m-=T_MEAT[a];w-=T_WOOD[a];c-=T_COAL[a];ir-=T_IRON[a];sec-=T_TIME[a];pw-=T_POWER[a];}double sp=Math.max(0,val(speed));long adjusted=(long)Math.ceil((sec*n)/(1.0+sp/100.0));String out="Meat: "+fmt(m*n)+"\nWood: "+fmt(w*n)+"\nCoal: "+fmt(c*n)+"\nIron: "+fmt(ir*n)+"\n\n⏱ "+tr("Base aika: ","Base time: ")+formatSeconds(sec*n)+"\n⚡ "+tr("Speed huomioitu: ","With speed: ")+formatSeconds(adjusted)+"\nPower: +"+fmt(pw*n);result.setText(out);saveResult(out);});}
 
     private void buildFallback(){root.addView(txt(tr("Tämä laskuri käyttää vielä vanhaa näkymää. Avaa se laskukeskuksesta.","This calculator still uses the legacy view. Open it from the calculator hub."),14,false,Color.WHITE));}
-
+    private void saveResult(String s){prefs.edit().putString("last_upgrade_mode",mode).putString("last_upgrade_summary",s).apply();}
+    private EditText vaultInput(String hint,String key){EditText e=input(hint);e.setText(prefs.getString(key,"0"));return e;}
     private String summaryHeader(int n){return tr("Päivitettäviä kohteita: ","Upgrade targets: ")+n+"\n\n";}
     private String line(String name,long need,long have){return name+": "+fmt(need)+"  •  "+tr("puuttuu ","missing ")+fmt(Math.max(0,need-have))+"\n";}
     private String[] levels(int a,int b){String[] x=new String[b-a+1];for(int i=a;i<=b;i++)x[i-a]=tr("Taso ","Level ")+i;return x;}
@@ -145,7 +78,7 @@ public class UpgradePlannerActivity extends Activity {
     private String tr(String fi,String enText){return en?enText:fi;}
     private void section(String s){root.addView(txt(s,13,true,Color.rgb(119,205,255)),mp(0,10,0,6));}
     private TextView label(String s){return txt(s,12,true,Color.rgb(190,218,233));}
-    private EditText input(String hint){EditText e=new EditText(this);e.setHint(hint);e.setHintTextColor(Color.rgb(190,210,222));e.setTextColor(Color.WHITE);e.setTextSize(16);e.setSingleLine();e.setInputType(InputType.TYPE_CLASS_NUMBER);e.setPadding(dp(14),dp(12),dp(14),dp(12));GradientDrawable g=new GradientDrawable();g.setColor(Color.rgb(24,61,83));g.setCornerRadius(dp(12));g.setStroke(dp(1),Color.rgb(58,111,143));e.setBackground(g);e.setLayoutParams(mp(0,4,0,7));return e;}
+    private EditText input(String hint){EditText e=new EditText(this);e.setHint(hint);e.setHintTextColor(Color.rgb(190,210,222));e.setTextColor(Color.WHITE);e.setTextSize(16);e.setSingleLine();e.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);e.setPadding(dp(14),dp(12),dp(14),dp(12));GradientDrawable g=new GradientDrawable();g.setColor(Color.rgb(24,61,83));g.setCornerRadius(dp(12));g.setStroke(dp(1),Color.rgb(58,111,143));e.setBackground(g);e.setLayoutParams(mp(0,4,0,7));return e;}
     private Spinner spin(String[] items){Spinner s=new Spinner(this);GradientDrawable g=new GradientDrawable();g.setColor(Color.rgb(24,61,83));g.setCornerRadius(dp(12));g.setStroke(dp(1),Color.rgb(58,111,143));s.setBackground(g);ArrayAdapter<String> ad=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,items){@Override public View getView(int p,View c,ViewGroup vg){TextView v=(TextView)super.getView(p,c,vg);v.setTextColor(Color.WHITE);v.setTextSize(16);v.setPadding(dp(12),dp(12),dp(12),dp(12));return v;}@Override public View getDropDownView(int p,View c,ViewGroup vg){TextView v=(TextView)super.getDropDownView(p,c,vg);v.setTextColor(Color.WHITE);v.setTextSize(16);v.setBackgroundColor(Color.rgb(24,61,83));v.setPadding(dp(14),dp(14),dp(14),dp(14));return v;}};s.setAdapter(ad);s.setLayoutParams(mp(0,4,0,8));return s;}
     private TextView resultBox(){TextView v=txt(tr("Valmis laskentaan.","Ready to calculate."),15,false,Color.WHITE);v.setPadding(dp(14),dp(14),dp(14),dp(14));GradientDrawable g=new GradientDrawable();g.setColor(Color.rgb(18,48,70));g.setCornerRadius(dp(14));g.setStroke(dp(1),Color.rgb(50,94,120));v.setBackground(g);return v;}
     private Button button(String s){Button b=new Button(this);b.setText(s);b.setAllCaps(false);b.setTextColor(Color.WHITE);b.setTypeface(Typeface.DEFAULT_BOLD);GradientDrawable g=new GradientDrawable();g.setColor(Color.rgb(28,139,207));g.setCornerRadius(dp(14));b.setBackground(g);return b;}
