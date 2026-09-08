@@ -85,7 +85,7 @@ jobs:
                           | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
                   setContentView(image);
                   new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                      startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                      startActivity(new Intent(SplashActivity.this, UnifiedActivity.class));
                       finish();
                   }, 1900);
               }
