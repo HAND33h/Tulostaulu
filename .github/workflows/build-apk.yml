@@ -45,6 +45,14 @@ jobs:
           decode('app/src/main/bunny_icon.b64', 'app/src/main/res/drawable/wos_bunny.jpg')
           PY
 
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('app/src/main/java/com/hand33h/tulostaulu/MainActivity.java')
+          s = p.read_text()
+          s = s.replace("replace('.', ' › ')", "replace(\".\", \" › \")")
+          p.write_text(s)
+          PY
+
           cat > app/src/main/java/com/hand33h/tulostaulu/SplashActivity.java <<'JAVA'
           package com.hand33h.tulostaulu;
 
