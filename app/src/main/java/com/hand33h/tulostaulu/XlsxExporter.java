@@ -2,6 +2,7 @@ package com.hand33h.tulostaulu;
 
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -35,9 +36,8 @@ public final class XlsxExporter {
     };
 
     /**
-     * personalRows: rank, player, id, personalPower, alliance.
-     * Other tabs are created with the exact template headers and remain empty until
-     * the public API exposes those state ranking datasets.
+     * API-provided Personal Power rows are combined with local screenshot imports.
+     * Screenshot-imported rows can populate all 14 sheets in the current app session.
      */
     public static void write(OutputStream output, List<String[]> personalRows) throws Exception {
         try (ZipOutputStream zip = new ZipOutputStream(output, StandardCharsets.UTF_8)) {
@@ -49,10 +49,39 @@ public final class XlsxExporter {
             put(zip, "xl/_rels/workbook.xml.rels", workbookRels());
             put(zip, "xl/styles.xml", styles());
             for (int i = 0; i < SHEETS.length; i++) {
-                List<String[]> data = i == 1 ? personalRows : null;
+                List<String[]> data = RankingStore.getRows(SHEETS[i]);
+                if (i == 1) data = mergePersonal(personalRows, data);
                 put(zip, "xl/worksheets/sheet" + (i + 1) + ".xml", sheetXml(HEADERS[i], data));
             }
         }
+    }
+
+    private static List<String[]> mergePersonal(List<String[]> apiRows, List<String[]> imported) {
+        List<String[]> out = new ArrayList<>();
+        if (apiRows != null) for (String[] row : apiRows) if (row != null) out.add(row.clone());
+        if (imported != null) {
+            for (String[] row : imported) {
+                if (row == null) continue;
+                String id = row.length > 2 ? row[2] : "";
+                String name = row.length > 1 ? row[1] : "";
+                boolean exists = false;
+                for (String[] old : out) {
+                    String oldId = old.length > 2 ? old[2] : "";
+                    String oldName = old.length > 1 ? old[1] : "";
+                    if ((!id.isEmpty() && id.equals(oldId)) || (id.isEmpty() && !name.isEmpty() && name.equalsIgnoreCase(oldName))) { exists = true; break; }
+                }
+                if (!exists) out.add(row.clone());
+            }
+        }
+        out.sort((a,b)->Integer.compare(rankOf(a),rankOf(b)));
+        if (out.size() > 100) return new ArrayList<>(out.subList(0,100));
+        return out;
+    }
+
+    private static int rankOf(String[] row) {
+        if (row == null || row.length == 0) return 9999;
+        try { return Integer.parseInt(row[0].replaceAll("[^0-9]", "")); }
+        catch (Exception e) { return 9999; }
     }
 
     private static void put(ZipOutputStream zip, String name, String text) throws Exception {
