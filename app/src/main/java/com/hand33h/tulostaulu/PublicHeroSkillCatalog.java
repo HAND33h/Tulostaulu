@@ -23,21 +23,13 @@ public final class PublicHeroSkillCatalog {
         public int widgetsToReach(int level){int n=Math.max(0,Math.min(10,level));return 5*n*(n+1)/2;}
     }
     public static final WidgetRule WIDGET_RULE=new WidgetRule();
-
-    /** Official constraints used by the simulator; these are rules, not guessed damage formula coefficients. */
     public static final class CombatRules {
-        public static final int HEROES_PER_MARCH=3;
-        public static final int LEADER_EXPEDITION_SKILLS=9;
-        public static final int MAX_JOINER_PRIMARY_SKILLS=4;
+        public static final int HEROES_PER_MARCH=3, LEADER_EXPEDITION_SKILLS=9, MAX_JOINER_PRIMARY_SKILLS=4;
         public static final double CITY_ATTACKER_DEATH_SHARE=0.35;
-        public static final String FRONT_ROW="Infantry";
-        public static final String MIDDLE_ROW="Lancer";
-        public static final String BACK_ROW="Marksman";
-        public static final boolean HERO_SKILLS_INDEPENDENT_OF_REPORT_STATS=true;
-        public static final boolean EXPEDITION_SKILLS_ACTIVE_WITHOUT_MATCHING_TROOP=true;
+        public static final String FRONT_ROW="Infantry", MIDDLE_ROW="Lancer", BACK_ROW="Marksman";
+        public static final boolean HERO_SKILLS_INDEPENDENT_OF_REPORT_STATS=true, EXPEDITION_SKILLS_ACTIVE_WITHOUT_MATCHING_TROOP=true;
         private CombatRules(){}
     }
-
     private static final List<Skill> DATA;
     static {
         ArrayList<Skill>d=new ArrayList<>();
@@ -46,6 +38,23 @@ public final class PublicHeroSkillCatalog {
         pub(d,"Ling Xue","Fearsome Aura","ENEMY_ATTACK_DOWN","ENEMY_ALL","PASSIVE",v(4,8,12,16,20),"OutOfGames hero guide");
         pub(d,"Ling Xue","Total Control","TRAINING_SPEED_UP","CITY","PASSIVE",v(4,8,12,16,20),"OutOfGames hero guide");
 
+        // Gen 6 - WhiteoutData exact Expedition ladders.
+        pub(d,"Wu Ming","Shadow's Evasion Normal","NORMAL_ATTACK_DAMAGE_TAKEN_DOWN","INFANTRY","PASSIVE",v(5,10,15,20,25),"WhiteoutData Gen6");
+        pub(d,"Wu Ming","Shadow's Evasion Skill","SKILL_DAMAGE_TAKEN_DOWN","INFANTRY","PASSIVE",v(6,12,18,24,30),"WhiteoutData Gen6");
+        pub(d,"Wu Ming","Crescent Uplift","DAMAGE_DEALT_UP","ALL_TROOPS","PASSIVE",v(4,8,12,16,20),"WhiteoutData Gen6");
+        pub(d,"Wu Ming","Elemental Resonance","SKILL_DAMAGE_UP","ALL_TROOPS","PASSIVE",v(5,10,15,20,25),"WhiteoutData Gen6");
+        pub(d,"Wu Ming","Martial Zenith","DAMAGE_DEALT_UP","ALL_TROOPS","WIDGET_EXPEDITION",v(10,15,20,25,30),"WhiteoutData Gen6");
+        pub(d,"Wu Ming","Steel Discipline","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData Gen6");
+
+        // Gen 9 - WhiteoutData exact Expedition ladders.
+        pub(d,"Magnus","Rapacious","TROOP_ATTACK_UP","ALL_TROOPS","PASSIVE_PRIMARY",v(5,10,15,20,25),"WhiteoutData Gen9");
+        pub(d,"Magnus","Iron Phalanx","TROOP_DEFENSE_UP","INFANTRY","ON_ATTACK_40_PERCENT_1_TURN",v(10,20,30,40,50),"WhiteoutData Gen9");
+        pub(d,"Magnus","Iceman Guard","DAMAGE_TAKEN_DOWN","INFANTRY","PASSIVE",v(2,4,6,8,10),"WhiteoutData Gen9");
+        pub(d,"Magnus","Iceman Marksman","DAMAGE_DEALT_UP","MARKSMAN","PASSIVE",v(2,4,6,8,10),"WhiteoutData Gen9");
+        pub(d,"Magnus","Heroic Stock","DAMAGE_TAKEN_DOWN","ALL_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData Gen9");
+        pub(d,"Magnus","Valoric Inspiration","DEFENDER_HEALTH_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData Gen9");
+
+        // Gen 10.
         pub(d,"Gregory","Legion of Sun","TROOP_ATTACK_UP","ALL_TROOPS","PASSIVE",v(3,6,9,12,15),"public hero guides");
         pub(d,"Gregory","Legion of Sun Defense","TROOP_DEFENSE_UP","ALL_TROOPS","PASSIVE",v(2,4,6,8,10),"public hero guides");
         pub(d,"Gregory","Charged Assault","CRIT_CHANCE","ALL_TROOPS","NORMAL_ATTACK",v(5,10,15,20,25),"public hero guides");
@@ -59,6 +68,14 @@ public final class PublicHeroSkillCatalog {
         pub(d,"Blanchette","Crimson Sniper vs Lancer","DAMAGE_UP","MARKSMAN_TO_LANCER","EVERY_2_STRIKES",v(8,16,24,32,40),"public hero guides");
         pub(d,"Blanchette","Crimson Sniper vs Marksman","DAMAGE_UP","MARKSMAN_TO_MARKSMAN","EVERY_2_STRIKES",v(4,8,12,16,20),"public hero guides");
 
+        // Gen 16 - WhiteoutData exact Expedition ladders.
+        pub(d,"Aisling","Songs of the Ancestors","DAMAGE_DEALT_UP","ALL_TROOPS","PASSIVE_PRIMARY",v(4,8,12,16,20),"WhiteoutData Gen16");
+        pub(d,"Aisling","Rock Storm Damage","EXTRA_DAMAGE","MARKSMAN","EVERY_3_TURNS",v(30,60,90,120,150),"WhiteoutData Gen16");
+        pub(d,"Aisling","Rock Storm Debuff","ENEMY_DAMAGE_DEALT_DOWN","ENEMY_ALL","EVERY_3_TURNS_1_TURN",v(6,12,18,24,30),"WhiteoutData Gen16");
+        pub(d,"Aisling","Forest Fury","EXTRA_DAMAGE","MARKSMAN","EVERY_3_TURNS",v(8,16,24,32,40),"WhiteoutData Gen16");
+        pub(d,"Aisling","Forest Guardian","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData Gen16");
+
+        // Gen 17.
         pub(d,"Aiden","Starfire Wall","TROOP_DEFENSE_UP","INFANTRY","EACH_TRIGGER_40_PERCENT_1_TURN",v(10,20,30,40,50),"WOS Heroes Gen17");
         pub(d,"Aiden","Scarlet Brigade Attack","TROOP_ATTACK_UP","ALL_TROOPS","PASSIVE",v(3,6,9,12,15),"WOS Heroes Gen17");
         pub(d,"Aiden","Scarlet Brigade Defense","TROOP_DEFENSE_UP","ALL_TROOPS","PASSIVE",v(2,4,6,8,10),"WOS Heroes Gen17");
