@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function role() { return signedIn() && request.auth.token.role != null ? request.auth.token.role : 'member'; }
+    function helperAdmin() { return role() == 'helper_admin' || role() == 'admin' || role() == 'owner'; }
+    function admin() { return role() == 'admin' || role() == 'owner'; }
+    function owner() { return role() == 'owner'; }
+
+    match /forum_posts/{postId} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.authorUid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['authorUid','displayName','anonymous','category','title','body','createdAt','updatedAt','locked','hidden','likeCount','replyCount'])
+        && request.resource.data.locked == false
+        && request.resource.data.hidden == false
+        && request.resource.data.likeCount == 0
+        && request.resource.data.replyCount == 0;
+      allow update: if signedIn() && (
+        helperAdmin() ||
+        (resource.data.authorUid == request.auth.uid
+          && request.resource.data.authorUid == resource.data.authorUid
+          && request.resource.data.locked == resource.data.locked
+          && request.resource.data.hidden == resource.data.hidden)
+      );
+      allow delete: if signedIn() && (resource.data.authorUid == request.auth.uid || helperAdmin());
+
+      match /replies/{replyId} {
+        allow read: if true;
+        allow create: if signedIn() && request.resource.data.authorUid == request.auth.uid;
+        allow update, delete: if signedIn() && (resource.data.authorUid == request.auth.uid || helperAdmin());
+      }
+      match /likes/{uid} {
+        allow read: if true;
+        allow create, delete: if signedIn() && uid == request.auth.uid;
+        allow update: if false;
+      }
+      match /reports/{reportId} {
+        allow create: if signedIn() && request.resource.data.reporterUid == request.auth.uid;
+        allow read, update, delete: if helperAdmin();
+      }
+    }
+
+    match /forum_users/{uid} {
+      allow read: if signedIn();
+      allow create: if signedIn() && uid == request.auth.uid;
+      allow update: if signedIn() && (uid == request.auth.uid || admin());
+      allow delete: if admin();
+    }
+
+    match /moderation/{doc=**} {
+      allow read, write: if helperAdmin();
+    }
+
+    match /admin/{doc=**} {
+      allow read, write: if admin();
+    }
+
+    match /owner/{doc=**} {
+      allow read, write: if owner();
+    }
+  }
+}
