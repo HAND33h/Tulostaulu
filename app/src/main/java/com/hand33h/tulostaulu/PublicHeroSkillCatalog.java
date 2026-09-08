@@ -19,18 +19,33 @@ public final class PublicHeroSkillCatalog {
         public final int maxLevel=10;
         public int expeditionTierAt(int widgetLevel){if(widgetLevel<2)return 0;return Math.min(5,widgetLevel/2);}
         public int explorationTierAt(int widgetLevel){if(widgetLevel<1)return 0;return Math.min(5,(widgetLevel+1)/2);}
+        public int widgetsForLevel(int level){return level<1||level>10?0:level*5;}
+        public int widgetsToReach(int level){int n=Math.max(0,Math.min(10,level));return 5*n*(n+1)/2;}
     }
     public static final WidgetRule WIDGET_RULE=new WidgetRule();
+
+    /** Official constraints used by the simulator; these are rules, not guessed damage formula coefficients. */
+    public static final class CombatRules {
+        public static final int HEROES_PER_MARCH=3;
+        public static final int LEADER_EXPEDITION_SKILLS=9;
+        public static final int MAX_JOINER_PRIMARY_SKILLS=4;
+        public static final double CITY_ATTACKER_DEATH_SHARE=0.35;
+        public static final String FRONT_ROW="Infantry";
+        public static final String MIDDLE_ROW="Lancer";
+        public static final String BACK_ROW="Marksman";
+        public static final boolean HERO_SKILLS_INDEPENDENT_OF_REPORT_STATS=true;
+        public static final boolean EXPEDITION_SKILLS_ACTIVE_WITHOUT_MATCHING_TROOP=true;
+        private CombatRules(){}
+    }
+
     private static final List<Skill> DATA;
     static {
         ArrayList<Skill>d=new ArrayList<>();
-        // Early heroes: exact public Expedition ladders.
         pub(d,"Sergey","Defender's Edge","DAMAGE_TAKEN_DOWN","ALL_TROOPS","PASSIVE",v(4,8,12,16,20),"OutOfGames hero guide");
         pub(d,"Sergey","Weaken","ENEMY_ATTACK_DOWN","ENEMY_ALL","PASSIVE",v(4,8,12,16,20),"OutOfGames hero guide");
         pub(d,"Ling Xue","Fearsome Aura","ENEMY_ATTACK_DOWN","ENEMY_ALL","PASSIVE",v(4,8,12,16,20),"OutOfGames hero guide");
         pub(d,"Ling Xue","Total Control","TRAINING_SPEED_UP","CITY","PASSIVE",v(4,8,12,16,20),"OutOfGames hero guide");
 
-        // Gen 10 public Expedition data.
         pub(d,"Gregory","Legion of Sun","TROOP_ATTACK_UP","ALL_TROOPS","PASSIVE",v(3,6,9,12,15),"public hero guides");
         pub(d,"Gregory","Legion of Sun Defense","TROOP_DEFENSE_UP","ALL_TROOPS","PASSIVE",v(2,4,6,8,10),"public hero guides");
         pub(d,"Gregory","Charged Assault","CRIT_CHANCE","ALL_TROOPS","NORMAL_ATTACK",v(5,10,15,20,25),"public hero guides");
@@ -44,7 +59,6 @@ public final class PublicHeroSkillCatalog {
         pub(d,"Blanchette","Crimson Sniper vs Lancer","DAMAGE_UP","MARKSMAN_TO_LANCER","EVERY_2_STRIKES",v(8,16,24,32,40),"public hero guides");
         pub(d,"Blanchette","Crimson Sniper vs Marksman","DAMAGE_UP","MARKSMAN_TO_MARKSMAN","EVERY_2_STRIKES",v(4,8,12,16,20),"public hero guides");
 
-        // Gen 17 exact public ladders captured so far.
         pub(d,"Aiden","Starfire Wall","TROOP_DEFENSE_UP","INFANTRY","EACH_TRIGGER_40_PERCENT_1_TURN",v(10,20,30,40,50),"WOS Heroes Gen17");
         pub(d,"Aiden","Scarlet Brigade Attack","TROOP_ATTACK_UP","ALL_TROOPS","PASSIVE",v(3,6,9,12,15),"WOS Heroes Gen17");
         pub(d,"Aiden","Scarlet Brigade Defense","TROOP_DEFENSE_UP","ALL_TROOPS","PASSIVE",v(2,4,6,8,10),"WOS Heroes Gen17");
