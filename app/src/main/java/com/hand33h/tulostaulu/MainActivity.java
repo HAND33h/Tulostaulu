@@ -30,7 +30,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +40,7 @@ import java.util.List;
 public class MainActivity extends Activity {
     private static final int CREATE_XLSX = 9002;
     private static final String PREFS = "wos_tulostaulu";
-    private static final String PROXY_BASE = "https://europe-north1-bunny-king.cloudfunctions.net/wosProxy";
+    private static final String API_BASE = "https://woscontrol.com/api/v1";
     private static final int BG = Color.rgb(234, 244, 251);
     private static final int TEXT = Color.rgb(18, 43, 64);
     private static final int MUTED = Color.rgb(68, 94, 113);
@@ -57,7 +56,6 @@ public class MainActivity extends Activity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        prefs.edit().remove("api_key").apply();
         english = "en".equals(prefs.getString("lang", "fi"));
 
         ScrollView scroll = new ScrollView(this);
@@ -85,7 +83,7 @@ public class MainActivity extends Activity {
         fidInput = input(tr("Pelaajan FID (valinnainen)", "Player FID (optional)"), prefs.getString("fid",""), true);
         root.addView(fidInput, lp(0,14,0,0));
 
-        root.addView(text(tr("API-avain säilytetään palvelimella eikä APK:ssa.", "The API key is stored on the server, not inside the APK."), 13, true, MUTED, Gravity.CENTER), lp(0,12,0,0));
+        root.addView(text(tr("API-avain käytetään suoraan WOS Controliin. Aseta avain ensin etusivulla.", "The API key is used directly with WOS Control. Set the key on the home screen first."), 13, true, MUTED, Gravity.CENTER), lp(0,12,0,0));
 
         Button loadButton = button(tr("HAE WOS CONTROL -DATA", "LOAD WOS CONTROL DATA"), ACCENT, 16);
         root.addView(loadButton, lp(0,24,0,10));
@@ -112,6 +110,8 @@ public class MainActivity extends Activity {
     private void loadBestData(){
         String state=stateInput.getText().toString().trim(), fid=fidInput.getText().toString().trim();
         if(state.isEmpty()){Toast.makeText(this,tr("Anna serverinumero","Enter a server number"),Toast.LENGTH_SHORT).show();return;}
+        String apiKey=getSharedPreferences(PREFS,MODE_PRIVATE).getString("api_key","").trim();
+        if(apiKey.isEmpty()){Toast.makeText(this,tr("Aseta WOS Control API-avain etusivulla ensin","Set the WOS Control API key on the home screen first"),Toast.LENGTH_LONG).show();return;}
         currentState=state;
         getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",state).putString("fid",fid).apply();
         rows.clear(); exportButton.setEnabled(false); resultsText.setText(tr("Haetaan...","Loading...")); hideKeyboard();
@@ -127,14 +127,21 @@ public class MainActivity extends Activity {
     private ApiResponse get(String path){
         HttpURLConnection c=null;
         try{
+            String key=getSharedPreferences(PREFS,MODE_PRIVATE).getString("api_key","").trim();
+            if(key.toLowerCase(java.util.Locale.ROOT).startsWith("bearer "))key=key.substring(7).trim();
+            if(key.isEmpty())return new ApiResponse(401,"Missing API key");
             String clean=path.startsWith("/")?path.substring(1):path;
-            String endpoint=clean, query="";
-            int q=clean.indexOf('?');
-            if(q>=0){endpoint=clean.substring(0,q);query=clean.substring(q+1);}
-            StringBuilder u=new StringBuilder(PROXY_BASE).append("?endpoint=").append(URLEncoder.encode(endpoint,"UTF-8"));
-            if(!query.isEmpty())u.append('&').append(query);
-            URL url=new URL(u.toString()); c=(HttpURLConnection)url.openConnection(); c.setRequestMethod("GET"); c.setConnectTimeout(15000); c.setReadTimeout(25000); c.setRequestProperty("Accept","application/json");
-            int code=c.getResponseCode(); BufferedReader r=new BufferedReader(new InputStreamReader(code>=200&&code<300?c.getInputStream():c.getErrorStream(),StandardCharsets.UTF_8));
+            URL url=new URL(API_BASE+"/"+clean);
+            c=(HttpURLConnection)url.openConnection();
+            c.setRequestMethod("GET");
+            c.setConnectTimeout(15000);
+            c.setReadTimeout(25000);
+            c.setRequestProperty("Accept","application/json");
+            c.setRequestProperty("X-API-Key",key);
+            c.setRequestProperty("Authorization","Bearer "+key);
+            c.setRequestProperty("User-Agent","WOSControl/1.0");
+            int code=c.getResponseCode();
+            BufferedReader r=new BufferedReader(new InputStreamReader(code>=200&&code<300?c.getInputStream():c.getErrorStream(),StandardCharsets.UTF_8));
             StringBuilder body=new StringBuilder();String line;while((line=r.readLine())!=null)body.append(line);r.close();return new ApiResponse(code,body.toString());
         }catch(Exception e){return new ApiResponse(-1,e.getMessage()==null?"Network error":e.getMessage());}finally{if(c!=null)c.disconnect();}
     }
@@ -163,7 +170,7 @@ public class MainActivity extends Activity {
         ApiResponse s=get("/state/"+Uri.encode(state));
         if(!ok(s))return;
         String stateText=tr("SERVERITIEDOT","STATE DATA")+"\n\n"+summarizeJson(s.body,40);
-        ApiResponse l=get("/leaderboard");
+        ApiResponse l=get("/leaderboard?state_id="+Uri.encode(state));
         List<PlayerRow> parsed=new ArrayList<>();
         if(l.code>=200&&l.code<300){try{parsed=parsePlayers(l.body,state);}catch(Exception ignored){}}
         if(!parsed.isEmpty()){
@@ -178,7 +185,7 @@ public class MainActivity extends Activity {
     }
 
     private boolean ok(ApiResponse a){
-        if(a.code==401||a.code==403){showError(tr("Palvelimen WOS API-avain puuttuu tai ei kelpaa","Server WOS API key is missing or unauthorized")+" (HTTP "+a.code+").");return false;}
+        if(a.code==401||a.code==403){showError(tr("WOS Control API-avain puuttuu tai ei kelpaa","WOS Control API key is missing or unauthorized")+" (HTTP "+a.code+").");return false;}
         if(a.code==429){showError(tr("API-kutsujen raja tuli vastaan. Yritä myöhemmin uudelleen.","API rate limit reached. Try again later."));return false;}
         if(a.code<200||a.code>=300){showError("WOS Control HTTP "+a.code+(a.body.isEmpty()?"":": "+shortText(a.body)));return false;}return true;
     }
@@ -187,7 +194,7 @@ public class MainActivity extends Activity {
     private String summarizeJson(String body,int max){try{Object root=body.trim().startsWith("[")?new JSONArray(body):new JSONObject(body);StringBuilder sb=new StringBuilder();appendScalars(root,sb,"",0,max);return sb.length()==0?shortText(body):sb.toString();}catch(Exception e){return shortText(body);}}
     private void appendScalars(Object node,StringBuilder sb,String prefix,int depth,int max){if(depth>3||lineCount(sb)>=max)return;if(node instanceof JSONObject){JSONObject o=(JSONObject)node;Iterator<String> it=o.keys();while(it.hasNext()&&lineCount(sb)<max){String k=it.next();Object v=o.opt(k);if(v instanceof JSONObject||v instanceof JSONArray)appendScalars(v,sb,prefix+k+".",depth+1,max);else if(v!=null&&v!=JSONObject.NULL){String s=String.valueOf(v);if(s.length()<=180)sb.append(prettyKey(prefix+k)).append(": ").append(s).append("\n");}}}else if(node instanceof JSONArray){JSONArray a=(JSONArray)node;for(int i=0;i<a.length()&&i<8&&lineCount(sb)<max;i++)appendScalars(a.opt(i),sb,prefix,depth+1,max);}}
     private int lineCount(StringBuilder sb){int c=0;for(int i=0;i<sb.length();i++)if(sb.charAt(i)=='\n')c++;return c;}
-    private String prettyKey(String k){return k.replace('_',' ').replace('.', ' › ');}
+    private String prettyKey(String k){return k.replace('_',' ').replace("."," › ");}
     private String shortText(String s){if(s==null)return"";s=s.trim();return s.length()>220?s.substring(0,220)+"…":s;}
     private List<PlayerRow> parsePlayers(String body,String state)throws Exception{Object root=body.trim().startsWith("[")?new JSONArray(body):new JSONObject(body);List<JSONObject> objs=new ArrayList<>();collect(root,objs,0);List<PlayerRow> out=new ArrayList<>();for(JSONObject o:objs){long might=longValue(o,"might","power","total_power","player_power");if(might<=0)continue;String rs=stringValue(o,"state_id","state","kid","server","server_id");if(rs.isEmpty()||!normalize(rs).equals(normalize(state)))continue;String name=stringValue(o,"nickname","name","player_name","username"),fid=stringValue(o,"fid","player_id","id"),alliance=stringValue(o,"alliance","alliance_name","alliance_tag","tag");if(name.isEmpty()&&fid.isEmpty())continue;out.add(new PlayerRow((int)longValue(o,"rank","ranking","position"),name,fid,alliance,might));}return out;}
     private void collect(Object n,List<JSONObject> out,int d)throws Exception{if(n==null||d>6)return;if(n instanceof JSONObject){JSONObject o=(JSONObject)n;out.add(o);Iterator<String>k=o.keys();while(k.hasNext()){Object x=o.opt(k.next());if(x instanceof JSONObject||x instanceof JSONArray)collect(x,out,d+1);}}else if(n instanceof JSONArray){JSONArray a=(JSONArray)n;for(int i=0;i<a.length();i++){Object x=a.opt(i);if(x instanceof JSONObject||x instanceof JSONArray)collect(x,out,d+1);}}}
