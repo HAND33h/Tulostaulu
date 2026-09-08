@@ -10,8 +10,8 @@ android {
         applicationId = "com.hand33h.tulostaulu"
         minSdk = 26
         targetSdk = 35
-        versionCode = 9
-        versionName = "1.8"
+        versionCode = 10
+        versionName = "1.9"
     }
 
     buildTypes {
