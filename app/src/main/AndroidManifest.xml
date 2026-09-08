@@ -9,24 +9,13 @@
         android:label="WOS Bunny King"
         android:theme="@style/Theme.Tulostaulu"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".WarAcademyActivity"
-            android:exported="false" />
-        <activity
-            android:name=".NativeCalculatorActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CalculatorHubActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MemeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UnifiedActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+        <activity android:name=".MyAccountActivity" android:exported="false" />
+        <activity android:name=".WarAcademyActivity" android:exported="false" />
+        <activity android:name=".NativeCalculatorActivity" android:exported="false" />
+        <activity android:name=".CalculatorHubActivity" android:exported="false" />
+        <activity android:name=".MemeActivity" android:exported="false" />
+        <activity android:name=".UnifiedActivity" android:exported="false" />
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
