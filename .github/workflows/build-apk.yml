@@ -33,7 +33,15 @@ jobs:
         shell: bash
         run: |
           mkdir -p app/src/main/res/drawable
-          base64 --decode app/src/main/splash_image.b64 > app/src/main/res/drawable/wos_splash.jpg
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, re
+          src = Path('app/src/main/splash_image.b64').read_text()
+          clean = re.sub(r'[^A-Za-z0-9+/=]', '', src)
+          pad = (-len(clean)) % 4
+          clean += '=' * pad
+          Path('app/src/main/res/drawable/wos_splash.jpg').write_bytes(base64.b64decode(clean, validate=False))
+          PY
 
           cat > app/src/main/java/com/hand33h/tulostaulu/SplashActivity.java <<'JAVA'
           package com.hand33h.tulostaulu;
@@ -58,7 +66,6 @@ jobs:
                   getWindow().setNavigationBarColor(Color.BLACK);
                   getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                           WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
                   ImageView image = new ImageView(this);
                   image.setImageResource(com.hand33h.tulostaulu.R.drawable.wos_splash);
                   image.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -67,7 +74,6 @@ jobs:
                           | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                           | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
                   setContentView(image);
-
                   new Handler(Looper.getMainLooper()).postDelayed(() -> {
                       startActivity(new Intent(SplashActivity.this, MainActivity.class));
                       finish();
@@ -80,7 +86,8 @@ jobs:
           from pathlib import Path
           path = Path('app/src/main/AndroidManifest.xml')
           s = path.read_text()
-          old = '''        <activity
+          if '.SplashActivity' not in s:
+              old = '''        <activity
                       android:name=".MainActivity"
                       android:exported="true">
                       <intent-filter>
@@ -88,7 +95,7 @@ jobs:
                           <category android:name="android.intent.category.LAUNCHER" />
                       </intent-filter>
                   </activity>'''
-          new = '''        <activity
+              new = '''        <activity
                       android:name=".MainActivity"
                       android:exported="false" />
                   <activity
@@ -99,9 +106,9 @@ jobs:
                           <category android:name="android.intent.category.LAUNCHER" />
                       </intent-filter>
                   </activity>'''
-          if old not in s:
-              raise SystemExit('Expected MainActivity manifest block not found')
-          path.write_text(s.replace(old, new))
+              if old not in s:
+                  raise SystemExit('Expected MainActivity manifest block not found')
+              path.write_text(s.replace(old, new))
           PY
 
       - name: Build debug APK
@@ -130,19 +137,8 @@ jobs:
           BUILD_TOOLS="$(ls -1 "$ANDROID_HOME/build-tools" | sort -V | tail -1)"
           ZIPALIGN="$ANDROID_HOME/build-tools/$BUILD_TOOLS/zipalign"
           APKSIGNER="$ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner"
-
-          "$ZIPALIGN" -f -p 4 \
-            app/build/outputs/apk/release/app-release-unsigned.apk \
-            WOS-Tulostaulu-aligned.apk
-
-          "$APKSIGNER" sign \
-            --ks release.jks \
-            --ks-key-alias "$KEY_ALIAS" \
-            --ks-pass "pass:$KEYSTORE_PASSWORD" \
-            --key-pass "pass:$KEY_PASSWORD" \
-            --out WOS-Tulostaulu.apk \
-            WOS-Tulostaulu-aligned.apk
-
+          "$ZIPALIGN" -f -p 4 app/build/outputs/apk/release/app-release-unsigned.apk WOS-Tulostaulu-aligned.apk
+          "$APKSIGNER" sign --ks release.jks --ks-key-alias "$KEY_ALIAS" --ks-pass "pass:$KEYSTORE_PASSWORD" --key-pass "pass:$KEY_PASSWORD" --out WOS-Tulostaulu.apk WOS-Tulostaulu-aligned.apk
           "$APKSIGNER" verify --verbose --print-certs WOS-Tulostaulu.apk
 
       - name: Upload signed APK
