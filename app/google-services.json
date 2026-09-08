@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "12036409261",
+    "project_id": "bunny-king",
+    "storage_bucket": "bunny-king.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12036409261:android:e98ead7f4b681ae5510324",
+        "android_client_info": {
+          "package_name": "com.hand33h.tulostaulu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3jjy3CFknbzpDxKCzLNiOzA7_ieX0xis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
