@@ -13,23 +13,37 @@ firebase functions:secrets:set WOS_API_KEY
 
 When Firebase asks for the value, paste the WOS API key there. Do not commit the key to GitHub.
 
-## 2. Configure the WOS API base URL
+## 2. Add the WOS API base URL
 
 Run:
 
 ```bash
-firebase functions:config:set WOS_API_BASE_URL="https://YOUR-WOS-API-BASE-URL"
+firebase functions:secrets:set WOS_API_BASE_URL
 ```
 
-If your provider uses a header other than `x-api-key`, configure it too:
+Paste the API base URL when prompted, for example:
+
+```text
+https://api.example.com
+```
+
+## 3. Add the authentication header name
+
+Run:
 
 ```bash
-firebase functions:config:set WOS_API_HEADER="Authorization"
+firebase functions:secrets:set WOS_API_HEADER
 ```
 
-Note: the included function defaults to the `x-api-key` header. If the provider expects `Authorization: Bearer ...`, the proxy needs the Bearer prefix added before deployment.
+For most API-key based services the value is:
 
-## 3. Deploy
+```text
+x-api-key
+```
+
+If your WOS API provider documents another header name, use that exact name instead.
+
+## 4. Deploy
 
 ```bash
 cd functions
@@ -40,7 +54,7 @@ firebase deploy --only functions:wosProxy
 
 The deployed function will be in region `europe-north1`.
 
-## 4. Example request
+## 5. Example request
 
 ```text
 https://europe-north1-bunny-king.cloudfunctions.net/wosProxy?endpoint=YOUR_ENDPOINT&state=1674
