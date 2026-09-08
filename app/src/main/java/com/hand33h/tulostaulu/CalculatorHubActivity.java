@@ -40,7 +40,7 @@ public class CalculatorHubActivity extends Activity {
         addNative(root,"🔥","Fire Crystals",tr("FC/RFC, Steel ja speedupit","FC/RFC, Steel and speedups"),"fire_crystals");
         addNative(root,"🏗️","Buildings / Furnace",tr("Resurssit, FC:t ja rakennusspeedupit","Resources, FCs and building speedups"),"buildings");
         addNative(root,"🧠","Research",tr("Resurssit, Steel ja research-speedupit","Resources, Steel and research speedups"),"research");
-        addNative(root,"🎓","War Academy",tr("Fire Crystal Shards, Steel ja speedupit","Fire Crystal Shards, Steel and speedups"),"war_academy");
+        addNative(root,"🎓","War Academy",tr("Helios T11 + Exalted/Molten T12, RFC, Shards ja Steel","Helios T11 + Exalted/Molten T12, RFC, Shards and Steel"),"war_academy");
         addNative(root,"🦸","Hero Gear",tr("Hero Gear XP, Essence Stones ja Mythril","Hero Gear XP, Essence Stones and Mythril"),"hero_gear");
         addNative(root,"🐾","Pets",tr("Pet-kehitysmateriaalit ja tavoitepuutteet","Pet upgrade materials and shortages"),"pets");
         addNative(root,"⚔️","Troops",tr("Koulutus, promootio, resurssit ja speedupit","Training, promotion, resources and speedups"),"troops");
@@ -52,7 +52,7 @@ public class CalculatorHubActivity extends Activity {
         addNative(root,"🧊","KOI / King of Icefield",tr("Eventtiresurssit ja pistearvio","Event resources and score estimate"),"koi");
         addNative(root,"📦","Chests",tr("Arkkumäärät ja odotetut materiaalit","Chest counts and expected materials"),"chests");
 
-        root.addView(label(tr("Nyt kaikki yllä olevat kortit avautuvat sovelluksen omana laskurina. Syötä tavoitteen tarve ja omat varastosi — Bunny King laskee puuttuvan määrän heti.","All cards above now open a native in-app calculator. Enter target needs and your current stock — Bunny King calculates shortages instantly."),12,false,Color.rgb(140,170,188)),mp(0,10,0,0));
+        root.addView(label(tr("Kaikki yllä olevat kortit avautuvat sovelluksen omana laskurina. War Academylla on nyt oma erikoislaskuri T11/T12-suunnitteluun.","All cards above open native in-app calculators. War Academy now has a dedicated T11/T12 planner."),12,false,Color.rgb(140,170,188)),mp(0,10,0,0));
         setContentView(sc);
     }
 
@@ -62,7 +62,10 @@ public class CalculatorHubActivity extends Activity {
         card.addView(label(icon+"  "+title,17,true,Color.WHITE));
         card.addView(label(desc,12,false,Color.rgb(202,224,238)),mp(0,4,0,8));
         Button open=smallButton(tr("AVAA NATIIVI LASKURI  →","OPEN NATIVE CALCULATOR  →"));
-        open.setOnClickListener(v->{Intent i=new Intent(this,NativeCalculatorActivity.class);i.putExtra("mode",mode);startActivity(i);});
+        open.setOnClickListener(v->{
+            if("war_academy".equals(mode)) startActivity(new Intent(this,WarAcademyActivity.class));
+            else {Intent i=new Intent(this,NativeCalculatorActivity.class);i.putExtra("mode",mode);startActivity(i);}
+        });
         card.addView(open); root.addView(card,mp(0,0,0,10));
     }
     private String tr(String fi,String en){return english?en:fi;}
