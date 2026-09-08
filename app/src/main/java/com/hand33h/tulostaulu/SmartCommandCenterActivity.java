@@ -27,7 +27,7 @@ public class SmartCommandCenterActivity extends Activity {
         en="en".equals(p.getString("lang","fi"));
         ScrollView sc=new ScrollView(this);
         root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(18),dp(18),dp(18),dp(40));root.setBackgroundColor(Color.rgb(7,23,39));sc.addView(root);
-        cardTitle("👑  "+tr("WOS SMART COMMAND CENTER 5.0","WOS SMART COMMAND CENTER 5.0"),tr("Scan → data → strategy → planner → event sniper → T12 → transfer → battle → export.","Scan → data → strategy → planner → event sniper → T12 → transfer → battle → export."));
+        cardTitle("👑  "+tr("WOS SMART COMMAND CENTER 6.0","WOS SMART COMMAND CENTER 6.0"),tr("Scan → data → inventory → upgrades → battle reports → formations → alliance ops → events → export.","Scan → data → inventory → upgrades → battle reports → formations → alliance ops → events → export."));
 
         section(tr("PELAAJAPROFIILI","PLAYER PROFILE"));
         state=input(tr("State / server","State / server"),true);state.setText(p.getString("state","1674"));root.addView(state);
@@ -37,11 +37,12 @@ public class SmartCommandCenterActivity extends Activity {
         recommendation=info("");root.addView(recommendation);
         save.setOnClickListener(v->{p.edit().putString("state",state.getText().toString().trim()).putString("playstyle",playstyle.getSelectedItem().toString()).putString("strategy_goal",goal.getSelectedItem().toString()).apply();showRecommendation();});
 
-        section(tr("SMART FLOW 5.0","SMART FLOW 5.0"));
+        section(tr("SMART FLOW 6.0","SMART FLOW 6.0"));
         addLaunch("📸",tr("Smart Scan / OCR","Smart Scan / OCR"),tr("Tuo ranking- tai profiilikuvia ja vie tunnistettu data pelaajarekisteriin.","Import ranking/profile screenshots and push recognized data into the player registry."),ScreenshotImportActivity.class);
         addLaunch("🧊",tr("State & Player Data","State & Player Data"),tr("State 1674 oletuksena, FID-haku, paikallinen TOP100 ja Excel.","State 1674 default, FID lookup, local TOP100 and Excel."),DataSourcesActivity.class);
         addLaunch("👑","Master Upgrade Planner",tr("Gear, Charms, FC, speed-bonukset ja muut päivitykset yhdestä näkymästä.","Gear, Charms, FC, speed bonuses and upgrades in one view."),MasterUpgradePlannerActivity.class);
         addLaunch("🚀",tr("Advanced Ops 5.0","Advanced Ops 5.0"),tr("Event Sniper, T12, State Age, Transfer, VIP, Territory ja Alliance Ops.","Event Sniper, T12, State Age, Transfer, VIP, Territory and Alliance Ops."),AdvancedOpsActivity.class);
+        addLaunch("🧠",tr("Operations Suite 6.0","Operations Suite 6.0"),tr("Inventory Vault, Battle Report Analyzer, Formation Generator ja Alliance Operations.","Inventory Vault, Battle Report Analyzer, Formation Generator and Alliance Operations."),OperationsSuite6Activity.class);
         addLaunch("💬","Community Strategy",tr("Reddit-yhteisön strategiat erillään varmennetusta pelidatasta.","Reddit community strategies kept separate from verified game data."),CommunityStrategyActivity.class);
         addLaunch("⚔️","Battle Simulator",tr("Vertaa hyökkääjää ja puolustajaa sekä WOS-bonusprosentteja.","Compare attacker, defender and WOS bonus percentages."),BattleSimulatorActivity.class);
 
