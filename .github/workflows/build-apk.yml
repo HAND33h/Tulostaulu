@@ -32,7 +32,7 @@ jobs:
       - name: Prepare WOS artwork
         shell: bash
         run: |
-          mkdir -p app/src/main/res/drawable
+          mkdir -p app/src/main/res/drawable app/src/main/res/mipmap-xxxhdpi
           python3 - <<'PY'
           from pathlib import Path
           import base64, re
@@ -44,6 +44,8 @@ jobs:
           decode('app/src/main/splash_image.b64', 'app/src/main/res/drawable/wos_splash.jpg')
           decode('app/src/main/bunny_icon.b64', 'app/src/main/res/drawable/wos_bunny.jpg')
           PY
+          cp app/src/main/res/drawable/wos_bunny.jpg app/src/main/res/mipmap-xxxhdpi/ic_launcher.jpg
+          cp app/src/main/res/drawable/wos_bunny.jpg app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.jpg
 
           python3 - <<'PY'
           from pathlib import Path
