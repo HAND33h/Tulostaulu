@@ -13,6 +13,7 @@
         android:networkSecurityConfig="@xml/network_security_config">
         <activity android:name=".ForumActivity" android:exported="false" />
         <activity android:name=".MyAccountActivity" android:exported="false" />
+        <activity android:name=".BattleSimulatorActivity" android:exported="false" />
         <activity android:name=".WarAcademyActivity" android:exported="false" />
         <activity android:name=".NativeCalculatorActivity" android:exported="false" />
         <activity android:name=".CalculatorHubActivity" android:exported="false" />
