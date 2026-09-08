@@ -30,12 +30,13 @@ public class UnifiedActivity extends Activity {
   String savedState=p.getString("state","1674").trim();if(savedState.isEmpty())savedState="1674";
 
   ScrollView sc=new ScrollView(this); LinearLayout root=new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(18),dp(20),dp(18),dp(40));root.setBackgroundColor(Color.rgb(7,23,39));sc.addView(root);
-  LinearLayout hero=box(Color.rgb(13,48,76),22); hero.setPadding(dp(22),dp(22),dp(22),dp(22)); hero.addView(label("👑  BUNNY KING",30,true,Color.WHITE));hero.addView(label(tr("WOS KOMENTOKESKUS","WOS COMMAND CENTER"),15,true,Color.rgb(130,211,255)));hero.addView(label(tr("Kaikki tärkeät WOS-työkalut yhdessä paikassa","Your WOS tools, intel and creative studio in one place"),13,false,Color.rgb(202,224,238)));if(anonymous)hero.addView(label(tr("🕶️ ANONYYMI TILA KÄYTÖSSÄ","🕶️ ANONYMOUS MODE ON"),12,true,Color.rgb(145,230,255)));root.addView(hero,mp(0,0,0,14));
+  LinearLayout hero=box(Color.rgb(13,48,76),22); hero.setPadding(dp(22),dp(22),dp(22),dp(22)); hero.addView(label("👑  BUNNY KING",30,true,Color.WHITE));hero.addView(label(tr("WOS KOMENTOKESKUS 7.3","WOS COMMAND CENTER 7.3"),15,true,Color.rgb(130,211,255)));hero.addView(label(tr("Kaikki tärkeät WOS-työkalut yhdessä paikassa","Your WOS tools, intel and creative studio in one place"),13,false,Color.rgb(202,224,238)));if(anonymous)hero.addView(label(tr("🕶️ ANONYYMI TILA KÄYTÖSSÄ","🕶️ ANONYMOUS MODE ON"),12,true,Color.rgb(145,230,255)));root.addView(hero,mp(0,0,0,14));
 
   Spinner lang=new Spinner(this);ArrayAdapter<String> la=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"🇫🇮 Suomi","🇬🇧 English"});lang.setAdapter(la);lang.setSelection(english?1:0);root.addView(lang,mp(0,0,0,14));lang.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener(){public void onItemSelected(android.widget.AdapterView<?> a,View v,int pos,long id){boolean n=pos==1;if(n!=english){getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("lang",n?"en":"fi").apply();recreate();}}public void onNothingSelected(android.widget.AdapterView<?> a){}});
 
   Button account=primary("👤  "+tr("OMA TILI / ANONYYMI TILA","MY ACCOUNT / ANONYMOUS MODE"));root.addView(account,mp(0,0,0,9));
-  Button forum=primary("💬  "+tr("WOS FOORUMI","WOS FORUM"));root.addView(forum,mp(0,0,0,16));
+  Button forum=primary("💬  "+tr("WOS FOORUMI","WOS FORUM"));root.addView(forum,mp(0,0,0,9));
+  Button v73=primary("⭐  "+tr("WOS 7.3 SUUNNITTELUKESKUS","WOS 7.3 PLANNING CENTER"));root.addView(v73,mp(0,0,0,16));
 
   root.addView(section(tr("OMA SERVERI","YOUR STATE")));
   LinearLayout state=box(Color.rgb(18,42,61),18);state.setPadding(dp(16),dp(16),dp(16),dp(16));
@@ -55,6 +56,7 @@ public class UnifiedActivity extends Activity {
 
   account.setOnClickListener(v->startActivity(new Intent(this,MyAccountActivity.class)));
   forum.setOnClickListener(v->startActivity(new Intent(this,ForumActivity.class)));
+  v73.setOnClickListener(v->startActivity(new Intent(this,Wos73Activity.class)));
   top.setOnClickListener(v->openStateData());
   player.setOnClickListener(v->{saveStateAndKey();startActivity(new Intent(this,MainActivity.class));});
   meme.setOnClickListener(v->startActivity(new Intent(this,MemeActivity.class)));
@@ -67,12 +69,7 @@ public class UnifiedActivity extends Activity {
   setContentView(sc);
  }
 
- private void saveStateAndKey(){
-  String s=server.getText().toString().trim();if(s.isEmpty())s="1674";
-  SharedPreferences.Editor e=getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s);
-  if(!anonymous){String k=key.getText().toString().trim();if(!k.isEmpty())e.putString("api_key",k);}e.apply();
- }
-
+ private void saveStateAndKey(){String s=server.getText().toString().trim();if(s.isEmpty())s="1674";SharedPreferences.Editor e=getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s);if(!anonymous){String k=key.getText().toString().trim();if(!k.isEmpty())e.putString("api_key",k);}e.apply();}
  private void openStateData(){saveStateAndKey();String s=server.getText().toString().trim();if(s.isEmpty())s="1674";status.setText(tr("Avataan State #","Opening State #")+s+"…");startActivity(new Intent(this,MainActivity.class));}
  @Override protected void onResume(){super.onResume();if(getSharedPreferences(PREFS,MODE_PRIVATE).getBoolean("anonymous_mode",false)!=anonymous)recreate();}
  private String tr(String fi,String en){return english?en:fi;} private TextView section(String s){return label(s,13,true,Color.rgb(119,205,255));}
