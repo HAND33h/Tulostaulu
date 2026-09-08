@@ -30,20 +30,22 @@ public class CalculatorHubActivity extends Activity {
 
         LinearLayout hero=box(Color.rgb(13,48,76),22);
         hero.setPadding(dp(20),dp(20),dp(20),dp(20));
-        hero.addView(label("🧮  "+tr("WOS LASKUKESKUS","WOS CALCULATOR HUB"),26,true,Color.WHITE));
-        hero.addView(label(tr("Kaikki tärkeimmät laskurit Bunny Kingin sisällä — ei ulkoisia sivuja.","The most useful calculators inside Bunny King — no external pages."),13,false,Color.rgb(202,224,238)));
+        hero.addView(label("🧮  "+tr("WOS LASKUKESKUS 2.0","WOS CALCULATOR HUB 2.0"),26,true,Color.WHITE));
+        hero.addView(label(tr("Päivityslaskurit on uudistettu: current → target, kappalemäärä, oma varasto, puuttuvat materiaalit ja aika/teho.","Upgrade calculators rebuilt: current → target, quantity, inventory, shortages and time/power."),13,false,Color.rgb(202,224,238)));
         root.addView(hero,mp(0,0,0,16));
 
-        addSection(root,tr("PÄÄLASKURIT","CORE CALCULATORS"));
-        addNative(root,"🛡️","Chief Gear",tr("Alloy, Polishing Solution, Design Plans, Lunar Amber","Alloy, Polishing Solution, Design Plans, Lunar Amber"),"chief_gear");
-        addNative(root,"💠","Chief Charms",tr("Charm Guides, Designs ja Secrets","Charm Guides, Designs and Secrets"),"charms");
-        addNative(root,"🔥","Fire Crystals",tr("FC/RFC, Steel ja speedupit","FC/RFC, Steel and speedups"),"fire_crystals");
-        addNative(root,"🏗️","Buildings / Furnace",tr("Resurssit, FC:t ja rakennusspeedupit","Resources, FCs and building speedups"),"buildings");
+        addSection(root,tr("PÄIVITETYT PÄÄLASKURIT","UPGRADED CORE CALCULATORS"));
+        addUpgrade(root,"🛡️","Chief Gear",tr("1–6 osaa, Alloy, Polishing, Plans, Amber, power ja puutteet","1–6 pieces, Alloy, Polishing, Plans, Amber, power and shortages"),"chief_gear");
+        addUpgrade(root,"💠","Chief Charms",tr("1–18 charm-slotia, Lv0–18, Guides, Designs, Secrets ja puutteet","1–18 charm slots, Lv0–18, Guides, Designs, Secrets and shortages"),"charms");
+        addUpgrade(root,"🔥","Fire Crystals",tr("Furnace Lv30 → FC10, FC/RFC ja oma varasto","Furnace Lv30 → FC10, FC/RFC and inventory"),"fire_crystals");
+        addUpgrade(root,"🏗️","Buildings / Furnace",tr("Furnace-päivityspolku ja vahvistetut FC/RFC-kulut","Furnace upgrade path and verified FC/RFC costs"),"buildings");
+        addUpgrade(root,"⚔️","Troops",tr("Training/promotion, resurssit, power sekä oma Training Speed %","Training/promotion, resources, power and your Training Speed %"),"troops");
+
+        addSection(root,tr("MUUT LASKURIT","OTHER CALCULATORS"));
         addNative(root,"🧠","Research",tr("Resurssit, Steel ja research-speedupit","Resources, Steel and research speedups"),"research");
         addNative(root,"🎓","War Academy",tr("Helios T11 + Exalted/Molten T12, RFC, Shards ja Steel","Helios T11 + Exalted/Molten T12, RFC, Shards and Steel"),"war_academy");
         addNative(root,"🦸","Hero Gear",tr("Hero Gear XP, Essence Stones ja Mythril","Hero Gear XP, Essence Stones and Mythril"),"hero_gear");
         addNative(root,"🐾","Pets",tr("Pet-kehitysmateriaalit ja tavoitepuutteet","Pet upgrade materials and shortages"),"pets");
-        addNative(root,"⚔️","Troops",tr("Koulutus, promootio, resurssit ja speedupit","Training, promotion, resources and speedups"),"troops");
         addNative(root,"👨‍🔬","Experts",tr("Expert XP, manuals ja materiaalit","Expert XP, manuals and materials"),"experts");
 
         addSection(root,tr("EVENTIT JA TAISTELU","EVENTS & COMBAT"));
@@ -53,7 +55,7 @@ public class CalculatorHubActivity extends Activity {
         addNative(root,"🧊","KOI / King of Icefield",tr("Eventtiresurssit ja pistearvio","Event resources and score estimate"),"koi");
         addNative(root,"📦","Chests",tr("Arkkumäärät ja odotetut materiaalit","Chest counts and expected materials"),"chests");
 
-        root.addView(label(tr("Battle Simulator on ensimmäinen kalibroitava taistelumalli. Se käyttää troop-määrää, troop-jakaumaa sekä ATK/DEF/Health/Lethality-arvoja ja näyttää voittaja-arvion, suhteellisen combat scoren ja tappioarvion.","Battle Simulator is the first calibratable combat model. It uses troop count, troop split and ATK/DEF/Health/Lethality values to estimate winner, relative combat score and losses."),12,false,Color.rgb(140,170,188)),mp(0,10,0,0));
+        root.addView(label(tr("Uudistuksen malli on otettu WOS-yhteisön parhaista käytännöistä: nykyinen taso → tavoite, inventaario → puute, nopeusbonus → todellinen aika. Ulkoisten sivujen koodia ei kopioida.","The redesign follows the best WOS community calculator patterns: current → target, inventory → shortage, speed bonus → effective time. No external site code is copied."),12,false,Color.rgb(140,170,188)),mp(0,10,0,0));
         setContentView(sc);
     }
 
@@ -68,11 +70,20 @@ public class CalculatorHubActivity extends Activity {
         card.addView(open); root.addView(card,mp(0,0,0,10));
     }
 
+    private void addUpgrade(LinearLayout root,String icon,String title,String desc,String mode){
+        LinearLayout card=box(Color.rgb(18,58,82),18);card.setPadding(dp(16),dp(14),dp(16),dp(14));
+        card.addView(label(icon+"  "+title+"  • 2.0",17,true,Color.WHITE));
+        card.addView(label(desc,12,false,Color.rgb(202,224,238)),mp(0,4,0,8));
+        Button open=smallButton(tr("AVAA UUSI LASKURI  →","OPEN NEW CALCULATOR  →"));
+        open.setOnClickListener(v->{Intent i=new Intent(this,UpgradePlannerActivity.class);i.putExtra("mode",mode);startActivity(i);});
+        card.addView(open);root.addView(card,mp(0,0,0,10));
+    }
+
     private void addNative(LinearLayout root,String icon,String title,String desc,String mode){
         LinearLayout card=box(Color.rgb(18,48,70),18); card.setPadding(dp(16),dp(14),dp(16),dp(14));
         card.addView(label(icon+"  "+title,17,true,Color.WHITE));
         card.addView(label(desc,12,false,Color.rgb(202,224,238)),mp(0,4,0,8));
-        Button open=smallButton(tr("AVAA NATIIVI LASKURI  →","OPEN NATIVE CALCULATOR  →"));
+        Button open=smallButton(tr("AVAA LASKURI  →","OPEN CALCULATOR  →"));
         open.setOnClickListener(v->{
             if("war_academy".equals(mode)) startActivity(new Intent(this,WarAcademyActivity.class));
             else {Intent i=new Intent(this,NativeCalculatorActivity.class);i.putExtra("mode",mode);startActivity(i);}
