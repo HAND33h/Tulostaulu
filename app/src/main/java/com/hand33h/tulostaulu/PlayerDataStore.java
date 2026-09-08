@@ -57,19 +57,47 @@ public class PlayerDataStore extends SQLiteOpenHelper {
         return sourceType != null && VERIFIED_SOURCES.contains(sourceType);
     }
 
-    public boolean save(PlayerRecord r) {
-        if (r == null || r.fid == null || r.fid.trim().isEmpty() || !isVerifiedSource(r.sourceType)) return false;
+    public boolean save(PlayerRecord incoming) {
+        if (incoming == null || incoming.fid == null || incoming.fid.trim().isEmpty() || !isVerifiedSource(incoming.sourceType)) return false;
         long now = System.currentTimeMillis();
-        if (r.fetchedAt <= 0) r.fetchedAt = now;
-        if (r.observedAt <= 0) r.observedAt = r.fetchedAt;
+        if (incoming.fetchedAt <= 0) incoming.fetchedAt = now;
+        if (incoming.observedAt <= 0) incoming.observedAt = incoming.fetchedAt;
+
         SQLiteDatabase db = getWritableDatabase();
-        ContentValues v = values(r);
-        db.insertWithOnConflict("current_player", null, v, SQLiteDatabase.CONFLICT_REPLACE);
-        ContentValues s = values(r);
-        s.remove("event_type"); s.remove("alliance_name"); s.remove("hero_total_power"); s.remove("exploration"); s.remove("labyrinth"); s.remove("chief_gear"); s.remove("chief_charms"); s.remove("rank_value");
-        db.insert("player_snapshot", null, s);
+        PlayerRecord current = getByFid(incoming.fid);
+        PlayerRecord merged = current == null ? incoming : merge(current, incoming);
+
+        db.insertWithOnConflict("current_player", null, values(merged), SQLiteDatabase.CONFLICT_REPLACE);
+
+        ContentValues snapshot = values(incoming);
+        snapshot.remove("event_type"); snapshot.remove("alliance_name"); snapshot.remove("hero_total_power");
+        snapshot.remove("exploration"); snapshot.remove("labyrinth"); snapshot.remove("chief_gear");
+        snapshot.remove("chief_charms"); snapshot.remove("rank_value");
+        db.insert("player_snapshot", null, snapshot);
         return true;
     }
+
+    private PlayerRecord merge(PlayerRecord old, PlayerRecord n) {
+        PlayerRecord r = new PlayerRecord();
+        r.fid = pick(n.fid, old.fid); r.nickname = pick(n.nickname, old.nickname); r.stateId = pick(n.stateId, old.stateId);
+        r.allianceTag = pick(n.allianceTag, old.allianceTag); r.allianceName = pick(n.allianceName, old.allianceName);
+        r.personalPower = pick(n.personalPower, old.personalPower); r.combatPower = pick(n.combatPower, old.combatPower);
+        r.heroPower = pick(n.heroPower, old.heroPower); r.heroTotalPower = pick(n.heroTotalPower, old.heroTotalPower);
+        r.troopPower = pick(n.troopPower, old.troopPower); r.petPower = pick(n.petPower, old.petPower);
+        r.expertPower = pick(n.expertPower, old.expertPower); r.kills = pick(n.kills, old.kills);
+        r.furnaceLevel = pick(n.furnaceLevel, old.furnaceLevel); r.exploration = pick(n.exploration, old.exploration);
+        r.labyrinth = pick(n.labyrinth, old.labyrinth); r.chiefGear = pick(n.chiefGear, old.chiefGear);
+        r.chiefCharms = pick(n.chiefCharms, old.chiefCharms); r.eventType = pick(n.eventType, old.eventType);
+        r.rank = n.rank > 0 ? n.rank : old.rank;
+        r.source = pick(n.source, old.source); r.sourceType = pick(n.sourceType, old.sourceType);
+        r.observedAt = n.observedAt > 0 ? n.observedAt : old.observedAt;
+        r.fetchedAt = Math.max(n.fetchedAt, old.fetchedAt);
+        r.confidence = Math.max(n.confidence, old.confidence);
+        return r;
+    }
+
+    private String pick(String n, String old) { return n != null && !n.trim().isEmpty() ? n : old; }
+    private long pick(long n, long old) { return n > 0 ? n : old; }
 
     private ContentValues values(PlayerRecord r) {
         ContentValues v = new ContentValues();
@@ -86,13 +114,17 @@ public class PlayerDataStore extends SQLiteOpenHelper {
         return v;
     }
 
+    public PlayerRecord getByFid(String fid) {
+        if (fid == null || fid.trim().isEmpty()) return null;
+        Cursor c = getReadableDatabase().query("current_player", null, "fid=?", new String[]{fid.trim()}, null, null, null, "1");
+        try { return c.moveToFirst() ? fromCursor(c) : null; } finally { c.close(); }
+    }
+
     public List<PlayerRecord> listState(String stateId, int limit) {
         ArrayList<PlayerRecord> out = new ArrayList<>();
         Cursor c = getReadableDatabase().query("current_player", null, "state_id=?", new String[]{stateId}, null, null,
-                "personal_power DESC, fetched_at DESC", String.valueOf(limit));
-        try {
-            while (c.moveToNext()) out.add(fromCursor(c));
-        } finally { c.close(); }
+                "personal_power DESC, combat_power DESC, fetched_at DESC", String.valueOf(limit));
+        try { while (c.moveToNext()) out.add(fromCursor(c)); } finally { c.close(); }
         return out;
     }
 
