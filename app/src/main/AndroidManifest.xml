@@ -10,6 +10,9 @@
         android:theme="@style/Theme.Tulostaulu"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".NativeCalculatorActivity"
+            android:exported="false" />
+        <activity
             android:name=".CalculatorHubActivity"
             android:exported="false" />
         <activity
