@@ -29,18 +29,20 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Prepare WOS splash screen
+      - name: Prepare WOS artwork
         shell: bash
         run: |
           mkdir -p app/src/main/res/drawable
           python3 - <<'PY'
           from pathlib import Path
           import base64, re
-          src = Path('app/src/main/splash_image.b64').read_text()
-          clean = re.sub(r'[^A-Za-z0-9+/=]', '', src)
-          pad = (-len(clean)) % 4
-          clean += '=' * pad
-          Path('app/src/main/res/drawable/wos_splash.jpg').write_bytes(base64.b64decode(clean, validate=False))
+          def decode(src, dst):
+              s = Path(src).read_text()
+              s = re.sub(r'[^A-Za-z0-9+/=]', '', s)
+              s += '=' * ((-len(s)) % 4)
+              Path(dst).write_bytes(base64.b64decode(s, validate=False))
+          decode('app/src/main/splash_image.b64', 'app/src/main/res/drawable/wos_splash.jpg')
+          decode('app/src/main/bunny_icon.b64', 'app/src/main/res/drawable/wos_bunny.jpg')
           PY
 
           cat > app/src/main/java/com/hand33h/tulostaulu/SplashActivity.java <<'JAVA'
