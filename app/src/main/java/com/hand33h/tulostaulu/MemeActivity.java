@@ -9,9 +9,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -22,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class MemeActivity extends Activity {
     private static final int PICK_IMAGE = 3101;
@@ -31,7 +31,7 @@ public class MemeActivity extends Activity {
     private FrameLayout preview;
     private ImageView image;
     private TextView topOverlay, bottomOverlay;
-    private EditText topInput, bottomInput;
+    private EditText topInput, bottomInput, searchInput;
     private Bitmap lastBitmap;
 
     @Override protected void onCreate(Bundle b) {
@@ -49,7 +49,15 @@ public class MemeActivity extends Activity {
         root.addView(txt("🐰 WHITEOUT SURVIVAL MEME GENERATOR", 22, true, Gravity.CENTER));
         root.addView(txt(tr("Tee oma WOS-meemi kuvasta ja teksteistä.", "Create your own WOS meme from an image and captions."), 14, false, Gravity.CENTER), margins(0,8,0,16));
 
-        Button choose = btn(tr("VALITSE KUVA", "CHOOSE IMAGE"), Color.rgb(20,125,190));
+        root.addView(txt(tr("INTERNET-KUVAHAKU", "INTERNET IMAGE SEARCH"), 15, true, Gravity.CENTER));
+        searchInput = input(tr("Hakusana, esim. Whiteout Survival", "Search, e.g. Whiteout Survival"));
+        searchInput.setText("Whiteout Survival");
+        root.addView(searchInput, margins(0,8,0,8));
+        Button webSearch = btn(tr("HAE KUVIA INTERNETISTÄ", "SEARCH IMAGES ONLINE"), Color.rgb(75,105,123));
+        root.addView(webSearch, margins(0,0,0,8));
+        root.addView(txt(tr("Avaa kuvahaun selaimeen. Tallenna haluamasi kuva puhelimeen ja valitse se sitten alta.", "Opens image search in your browser. Save the image you want, then choose it below."), 12, false, Gravity.CENTER), margins(0,0,0,14));
+
+        Button choose = btn(tr("VALITSE KUVA PUHELIMESTA", "CHOOSE IMAGE FROM PHONE"), Color.rgb(20,125,190));
         root.addView(choose);
 
         topInput = input(tr("Yläteksti", "Top text"));
@@ -77,6 +85,7 @@ public class MemeActivity extends Activity {
         root.addView(update, margins(0,12,0,8));
         root.addView(save);
 
+        webSearch.setOnClickListener(v -> searchImages());
         choose.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             i.setType("image/*");
@@ -86,6 +95,18 @@ public class MemeActivity extends Activity {
         update.setOnClickListener(v -> updateText());
         save.setOnClickListener(v -> saveMeme());
         setContentView(sc);
+    }
+
+    private void searchImages() {
+        try {
+            String q = searchInput.getText().toString().trim();
+            if (q.isEmpty()) q = "Whiteout Survival";
+            String encoded = URLEncoder.encode(q, StandardCharsets.UTF_8.toString());
+            Uri uri = Uri.parse("https://www.google.com/search?tbm=isch&q=" + encoded);
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        } catch (Exception e) {
+            toast(tr("Kuvahaku ei auennut: ", "Could not open image search: ") + e.getMessage());
+        }
     }
 
     private void updateText() {
@@ -114,7 +135,7 @@ public class MemeActivity extends Activity {
             if (requestCode == PICK_IMAGE) {
                 Uri uri = data.getData();
                 if (uri != null) {
-                    getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    try { getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION); } catch (Exception ignored) {}
                     image.setImageURI(uri);
                 }
             } else if (requestCode == CREATE_IMAGE && lastBitmap != null) {
