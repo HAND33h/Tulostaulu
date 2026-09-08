@@ -61,13 +61,14 @@ public class UnifiedActivity extends Activity {
 
         server=e(tr("Serverinumero","Server number"),p.getString("state","77"),true);key=e("WOS Control API key (wos_...)",p.getString("api_key",""),false);root.addView(server,m(0,10,0,8));root.addView(key,m(0,0,0,12));
         Button top=b(tr("HAE SERVERIN TOP 100","LOAD SERVER TOP 100"),Color.rgb(20,125,190));root.addView(top,m(0,0,0,8));
-        Button advanced=b(tr("AVAA WOS CONTROL -NÄKYMÄ","OPEN WOS CONTROL VIEW"),Color.rgb(54,96,130));root.addView(advanced,m(0,0,0,16));
+        Button advanced=b(tr("AVAA WOS CONTROL -NÄKYMÄ","OPEN WOS CONTROL VIEW"),Color.rgb(54,96,130));root.addView(advanced,m(0,0,0,8));
+        Button meme=b(tr("WHITEOUT SURVIVAL MEME GENERATOR","WHITEOUT SURVIVAL MEME GENERATOR"),Color.rgb(93,74,142));root.addView(meme,m(0,0,0,16));
         root.addView(t(tr("JULKISET VARALÄHTEET","PUBLIC BACKUP SOURCES"),15,true,Gravity.CENTER));
         Button ob=b("WOS OBSERVER",Color.rgb(75,105,123)),gu=b("WOS GURU",Color.rgb(75,105,123)),dev=b("WHITEOUTSURVIVAL.DEV",Color.rgb(75,105,123)),docs=b(tr("WOS CONTROL API / HANKI AVAIN","WOS CONTROL API / GET KEY"),Color.rgb(75,105,123));
         root.addView(ob,m(0,8,0,6));root.addView(gu,m(0,0,0,6));root.addView(dev,m(0,0,0,6));root.addView(docs,m(0,0,0,18));
         status=t(tr("Valmis. TOP100 käyttää WOS Controlia. Muut lähteet ovat mukana varalähteinä.","Ready. TOP100 uses WOS Control. Other sources are available as backups."),15,true,Gravity.CENTER);
         result=t(tr("Ei ladattua dataa.","No data loaded."),14,false,Gravity.START);root.addView(status);root.addView(result,m(0,12,0,0));root.addView(t("App owner: HAND33h",12,true,Gravity.CENTER),m(0,28,0,0));
-        top.setOnClickListener(v->load());advanced.setOnClickListener(v->startActivity(new Intent(this,MainActivity.class)));ob.setOnClickListener(v->open("https://wos-observer.com/"));gu.setOnClickListener(v->open("https://wosguru.com/"));dev.setOnClickListener(v->open("https://whiteoutsurvival.dev/"));docs.setOnClickListener(v->open("https://woscontrol.com/api-docs"));setContentView(sc);
+        top.setOnClickListener(v->load());advanced.setOnClickListener(v->startActivity(new Intent(this,MainActivity.class)));meme.setOnClickListener(v->startActivity(new Intent(this,MemeActivity.class)));ob.setOnClickListener(v->open("https://wos-observer.com/"));gu.setOnClickListener(v->open("https://wosguru.com/"));dev.setOnClickListener(v->open("https://whiteoutsurvival.dev/"));docs.setOnClickListener(v->open("https://woscontrol.com/api-docs"));setContentView(sc);
     }
 
     private String tr(String fi,String en){return english?en:fi;}
