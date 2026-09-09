@@ -25,10 +25,10 @@ public final class VerifiedHeroSkillGen14 {
         new Row("Dominic","Optical Mirror Guard",3,"DAMAGE_TAKEN_DOWN","INFANTRY_MARKSMAN","PASSIVE",v(3,6,9,12,15),"WSCO Gen14"),
         new Row("Dominic","Optical Mirror Damage",3,"DAMAGE_DEALT_UP","INFANTRY_MARKSMAN","PASSIVE",v(3,6,9,12,15),"WSCO Gen14"),
         new Row("Dominic","Grand Fantasy",0,"RALLY_TROOP_LETHALITY_UP","RALLY_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WoS H5Joy / WoS Guru; cross-checked 2026-09-09"),
-        new Row("Cara","Smoke Grenades",1,"ENEMY_LETHALITY_DOWN","ENEMY_ALL","PASSIVE",v(4,8,12,16,20),"WSCO / Whiteout Battlemaster Gen14"),
-        new Row("Cara","Mech Pets",2,"NORMAL_ATTACK_DAMAGE_UP","ALL_TROOPS","PASSIVE",v(10,15,20,25,30),"WSCO / Whiteout Battlemaster Gen14"),
-        new Row("Cara","Flying Broom vs Lancer",3,"DAMAGE_DEALT_UP","MARKSMAN_VS_LANCER","EVERY_2_ATTACKS",v(8,16,24,32,40),"WSCO / Whiteout Battlemaster Gen14"),
-        new Row("Cara","Flying Broom vs Marksman",3,"DAMAGE_DEALT_UP","MARKSMAN_VS_MARKSMAN","EVERY_2_ATTACKS",v(4,8,12,16,20),"WSCO / Whiteout Battlemaster Gen14"),
+        new Row("Cara","Smoky Encounter",1,"ENEMY_LETHALITY_DOWN","ENEMY_ALL","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WoS Tools; cross-checked 2026-09-09"),
+        new Row("Cara","Mech Pet",2,"NORMAL_ATTACK_DAMAGE_UP","ALL_TROOPS","PASSIVE",v(10,15,20,25,30),"WOS Heroes / WoS Tools; cross-checked 2026-09-09"),
+        new Row("Cara","Witch's Wrath vs Lancer",3,"DAMAGE_DEALT_UP","MARKSMAN_VS_LANCER","EVERY_2_ATTACKS",v(8,16,24,32,40),"WOS Heroes / WoS Tools; cross-checked 2026-09-09"),
+        new Row("Cara","Witch's Wrath vs Marksman",3,"DAMAGE_DEALT_UP","MARKSMAN_VS_MARKSMAN","EVERY_2_ATTACKS",v(4,8,12,16,20),"WOS Heroes / WoS Tools; cross-checked 2026-09-09"),
         new Row("Cara","Shrouded Haven",0,"DEFENDER_LETHALITY_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WoS H5Joy / Whiteout Battlemaster")
     ));
     private VerifiedHeroSkillGen14(){}
