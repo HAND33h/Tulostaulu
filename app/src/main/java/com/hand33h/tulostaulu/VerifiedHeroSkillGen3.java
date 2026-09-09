@@ -16,7 +16,7 @@ public final class VerifiedHeroSkillGen3 {
         new Row("Logan","Fists of Destruction","DAMAGE_DEALT","TARGET","EXPLORATION_ATTACK_SPEED_DOWN_50_PERCENT_FOR_4S",v(120,132,144,156,168),"WhiteoutData / H5Joy; cross-checked 2026-09-09"),
         new Row("Logan","Power Suit Proc","PROC_CHANCE","LOGAN","EXPLORATION_WHEN_ATTACKED_DEFENSE_BUFF_FOR_2S_UP_TO_5_STACKS",v(8,10,12,14,16),"WhiteoutData / H5Joy; cross-checked 2026-09-09; Defense ladder has Lv3 conflict (14 vs 13) and is intentionally not encoded"),
         new Row("Logan","Blustery Strike","DAMAGE_DEALT","CONE_AREA_TARGETS","EXPLORATION_30_PERCENT_STUN_CHANCE_FOR_1S",v(80,88,96,104,112),"WhiteoutData / H5Joy; cross-checked 2026-09-09"),
-        new Row("Logan","Lion's Might","ATTACK_DOWN","ALL_ENEMY_TROOPS","EXPEDITION_PASSIVE",v(4,8,12,16,20),"WhiteoutData / WoS community references; cross-checked 2026-09-09"),
+        new Row("Logan","Lion Strike","DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_20_PERCENT_CHANCE_FOR_3_TURNS",v(8,16,24,32,40),"WSCO Logan current guide corroborates max 40% and 20% proc; corrected 2026-09-09 after fresh source audit"),
         new Row("Logan","Lion Intimidation","DAMAGE_TAKEN_DOWN","ALL_TROOPS","EXPEDITION_PASSIVE",v(4,8,12,16,20),"WhiteoutData / WoS community references; cross-checked 2026-09-09"),
         new Row("Logan","Leader Inspiration","HEALTH_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"WhiteoutData / WoS community references; cross-checked 2026-09-09"),
         new Row("Logan","Enhanced Fists of Steel","DAMAGE_DEALT_UP","FISTS_OF_DESTRUCTION","EXCLUSIVE_EXPLORATION",v(10,15,20,25,30),"WhiteoutData exact ladder / H5Joy max 30; cross-checked 2026-09-09"),
