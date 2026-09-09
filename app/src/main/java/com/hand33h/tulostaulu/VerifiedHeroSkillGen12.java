@@ -24,7 +24,13 @@ public final class VerifiedHeroSkillGen12 {
         new Row("Karol","Shieldbreaker Lancer","DAMAGE_DEALT_UP","ALL_TROOPS_VS_LANCER","PASSIVE",v(6,12,18,24,30),"WOS Heroes / Whiteout Survival Community Wiki; full ladder cross-checked 2026-09-09"),
         new Row("Karol","Shieldbreaker Infantry","DAMAGE_DEALT_UP","ALL_TROOPS_VS_INFANTRY","PASSIVE",v(5,10,15,20,25),"WOS Heroes / Whiteout Survival Community Wiki; full ladder cross-checked 2026-09-09"),
         new Row("Karol","Standard of Ages Attack","TROOP_ATTACK_UP","ALL_TROOPS","PASSIVE",v(3,6,9,12,15),"WOS Heroes / Whiteout Survival Community Wiki; full ladder cross-checked 2026-09-09"),
-        new Row("Karol","Standard of Ages Defense","TROOP_DEFENSE_UP","ALL_TROOPS","PASSIVE",v(2,4,6,8,10),"WOS Heroes / Whiteout Survival Community Wiki; full ladder cross-checked 2026-09-09")
+        new Row("Karol","Standard of Ages Defense","TROOP_DEFENSE_UP","ALL_TROOPS","PASSIVE",v(2,4,6,8,10),"WOS Heroes / Whiteout Survival Community Wiki; full ladder cross-checked 2026-09-09"),
+
+        new Row("Ligeia","Nerf Poison","ENEMY_DEFENSE_DOWN","ENEMY_ALL","PASSIVE",v(5,10,15,20,25),"WOS Heroes / Whiteout Survival Wiki; full ladder cross-checked 2026-09-09"),
+        new Row("Ligeia","Corrosion Damage","EXTRA_DAMAGE","MARKSMAN","EVERY_2_ATTACKS",v(20,40,60,80,100),"WOS Heroes / Whiteout Survival Wiki; full ladder cross-checked 2026-09-09"),
+        new Row("Ligeia","Corrosion Debuff","ENEMY_DAMAGE_TAKEN_UP","TARGET","1_TURN",v(5,10,15,20,25),"WOS Heroes / Whiteout Survival Wiki; full ladder cross-checked 2026-09-09"),
+        new Row("Ligeia","Toxic Tip Damage","DAMAGE_DEALT_UP","MARKSMAN","EVERY_2_ATTACKS",v(20,40,60,80,100),"WOS Heroes / Whiteout Survival Wiki; full ladder cross-checked 2026-09-09"),
+        new Row("Ligeia","Toxic Tip Debuff","ENEMY_DAMAGE_DEALT_DOWN","TARGET","EVERY_2_ATTACKS_1_TURN",v(4,8,12,16,20),"WOS Heroes / Whiteout Survival Wiki; full ladder cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen12(){}
 }
