@@ -27,7 +27,8 @@ public final class VerifiedHeroSkillGen10 {
         new Row("Blanchette","Blood Hunter","DAMAGE_UP","MARKSMEN_EVERY_3_ROUNDS","PASSIVE",v(15,30,45,60,75),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Blanchette","Crimson Sniper vs Lancers","EXTRA_DAMAGE_UP","ENEMY_LANCERS","MARKSMEN_EVERY_2_STRIKES",v(8,16,24,32,40),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Blanchette","Crimson Sniper vs Marksmen","EXTRA_DAMAGE_UP","ENEMY_MARKSMEN","MARKSMEN_EVERY_2_STRIKES",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
-        new Row("Blanchette","Lightning Strike","RALLY_TROOPS_LETHALITY_UP","RALLY_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
+        new Row("Blanchette","Lightning Strike","RALLY_TROOPS_LETHALITY_UP","RALLY_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Blanchette","Hunter's Rage","ATTACK_SPEED_UP","BLANCHETTE","EXCLUSIVE_EXPLORATION_HEAL_BLOCK_PLUS_5S",v(10,15,20,25,30),"WOS Heroes / Whiteout Survival Wiki; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen10(){}
 }
