@@ -30,7 +30,9 @@ public final class VerifiedHeroSkillGen6 {
         new Row("Wu Ming","Shadow's Evasion Normal Attack","DAMAGE_TAKEN_DOWN","INFANTRY","EXPEDITION_NORMAL_ATTACKS",v(5,10,15,20,25),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Wu Ming","Shadow's Evasion Skill","SKILL_DAMAGE_TAKEN_DOWN","INFANTRY","EXPEDITION_SKILLS",v(6,12,18,24,30),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Wu Ming","Crescent Uplift","DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
-        new Row("Wu Ming","Elemental Resonance","SKILL_DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09")
+        new Row("Wu Ming","Elemental Resonance","SKILL_DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Wu Ming","Martial Zenith","DAMAGE_DEALT_UP","WU_MING","EXCLUSIVE_EXPLORATION",v(10,15,20,25,30),"WOS Heroes exact ladder / H5Joy max 30 / WoSTools max 30; cross-checked 2026-09-09"),
+        new Row("Wu Ming","Steel Discipline","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes exact ladder / H5Joy max 15 / WoSTools max 15; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen6(){}
 }
