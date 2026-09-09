@@ -23,7 +23,11 @@ public final class VerifiedHeroSkillGen17 {
         new Row("Bertha","Vengeance Marksman Attack","ATTACK_UP","MARKSMAN","EVERY_2_LANCER_ATTACKS_1_TURN",v(6,12,18,24,30),"WOS Heroes / wos-wiki.de / WSCO; cross-checked 2026-09-09"),
         new Row("Bertha","Lethal Precision Damage","DAMAGE_DEALT_UP","LANCER","EACH_ATTACK",v(12,24,36,48,60),"WOS Heroes / wos-wiki.de / WSCO; cross-checked 2026-09-09"),
         new Row("Bertha","Lethal Precision Weakness","ENEMY_DAMAGE_TAKEN_UP","TARGET","1_TURN",v(5,10,15,20,25),"WOS Heroes / wos-wiki.de / WSCO; cross-checked 2026-09-09"),
-        new Row("Bertha","Antibodies","DEFENDER_LETHALITY_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / Whiteout Survival Wiki; cross-checked 2026-09-09")
+        new Row("Bertha","Antibodies","DEFENDER_LETHALITY_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Eleanor","Theoretical Advantage","ENEMY_DEFENSE_DOWN","ENEMY_ALL","PASSIVE_PRIMARY",v(5,10,15,20,25),"WOS Heroes / Whiteout Survival Wiki / wos-wiki.de; cross-checked 2026-09-09"),
+        new Row("Eleanor","Pierce Caliber Extra Damage","EXTRA_DAMAGE","MARKSMAN","ON_ATTACK_50_PERCENT",v(20,40,60,80,100),"WOS Heroes / Whiteout Survival Wiki / wos-wiki.de; cross-checked 2026-09-09"),
+        new Row("Eleanor","Pierce Caliber Damage","DAMAGE_DEALT_UP","MARKSMAN","ON_ATTACK_50_PERCENT_1_TURN",v(8,16,24,32,40),"WOS Heroes / Whiteout Survival Wiki / wos-wiki.de; cross-checked 2026-09-09"),
+        new Row("Eleanor","Trajectoids","DAMAGE_DEALT_UP","MARKSMAN_VS_MARKSMAN","EVERY_2_ATTACKS",v(12,24,36,48,60),"WOS Heroes / Whiteout Survival Wiki / wos-wiki.de; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen17(){}
 }
