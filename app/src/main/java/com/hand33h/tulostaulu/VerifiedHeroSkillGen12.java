@@ -18,7 +18,13 @@ public final class VerifiedHeroSkillGen12 {
         new Row("Hervor","Undying Skill","SKILL_DAMAGE_TAKEN_DOWN","INFANTRY","PASSIVE",v(6,12,18,24,30),"WOS Heroes / WosGift / Whiteout Survival Wiki / Heaven Guardian; cross-checked 2026-09-09"),
         new Row("Hervor","Battlethirsty Damage Taken","DAMAGE_TAKEN_DOWN","INFANTRY","PASSIVE",v(3,6,9,12,15),"WOS Heroes / WosGift / Heaven Guardian; cross-checked 2026-09-09"),
         new Row("Hervor","Battlethirsty Damage Dealt","DAMAGE_DEALT_UP","INFANTRY","PASSIVE",v(2,4,6,8,10),"WOS Heroes / WosGift / Heaven Guardian; cross-checked 2026-09-09"),
-        new Row("Hervor","Fort of Rock","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / whiteout-survival.com; full ladder cross-checked 2026-09-09")
+        new Row("Hervor","Fort of Rock","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / whiteout-survival.com; full ladder cross-checked 2026-09-09"),
+
+        new Row("Karol","In the Wings","DAMAGE_TAKEN_DOWN","ALL_TROOPS","PASSIVE",v(4,8,12,16,20),"WOS Heroes / Whiteout Survival Community Wiki; full ladder cross-checked 2026-09-09"),
+        new Row("Karol","Shieldbreaker Lancer","DAMAGE_DEALT_UP","ALL_TROOPS_VS_LANCER","PASSIVE",v(6,12,18,24,30),"WOS Heroes / Whiteout Survival Community Wiki; full ladder cross-checked 2026-09-09"),
+        new Row("Karol","Shieldbreaker Infantry","DAMAGE_DEALT_UP","ALL_TROOPS_VS_INFANTRY","PASSIVE",v(5,10,15,20,25),"WOS Heroes / Whiteout Survival Community Wiki; full ladder cross-checked 2026-09-09"),
+        new Row("Karol","Standard of Ages Attack","TROOP_ATTACK_UP","ALL_TROOPS","PASSIVE",v(3,6,9,12,15),"WOS Heroes / Whiteout Survival Community Wiki; full ladder cross-checked 2026-09-09"),
+        new Row("Karol","Standard of Ages Defense","TROOP_DEFENSE_UP","ALL_TROOPS","PASSIVE",v(2,4,6,8,10),"WOS Heroes / Whiteout Survival Community Wiki; full ladder cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen12(){}
 }
