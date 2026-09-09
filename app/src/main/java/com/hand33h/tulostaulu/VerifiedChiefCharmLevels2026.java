@@ -12,16 +12,17 @@ import java.util.List;
  *
  * Stable consensus:
  * - Levels 12+ require Charm Secrets.
- * - Levels 17-18 unlock with Gen 8 state progression and each has 9 sub-stages.
- * - Costs/stat totals below are cross-checked across current sources.
+ * - Lv12-15 have 5 sub-stages; Lv16-18 have 9 sub-stages.
+ * - Levels 17-18 unlock with Gen 8 state progression.
+ * - Material costs/stat totals below are cross-checked across current sources.
  *
  * Progression conflict intentionally preserved:
  * - Some recent 2026 sources place Lv12-16 at Gen5.
- * - Other current references place Lv16 later (for example Gen7).
- * Therefore this class does NOT auto-unlock Lv12-16 from a single generation gate.
+ * - Other current references describe later state gating for the highest levels.
+ * Therefore this class does NOT auto-unlock Lv12-16 from a disputed generation gate.
  *
  * Power note:
- * - Lv12-16 values use the current 124,000-per-level progression corroborated by
+ * - Lv12-16 values use the 124,000-per-level progression corroborated by
  *   WhiteoutSurvival.dev, Heaven Guardian and current community tables.
  * - WOS Forge currently publishes higher Lv12-16 power values; that conflict is
  *   documented rather than silently accepted.
@@ -63,11 +64,7 @@ public final class VerifiedChiefCharmLevels2026 {
         new Row(18, 1300, 1130, 180, 118.0, 2832000, 9, 8)
     ));
 
-    /**
-     * Returns true only when the current 2026 source set gives a non-conflicting
-     * generation gate. Lv12-16 remain unresolved and must use the live-state/client
-     * progression table instead of being guessed here.
-     */
+    /** Returns true only for a generation gate that is non-conflicting in current sources. */
     public static boolean isVerifiedHighLevelUnlocked(int charmLevel, int unlockedHeroGeneration) {
         if (charmLevel == 17 || charmLevel == 18) {
             return unlockedHeroGeneration >= LEVEL_17_TO_18_UNLOCK_HERO_GENERATION;
