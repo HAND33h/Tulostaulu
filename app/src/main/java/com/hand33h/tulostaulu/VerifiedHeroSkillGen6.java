@@ -32,7 +32,10 @@ public final class VerifiedHeroSkillGen6 {
         new Row("Wu Ming","Crescent Uplift","DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Wu Ming","Elemental Resonance","SKILL_DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Wu Ming","Martial Zenith","DAMAGE_DEALT_UP","WU_MING","EXCLUSIVE_EXPLORATION",v(10,15,20,25,30),"WOS Heroes exact ladder / H5Joy max 30 / WoSTools max 30; cross-checked 2026-09-09"),
-        new Row("Wu Ming","Steel Discipline","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes exact ladder / H5Joy max 15 / WoSTools max 15; cross-checked 2026-09-09")
+        new Row("Wu Ming","Steel Discipline","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes exact ladder / H5Joy max 15 / WoSTools max 15; cross-checked 2026-09-09"),
+        new Row("Wayne","Hurricane Blowback","DAMAGE_DEALT","STRAIGHT_LINE_AREA_OF_EFFECT","EXPLORATION_OUTBOUND_AND_RETURN_SAME_DAMAGE",v(100,110,120,130,140),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki / H5Joy; cross-checked 2026-09-09"),
+        new Row("Wayne","Phantom Blitz","EXTRA_NORMAL_ATTACK_CHANCE","WAYNE","EXPLORATION_EACH_NORMAL_ATTACK",v(15,20,25,30,35),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki / H5Joy; cross-checked 2026-09-09"),
+        new Row("Wayne","Noon Time","CRIT_RATE_UP","WAYNE","EXPLORATION_ON_DEALING_DAMAGE",v(3,6,9,12,15),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki / H5Joy; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen6(){}
 }
