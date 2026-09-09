@@ -22,7 +22,11 @@ public final class VerifiedHeroSkillGen6 {
         new Row("Renee","Dreamcatcher","DAMAGE_DEALT_UP","LANCERS_VS_DREAM_MARKED_TARGET","EXPEDITION_PASSIVE",v(30,60,90,120,150),"WhiteoutData / Whiteout Survival Community Wiki / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Renee","Dreamslice","DAMAGE_DEALT_UP","ALL_TROOPS_VS_DREAM_MARKED_TARGET","EXPEDITION_PASSIVE",v(15,30,45,60,75),"WhiteoutData / Whiteout Survival Community Wiki / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Renee","Dream Illusion","CONFUSION_CHANCE","TARGET","EXCLUSIVE_EXPLORATION_CONFUSES_FOR_1S",v(2,3.5,5,6.5,8),"WOS Heroes / whiteout-survival.com / H5Joy; cross-checked 2026-09-09"),
-        new Row("Renee","Wistful Enchantment","RALLY_TROOPS_LETHALITY_UP","RALLY_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / whiteout-survival.com / H5Joy; cross-checked 2026-09-09")
+        new Row("Renee","Wistful Enchantment","RALLY_TROOPS_LETHALITY_UP","RALLY_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / whiteout-survival.com / H5Joy; cross-checked 2026-09-09"),
+        new Row("Wu Ming","Cyclone Barrier","DAMAGE_DEALT","AREA_OF_EFFECT","EXPLORATION_INVULNERABLE_FOR_2S",v(100,110,120,130,140),"WOS Heroes / WhiteoutData / H5Joy; cross-checked 2026-09-09"),
+        new Row("Wu Ming","Inner Clarity Attack","ATTACK_UP","WU_MING","EXPLORATION_FOR_4S",v(8,12,16,20,24),"WOS Heroes / WhiteoutData / H5Joy; cross-checked 2026-09-09"),
+        new Row("Wu Ming","Inner Clarity Defense","DEFENSE_UP","WU_MING","EXPLORATION_FOR_4S",v(16,24,32,40,48),"WOS Heroes / WhiteoutData / H5Joy; cross-checked 2026-09-09"),
+        new Row("Wu Ming","Remote Impact","DAMAGE_DEALT","RANDOM_ENEMY","EXPLORATION_EVERY_NORMAL_ATTACK",v(20,22,24,26,28),"WOS Heroes / WhiteoutData / H5Joy; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen6(){}
 }
