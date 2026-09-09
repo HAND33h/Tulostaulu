@@ -32,7 +32,10 @@ public final class VerifiedHeroSkillGen5 {
         new Row("Norah","Momentum Damage Taken","DAMAGE_TAKEN_DOWN","ALL_TROOPS","EXPEDITION_EVERY_5_LANCER_ATTACKS_FOR_2_TURNS",v(5,10,15,20,25),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Norah","Disruptor Stun Chance","STUN_CHANCE","BARRAGE_TARGET","EXCLUSIVE_EXPLORATION_BARRAGE_GRENADE",v(25,27.5,30,32.5,35),"WhiteoutData exact ladder / H5Joy and Heaven Guardian max 35; cross-checked 2026-09-09"),
         new Row("Norah","Disruptor Stun Time","STUN_DURATION_SECONDS","BARRAGE_TARGET","EXCLUSIVE_EXPLORATION_BARRAGE_GRENADE",v(0.6,0.7,0.8,0.9,1),"WhiteoutData exact ladder / H5Joy and Heaven Guardian max 1s; cross-checked 2026-09-09"),
-        new Row("Norah","True Grit","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData exact ladder / H5Joy and Heaven Guardian max 15; cross-checked 2026-09-09")
+        new Row("Norah","True Grit","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData exact ladder / H5Joy and Heaven Guardian max 15; cross-checked 2026-09-09"),
+        new Row("Gwen","Salvo","DAMAGE_DEALT","REAR_ENEMIES_AREA_OF_EFFECT","EXPLORATION_HEROES_FIRST_ATTACK_SPEED_DOWN_50_PERCENT_FOR_2S",v(180,198,216,234,252),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Gwen","Sky Sniper","DAMAGE_DEALT","TARGET","EXPLORATION_HEROES_FIRST_50_PERCENT_DOUBLE_DAMAGE_CHANCE",v(100,110,120,130,140),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Gwen","Hellfire","DAMAGE_PER_SECOND","AREA_OF_EFFECT","EXPLORATION_BURN_FOR_3S",v(35,38.5,42,45.5,49),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen5(){}
 }
