@@ -32,11 +32,17 @@ public final class VerifiedHeroSkillGen11 {
         new Row("Eleonora","Soaring Flame Damage Taken","DAMAGE_TAKEN_DOWN","ALL_TROOPS","EVERY_5_INFANTRY_ATTACKS_FOR_2_TURNS",v(5,10,15,20,25),"Current Whiteout Survival Wiki explicitly describes damage dealt + damage taken reduction; corrected old attack/defense semantics; cross-checked 2026-09-10"),
         new Row("Eleonora","Last Fortress","DEFENDER_HEALTH_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"Existing verified widget ladder; max 15 corroborated by current Whiteout Survival Wiki; cross-checked 2026-09-10"),
 
-        new Row("Lloyd","Bird Invasion","ENEMY_LETHALITY_DOWN","ENEMY_ALL","PASSIVE",v(4,8,12,16,20),"WOS Heroes / current Wiki / WSCO / Heaven Guardian; cross-checked 2026-09-10"),
-        new Row("Lloyd","Iceflare Bomb Damage","ATTACK_UP","LANCER","EVERY_3_TURNS",v(30,60,90,120,150),"WOS Heroes / current Wiki / WSCO / Heaven Guardian; cross-checked 2026-09-10"),
-        new Row("Lloyd","Iceflare Bomb Debuff","ENEMY_LETHALITY_DOWN","ENEMY_ALL","EVERY_3_TURNS_1_TURN",v(6,12,18,24,30),"WOS Heroes / current Wiki / WSCO / Heaven Guardian; cross-checked 2026-09-10"),
-        new Row("Lloyd","Ingenious Mastery","TROOP_LETHALITY_UP","ALL_TROOPS","40_PERCENT_PROC",v(10,20,30,40,50),"WOS Heroes / current Wiki / WSCO / Heaven Guardian; cross-checked 2026-09-10"),
-        new Row("Lloyd","Steel Maze","DEFENDER_ATTACK_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"Current Whiteout Survival Wiki / WOS Heroes / WSCO / H5Joy / Heaven Guardian all identify Defender Troops Attack, max 15; stale conflicting upgrade label no longer treated as current truth; cross-checked 2026-09-10")
+        new Row("Lloyd","Rapid Bombardment","DAMAGE_DEALT","AOE","EXPLORATION_3_BOMBS_EACH",v(70,77,84,91,98),"Current Whiteout Survival Wiki / whiteout-survival.com / WSCO / H5Joy; cross-checked 2026-09-10"),
+        new Row("Lloyd","Weakness Focus Damage","DAMAGE_DEALT","TARGET","EXPLORATION_ACTIVE",v(100,110,120,130,140),"Current Whiteout Survival Wiki / whiteout-survival.com / WSCO / H5Joy; cross-checked 2026-09-10"),
+        new Row("Lloyd","Weakness Focus Vulnerability","DAMAGE_TAKEN_UP","TARGET","EXPLORATION_FOR_3_SECONDS",v(10,12.5,15,17.5,20),"Current Whiteout Survival Wiki / whiteout-survival.com / WSCO / H5Joy; cross-checked 2026-09-10"),
+        new Row("Lloyd","Practiced Perfection","ATTACK_SPEED_UP","LLOYD","EXPLORATION_PASSIVE",v(10,15,20,25,30),"Current Whiteout Survival Wiki / whiteout-survival.com / WSCO / H5Joy; cross-checked 2026-09-10"),
+        new Row("Lloyd","Bird Invasion","ENEMY_LETHALITY_DOWN","ENEMY_ALL","EXPEDITION_PASSIVE",v(4,8,12,16,20),"WOS Heroes / current Wiki / WSCO / Heaven Guardian; cross-checked 2026-09-10"),
+        new Row("Lloyd","Iceflare Bomb Damage","ATTACK_UP","LANCER","EXPEDITION_EVERY_3_TURNS",v(30,60,90,120,150),"WOS Heroes / current Wiki / WSCO / Heaven Guardian; cross-checked 2026-09-10"),
+        new Row("Lloyd","Iceflare Bomb Debuff","ENEMY_LETHALITY_DOWN","ENEMY_ALL","EXPEDITION_EVERY_3_TURNS_1_TURN",v(6,12,18,24,30),"WOS Heroes / current Wiki / WSCO / Heaven Guardian; cross-checked 2026-09-10"),
+        new Row("Lloyd","Ingenious Mastery","TROOP_LETHALITY_UP","ALL_TROOPS","EXPEDITION_40_PERCENT_PROC",v(10,20,30,40,50),"WOS Heroes / current Wiki / WSCO / Heaven Guardian; cross-checked 2026-09-10"),
+        new Row("Lloyd","Frosty Whisper Extra Damage","EXTRA_DAMAGE","TARGET","EXCLUSIVE_EXPLORATION_NORMAL_ATTACK_NONSTACKING",v(3,6,9,12,15),"Current Wiki / whiteout-survival.com / WSCO / H5Joy / Heaven Guardian; Lv5=15 verified; ladder cross-checked 2026-09-10"),
+        new Row("Lloyd","Frosty Whisper Attack Speed Down","ATTACK_SPEED_DOWN","TARGET","EXCLUSIVE_EXPLORATION_FOR_2_SECONDS_NONSTACKING",v(3,6,9,12,15),"Current Wiki / whiteout-survival.com / WSCO / H5Joy / Heaven Guardian; Lv5=15 verified; ladder cross-checked 2026-09-10"),
+        new Row("Lloyd","Steel Maze","DEFENDER_ATTACK_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"Current Whiteout Survival Wiki / WOS Heroes / WSCO / H5Joy / Heaven Guardian all identify Defender Troops Attack; cross-checked 2026-09-10")
     ));
     private VerifiedHeroSkillGen11(){}
 }
