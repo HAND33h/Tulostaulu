@@ -21,6 +21,8 @@ public final class VerifiedHeroSkillGen7 {
         new Row("Edith","Strategic Balance Lancers","DAMAGE_DEALT_UP","LANCERS","EXPEDITION_PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Edith","Ironclad","DAMAGE_TAKEN_DOWN","INFANTRY","EXPEDITION_PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Edith","Steel Sentinel","HEALTH_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Edith","Pocket Engineer Heal","HEAL_MAX_HEALTH_PERCENT","MR_TIN","EXCLUSIVE_EXPLORATION_FIRST_BELOW_50_PERCENT_HEALTH",v(15,20,25,30,35),"WOS Heroes / whiteout-survival.com; cross-checked 2026-09-09"),
+        new Row("Edith","Pocket Engineer Defense","DEFENSE_UP","MR_TIN","EXCLUSIVE_EXPLORATION_FIRST_BELOW_50_PERCENT_HEALTH_UNTIL_BATTLE_END",v(10,15,20,25,30),"WOS Heroes / whiteout-survival.com; cross-checked 2026-09-09"),
         new Row("Edith","Fortworks","DEFENDER_HEALTH_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Gordon","Poison Blast","DAMAGE_DEALT","NEARBY_ENEMIES","EXPLORATION_EVERY_0_5S_FOR_3S",v(50,55,60,65,70),"WOS Heroes / WhiteoutData / H5Joy; cross-checked 2026-09-09"),
         new Row("Gordon","Toxic Molotov Damage","DAMAGE_DEALT","TARGET","EXPLORATION_EVERY_0_5S",v(25,27.5,30,32.5,35),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
