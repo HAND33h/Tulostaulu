@@ -39,7 +39,9 @@ public final class VerifiedHeroSkillGen5 {
         new Row("Gwen","Eagle Vision","DAMAGE_TAKEN_UP","ENEMY_TARGET","EXPEDITION_PASSIVE",v(5,10,15,20,25),"WhiteoutData / WoSTools; cross-checked 2026-09-09"),
         new Row("Gwen","Air Dominance Extra Damage","EXTRA_DAMAGE_DEALT","ALL_TROOPS","EXPEDITION_AFTER_EVERY_5_ATTACKS",v(20,40,60,80,100),"WhiteoutData / WoSTools; cross-checked 2026-09-09"),
         new Row("Gwen","Air Dominance Next Attack Vulnerability","DAMAGE_TAKEN_UP","ENEMY_TARGET","EXPEDITION_NEXT_ATTACK_AFTER_AIR_DOMINANCE",v(5,7.5,10,12.5,15),"WhiteoutData / WoSTools; cross-checked 2026-09-09"),
-        new Row("Gwen","Blastmaster","EXTRA_DAMAGE_DEALT","ALL_ENEMIES","EXPEDITION_NEXT_ATTACK_EVERY_4_ATTACKS",v(10,20,30,40,50),"WhiteoutData / WoSTools; cross-checked 2026-09-09")
+        new Row("Gwen","Blastmaster","EXTRA_DAMAGE_DEALT","ALL_ENEMIES","EXPEDITION_NEXT_ATTACK_EVERY_4_ATTACKS",v(10,20,30,40,50),"WhiteoutData / WoSTools; cross-checked 2026-09-09"),
+        new Row("Gwen","Fire Support Unit","DAMAGE_DEALT","RANDOM_TARGET","EXCLUSIVE_EXPLORATION_ON_SKILL_CAST_HEROES_FIRST",v(50,55,60,65,70),"WhiteoutData exact ladder / H5Joy and WSCO max 70; cross-checked 2026-09-09"),
+        new Row("Gwen","Marauder","RALLY_TROOPS_LETHALITY_UP","RALLY_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData exact ladder / H5Joy and WSCO max 15; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen5(){}
 }
