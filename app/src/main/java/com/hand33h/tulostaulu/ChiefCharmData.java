@@ -1,7 +1,7 @@
 package com.hand33h.tulostaulu;
 
 /**
- * Chief Charm progression, checked against WOS Forge 2026-09-09.
+ * Chief Charm progression, re-audited against current WOS Forge and 2026 Gen8 cap sources on 2026-09-10.
  * Values are per single charm and the published stat is Health & Lethality.
  */
 public final class ChiefCharmData {
@@ -51,11 +51,11 @@ public final class ChiefCharmData {
     public static boolean isUnlocked(int furnaceLevel){return furnaceLevel>=UNLOCK_FURNACE_LEVEL;}
     public static boolean materialExchangeUnlocked(int highestCharmLevel){return highestCharmLevel>=MATERIAL_EXCHANGE_UNLOCK_LEVEL;}
 
-    /** Published number of star sub-upgrades within the level. Levels 1-3 and 18 are direct level rows. */
+    /** Published number of star/sub-stage upgrades within the level. Lv16-Lv18 use nine sub-stages. */
     public static int starStepsAtLevel(int charmLevel){
         if(charmLevel>=4 && charmLevel<=10)return 4;
         if(charmLevel>=11 && charmLevel<=15)return 5;
-        if(charmLevel==16 || charmLevel==17)return 9;
+        if(charmLevel>=16 && charmLevel<=18)return 9;
         return 0;
     }
 
