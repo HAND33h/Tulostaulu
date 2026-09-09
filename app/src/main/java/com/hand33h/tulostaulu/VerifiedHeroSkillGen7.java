@@ -44,7 +44,9 @@ public final class VerifiedHeroSkillGen7 {
         new Row("Bradley","Veteran's Might","ATTACK_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Bradley","Power Shot vs Lancers","DAMAGE_DEALT_UP","ENEMY_LANCERS","EXPEDITION_ALL_TROOPS",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Bradley","Power Shot vs Infantry","DAMAGE_DEALT_UP","ENEMY_INFANTRY","EXPEDITION_ALL_TROOPS",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
-        new Row("Bradley","Tactical Assistance","DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_EVERY_4_TURNS_FOR_2_TURNS",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
+        new Row("Bradley","Tactical Assistance","DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_EVERY_4_TURNS_FOR_2_TURNS",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Bradley","Onslaught","ATTACK_SPEED_UP","HEROES_AND_ESCORTS","EXCLUSIVE_AFTER_DESTRUCTOR_FOR_5S",v(6,8,10,12,14),"WhiteoutData / Heaven Guardian / Whiteout Survival Wiki JP; cross-checked 2026-09-09"),
+        new Row("Bradley","Siege Insight","ATTACK_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"Heaven Guardian / Whiteout Survival Wiki JP / WhiteoutData; source description and independent sources say Defender Attack; WhiteoutData upgrade label says Defense, treated as label conflict; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen7(){}
 }
