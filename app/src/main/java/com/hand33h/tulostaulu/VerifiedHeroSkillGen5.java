@@ -35,7 +35,11 @@ public final class VerifiedHeroSkillGen5 {
         new Row("Norah","True Grit","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData exact ladder / H5Joy and Heaven Guardian max 15; cross-checked 2026-09-09"),
         new Row("Gwen","Salvo","DAMAGE_DEALT","REAR_ENEMIES_AREA_OF_EFFECT","EXPLORATION_HEROES_FIRST_ATTACK_SPEED_DOWN_50_PERCENT_FOR_2S",v(180,198,216,234,252),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Gwen","Sky Sniper","DAMAGE_DEALT","TARGET","EXPLORATION_HEROES_FIRST_50_PERCENT_DOUBLE_DAMAGE_CHANCE",v(100,110,120,130,140),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
-        new Row("Gwen","Hellfire","DAMAGE_PER_SECOND","AREA_OF_EFFECT","EXPLORATION_BURN_FOR_3S",v(35,38.5,42,45.5,49),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09")
+        new Row("Gwen","Hellfire","DAMAGE_PER_SECOND","AREA_OF_EFFECT","EXPLORATION_BURN_FOR_3S",v(35,38.5,42,45.5,49),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Gwen","Eagle Vision","DAMAGE_TAKEN_UP","ENEMY_TARGET","EXPEDITION_PASSIVE",v(5,10,15,20,25),"WhiteoutData / WoSTools; cross-checked 2026-09-09"),
+        new Row("Gwen","Air Dominance Extra Damage","EXTRA_DAMAGE_DEALT","ALL_TROOPS","EXPEDITION_AFTER_EVERY_5_ATTACKS",v(20,40,60,80,100),"WhiteoutData / WoSTools; cross-checked 2026-09-09"),
+        new Row("Gwen","Air Dominance Next Attack Vulnerability","DAMAGE_TAKEN_UP","ENEMY_TARGET","EXPEDITION_NEXT_ATTACK_AFTER_AIR_DOMINANCE",v(5,7.5,10,12.5,15),"WhiteoutData / WoSTools; cross-checked 2026-09-09"),
+        new Row("Gwen","Blastmaster","EXTRA_DAMAGE_DEALT","ALL_ENEMIES","EXPEDITION_NEXT_ATTACK_EVERY_4_ATTACKS",v(10,20,30,40,50),"WhiteoutData / WoSTools; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen5(){}
 }
