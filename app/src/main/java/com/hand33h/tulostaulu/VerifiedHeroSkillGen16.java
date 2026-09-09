@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/** Cross-validated Gen16 Expedition widget data. Values are Lv1..Lv5. */
+/** Cross-validated Gen16 Expedition data. Values are Lv1..Lv5. */
 public final class VerifiedHeroSkillGen16 {
     public static final class Row {
         public final String hero,skill,effect,target,trigger,source;
@@ -13,8 +13,13 @@ public final class VerifiedHeroSkillGen16 {
     }
     private static double[] v(double...x){return x;}
     public static final List<Row> DATA=Collections.unmodifiableList(Arrays.asList(
-        new Row("Ursar","Typhoon Drums","RALLY_ATTACK_UP","RALLY_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes; roster cross-check wos-wiki.de; cross-checked 2026-09-09"),
-        new Row("Aisling","Forest Guardian","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes; roster cross-check wos-wiki.de; cross-checked 2026-09-09")
+        new Row("Ursar","Forest Spores","ENEMY_ATTACK_DOWN","ENEMY_ALL","PASSIVE",v(5,10,15,20,25),"WhiteoutData / WSCO; cross-checked 2026-09-09"),
+        new Row("Ursar","Horn of the Ancients Lethality","LETHALITY_UP","LANCER_MARKSMAN","2_TURNS",v(6,12,18,24,30),"WhiteoutData / WSCO; cross-checked 2026-09-09"),
+        new Row("Ursar","Horn of the Ancients Defense","ENEMY_DEFENSE_DOWN","ENEMY_ALL","1_TURN",v(6,12,18,24,30),"WhiteoutData / WSCO; cross-checked 2026-09-09"),
+        new Row("Ursar","Poison Tips Damage","EXTRA_DAMAGE","LANCER","EVERY_2_ATTACKS",v(20,40,60,80,100),"WhiteoutData / WSCO; cross-checked 2026-09-09"),
+        new Row("Ursar","Poison Tips Debuff","ENEMY_DAMAGE_TAKEN_UP","TARGET","1_TURN",v(5,10,15,20,25),"WhiteoutData / WSCO; cross-checked 2026-09-09"),
+        new Row("Ursar","Typhoon Drums","RALLY_ATTACK_UP","RALLY_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / H5Joy / Whiteout Battlemaster; cross-checked 2026-09-09"),
+        new Row("Aisling","Forest Guardian","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / Whiteout Survival Wiki; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen16(){}
 }
