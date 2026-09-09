@@ -64,7 +64,16 @@ public final class VerifiedHeroSkillGen0 {
         new Row("Eugene","Axe Whirl","DAMAGE_DEALT_PER_0_5S","NEARBY_ENEMIES","EXPLORATION_FOR_3S",v(80,88,96,104,110),"Whiteout Survival Wiki / Wolf Command / whiteout-survival.com; cross-checked 2026-09-10"),
         new Row("Eugene","Razor Sharp","DAMAGE_DEALT_UP_PER_SECOND","EUGENE","EXPLORATION_PASSIVE",v(10,15,20,25,30),"Whiteout Survival Wiki / Wolf Command / whiteout-survival.com; cross-checked 2026-09-10"),
         new Row("Eugene","Woodland Inheritor","SAWMILL_OUTPUT_UP","CITY_SAWMILL","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / Community Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
-        new Row("Eugene","Master Woodcutter","WOOD_GATHERING_SPEED_UP","WOOD_GATHERING","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / Community Wiki / whiteout-survival.com; cross-checked 2026-09-10")
+        new Row("Eugene","Master Woodcutter","WOOD_GATHERING_SPEED_UP","WOOD_GATHERING","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / Community Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
+        new Row("Cloris","Rain of Arrows","DAMAGE_DEALT","AREA_AROUND_TARGET","EXPLORATION_ACTIVE",v(180,198,216,234,252),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WSCO; cross-checked 2026-09-10"),
+        new Row("Cloris","Hunter's Mark","DAMAGE_INFLICTED_UP","TARGET","EXPLORATION_THIS_ATTACK",v(10,15,20,25,30),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WSCO; cross-checked 2026-09-10"),
+        new Row("Cloris","Top Hunter","HUNTERS_HUT_OUTPUT_UP","CITY_HUNTERS_HUT","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WSCO; cross-checked 2026-09-10"),
+        new Row("Cloris","Predator","MEAT_GATHERING_SPEED_UP","MEAT_GATHERING","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WSCO; cross-checked 2026-09-10"),
+        new Row("Charlie","Shrapnel Load","DAMAGE_DEALT","TARGET_AND_NEARBY_ENEMIES","EXPLORATION_ACTIVE",v(140,154,168,182,196),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WOS Heroes; cross-checked 2026-09-10"),
+        new Row("Charlie","Grenadier Stun Chance","STUN_CHANCE","TARGET","EXPLORATION_GRENADE",v(10,15,15,20,20),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WOS Heroes; cross-checked 2026-09-10"),
+        new Row("Charlie","Grenadier Stun Time","STUN_TIME_SECONDS","TARGET","EXPLORATION_GRENADE",v(0.5,0.5,1,1,1.5),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WOS Heroes; cross-checked 2026-09-10"),
+        new Row("Charlie","Demolitions Expert","COAL_MINE_OUTPUT_UP","CITY_COAL_MINE","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WOS Heroes; cross-checked 2026-09-10"),
+        new Row("Charlie","Coal Extraction","COAL_GATHERING_SPEED_UP","COAL_GATHERING","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WOS Heroes; cross-checked 2026-09-10")
     ));
     private VerifiedHeroSkillGen0(){}
 }
