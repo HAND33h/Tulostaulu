@@ -17,6 +17,7 @@ public final class VerifiedHeroSkillGen10 {
         new Row("Gregory","Charged Assault","CRIT_CHANCE_UP","ALL_TROOPS_NORMAL_ATTACKS","PASSIVE",v(5,10,15,20,25),"WOS Heroes / whiteout-survival.com; cross-checked 2026-09-09"),
         new Row("Gregory","Unbroken","DAMAGE_TAKEN_DOWN","INFANTRY","PASSIVE",v(4,8,12,16,20),"WOS Heroes / whiteout-survival.com; cross-checked 2026-09-09"),
         new Row("Gregory","Day of the Guard","LETHALITY_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION_WIDGET",v(5,7.5,10,12.5,15),"WOS Heroes / whiteoutdata.com; cross-checked 2026-09-09"),
+        new Row("Gregory","Sacrificial Will","ATTACK_UP","ALL_FRIENDLY_TROOPS","ON_GREGORY_DEFEAT_FOR_5_SECONDS",v(8,12,16,20,24),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Freya","Fog of War","TROOP_ATTACK_DOWN","ALL_ENEMY_TROOPS","PASSIVE",v(4,8,12,16,20),"WOS Heroes / whiteoutdata.com / whiteoutsurvival.wiki; cross-checked 2026-09-09"),
         new Row("Freya","Blood Moon Scythe","REAP_DAMAGE","LANCER_NORMAL_ATTACKS","50_PERCENT_CHANCE",v(20,40,60,80,100),"WOS Heroes / whiteoutdata.com / whiteoutsurvival.wiki; cross-checked 2026-09-09"),
         new Row("Freya","Night's Vengeance Damage Taken","DAMAGE_TAKEN_DOWN","INFANTRY_AND_MARKSMEN","PASSIVE",v(3,6,9,12,15),"WOS Heroes / whiteoutdata.com / whiteoutsurvival.wiki; cross-checked 2026-09-09"),
