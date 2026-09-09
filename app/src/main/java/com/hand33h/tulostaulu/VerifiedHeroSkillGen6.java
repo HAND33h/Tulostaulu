@@ -35,7 +35,11 @@ public final class VerifiedHeroSkillGen6 {
         new Row("Wu Ming","Steel Discipline","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes exact ladder / H5Joy max 15 / WoSTools max 15; cross-checked 2026-09-09"),
         new Row("Wayne","Hurricane Blowback","DAMAGE_DEALT","STRAIGHT_LINE_AREA_OF_EFFECT","EXPLORATION_OUTBOUND_AND_RETURN_SAME_DAMAGE",v(100,110,120,130,140),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki / H5Joy; cross-checked 2026-09-09"),
         new Row("Wayne","Phantom Blitz","EXTRA_NORMAL_ATTACK_CHANCE","WAYNE","EXPLORATION_EACH_NORMAL_ATTACK",v(15,20,25,30,35),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki / H5Joy; cross-checked 2026-09-09"),
-        new Row("Wayne","Noon Time","CRIT_RATE_UP","WAYNE","EXPLORATION_ON_DEALING_DAMAGE",v(3,6,9,12,15),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki / H5Joy; cross-checked 2026-09-09")
+        new Row("Wayne","Noon Time","CRIT_RATE_UP","WAYNE","EXPLORATION_ON_DEALING_DAMAGE",v(3,6,9,12,15),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki / H5Joy; cross-checked 2026-09-09"),
+        new Row("Wayne","Thunder Strike","EXTRA_ATTACK_DAMAGE","FRIENDLY_TROOPS","EXPEDITION_EVERY_4_TURNS",v(20,40,60,80,100),"Whiteout Survival Community Wiki / WSCO / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Wayne","Roundabout Hit vs Lancers","EXTRA_DAMAGE_DEALT","MARKSMEN_VS_ENEMY_LANCERS","EXPEDITION_EVERY_OTHER_ATTACK",v(8,16,24,32,40),"Whiteout Survival Wiki / Whiteout Survival Community Wiki / WSCO; cross-checked 2026-09-09"),
+        new Row("Wayne","Roundabout Hit vs Marksmen","EXTRA_DAMAGE_DEALT","MARKSMEN_VS_ENEMY_MARKSMEN","EXPEDITION_EVERY_OTHER_ATTACK",v(4,8,12,16,20),"Whiteout Survival Wiki / Whiteout Survival Community Wiki / WSCO; cross-checked 2026-09-09"),
+        new Row("Wayne","Fleet","CRIT_RATE_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / Whiteout Survival Community Wiki / WSCO; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen6(){}
 }
