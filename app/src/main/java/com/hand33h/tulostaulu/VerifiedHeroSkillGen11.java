@@ -29,7 +29,8 @@ public final class VerifiedHeroSkillGen11 {
         new Row("Lloyd","Bird Invasion","ENEMY_LETHALITY_DOWN","ENEMY_ALL","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WSCO; full ladder + max cross-checked 2026-09-09"),
         new Row("Lloyd","Iceflare Bomb Damage","ATTACK_UP","LANCER","EVERY_3_TURNS",v(30,60,90,120,150),"WOS Heroes / WSCO; full ladder + max cross-checked 2026-09-09"),
         new Row("Lloyd","Iceflare Bomb Debuff","ENEMY_LETHALITY_DOWN","ENEMY_ALL","EVERY_3_TURNS_1_TURN",v(6,12,18,24,30),"WOS Heroes / WSCO; full ladder + max cross-checked 2026-09-09"),
-        new Row("Lloyd","Ingenious Mastery","TROOP_LETHALITY_UP","ALL_TROOPS","40_PERCENT_PROC",v(10,20,30,40,50),"WOS Heroes / WSCO; full ladder + max cross-checked 2026-09-09")
+        new Row("Lloyd","Ingenious Mastery","TROOP_LETHALITY_UP","ALL_TROOPS","40_PERCENT_PROC",v(10,20,30,40,50),"WOS Heroes / WSCO; full ladder + max cross-checked 2026-09-09"),
+        new Row("Lloyd","Steel Maze","DEFENDER_ATTACK_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / WhiteoutData; full ladder cross-checked 2026-09-09; SOURCE_CONFLICT: WhiteoutData description says Defender Troops Attack while upgrade label says Defense")
     ));
     private VerifiedHeroSkillGen11(){}
 }
