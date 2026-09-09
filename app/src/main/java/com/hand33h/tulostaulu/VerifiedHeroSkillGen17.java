@@ -27,7 +27,8 @@ public final class VerifiedHeroSkillGen17 {
         new Row("Eleanor","Theoretical Advantage","ENEMY_DEFENSE_DOWN","ENEMY_ALL","PASSIVE_PRIMARY",v(5,10,15,20,25),"WOS Heroes / Whiteout Survival Wiki / wos-wiki.de; cross-checked 2026-09-09"),
         new Row("Eleanor","Pierce Caliber Extra Damage","EXTRA_DAMAGE","MARKSMAN","ON_ATTACK_50_PERCENT",v(20,40,60,80,100),"WOS Heroes / Whiteout Survival Wiki / wos-wiki.de; cross-checked 2026-09-09"),
         new Row("Eleanor","Pierce Caliber Damage","DAMAGE_DEALT_UP","MARKSMAN","ON_ATTACK_50_PERCENT_1_TURN",v(8,16,24,32,40),"WOS Heroes / Whiteout Survival Wiki / wos-wiki.de; cross-checked 2026-09-09"),
-        new Row("Eleanor","Trajectoids","DAMAGE_DEALT_UP","MARKSMAN_VS_MARKSMAN","EVERY_2_ATTACKS",v(12,24,36,48,60),"WOS Heroes / Whiteout Survival Wiki / wos-wiki.de; cross-checked 2026-09-09")
+        new Row("Eleanor","Trajectoids","DAMAGE_DEALT_UP","MARKSMAN_VS_MARKSMAN","EVERY_2_ATTACKS",v(12,24,36,48,60),"WOS Heroes / Whiteout Survival Wiki / wos-wiki.de; cross-checked 2026-09-09"),
+        new Row("Eleanor","Doom Patrol","RALLY_LETHALITY_UP","RALLY_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / Heaven Guardian / wos-wiki.de; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen17(){}
 }
