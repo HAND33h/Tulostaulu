@@ -25,7 +25,8 @@ public final class VerifiedHeroSkillGen8 {
         new Row("Gatot","Royal Legion","ENEMY_ATTACK_DOWN","ALL_ENEMY_TROOPS","PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Hendrik","Worm's Ravage","ENEMY_DEFENSE_DOWN","ALL_ENEMY_TROOPS","PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Hendrik","Armor of Barnacles","DEFENSE_UP","ALL_TROOPS","EVERY_4_TURNS_FOR_2_TURNS",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
-        new Row("Hendrik","Dagon's Heir","DAMAGE_DEALT","ALL_ENEMIES","EVERY_3_TURNS_WITH_MARKSMEN",v(8,16,24,32,40),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
+        new Row("Hendrik","Dagon's Heir","DAMAGE_DEALT","ALL_ENEMIES","EVERY_3_TURNS_WITH_MARKSMEN",v(8,16,24,32,40),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Hendrik","Abyssal Blessing","TROOP_ATTACK_UP","RALLY_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen8(){}
 }
