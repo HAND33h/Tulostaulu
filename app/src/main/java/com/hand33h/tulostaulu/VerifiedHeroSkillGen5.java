@@ -24,7 +24,12 @@ public final class VerifiedHeroSkillGen5 {
         new Row("Hector","Goliath","DEFENDER_ATTACK_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData exact ladder / H5Joy max 15 / WoS Wiki max 15; cross-checked 2026-09-09"),
         new Row("Norah","Barrage","DAMAGE_DEALT","RANDOM_TARGET_AREA_OF_EFFECT","EXPLORATION_5_GRENADES_HEROES_FIRST",v(60,66,72,78,84),"WhiteoutData / H5Joy / Whiteout Survival Wiki / WoSTools; cross-checked 2026-09-09"),
         new Row("Norah","Flashbang","DAMAGE_DEALT","TARGET","EXPLORATION_STUNS_FOR_1_5S",v(50,55,60,65,70),"WhiteoutData / H5Joy / Whiteout Survival Wiki / WoSTools; cross-checked 2026-09-09"),
-        new Row("Norah","Valkyrie Cry","ATTACK_UP","ALL_TROOPS","EXPLORATION_PASSIVE",v(3,3.5,4,4.5,5),"WhiteoutData / H5Joy / Whiteout Survival Wiki / WoSTools; cross-checked 2026-09-09")
+        new Row("Norah","Valkyrie Cry","ATTACK_UP","ALL_TROOPS","EXPLORATION_PASSIVE",v(3,3.5,4,4.5,5),"WhiteoutData / H5Joy / Whiteout Survival Wiki / WoSTools; cross-checked 2026-09-09"),
+        new Row("Norah","Combined Arms Damage Taken","DAMAGE_TAKEN_DOWN","INFANTRY_AND_MARKSMEN","EXPEDITION_PASSIVE",v(3,6,9,12,15),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Norah","Combined Arms Damage Dealt","DAMAGE_DEALT_UP","INFANTRY_AND_MARKSMEN","EXPEDITION_PASSIVE",v(3,6,9,12,15),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Norah","Sneak Strike","EXTRA_DAMAGE_DEALT","LANCERS_VS_ALL_ENEMIES","EXPEDITION_20_PERCENT_CHANCE_ON_ATTACK",v(20,40,60,80,100),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Norah","Momentum Damage Dealt","DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_EVERY_5_LANCER_ATTACKS_FOR_2_TURNS",v(5,10,15,20,25),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Norah","Momentum Damage Taken","DAMAGE_TAKEN_DOWN","ALL_TROOPS","EXPEDITION_EVERY_5_LANCER_ATTACKS_FOR_2_TURNS",v(5,10,15,20,25),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen5(){}
 }
