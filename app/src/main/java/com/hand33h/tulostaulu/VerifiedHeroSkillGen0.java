@@ -56,7 +56,15 @@ public final class VerifiedHeroSkillGen0 {
         new Row("Lumak Bokan","Echoing Boost","ATTACK_UP","LUMAK_AND_NEARBY_FRIENDLY_TROOPS","EXPLORATION_AFTER_EARTHSHAKE_FOR_2S",v(15,20,25,30,35),"Whiteout Survival Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
         new Row("Lumak Bokan","Jungle-Born Agility","ATTACK_SPEED_UP","LUMAK_BOKAN","EXPLORATION_PASSIVE",v(10,15,20,25,30),"Whiteout Survival Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
         new Row("Lumak Bokan","Tactical Deception","DAMAGE_DEALT_DOWN","ALL_ENEMY_TROOPS","EXPEDITION_PASSIVE",v(4,8,12,16,20),"Whiteout Survival Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
-        new Row("Lumak Bokan","Emerald Warrior","HUNTING_MARCH_SPEED_UP","HUNTING_MARCH","EXPEDITION_GROWTH_PASSIVE",v(20,40,60,80,100),"Whiteout Survival Wiki / whiteout-survival.com; cross-checked 2026-09-10")
+        new Row("Lumak Bokan","Emerald Warrior","HUNTING_MARCH_SPEED_UP","HUNTING_MARCH","EXPEDITION_GROWTH_PASSIVE",v(20,40,60,80,100),"Whiteout Survival Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
+        new Row("Smith","Hammer Burn","DAMAGE_DEALT","FORWARD_ARC","EXPLORATION_ACTIVE",v(200,220,240,260,280),"Whiteout Survival Wiki / WoSTools / Wolf Command; cross-checked 2026-09-10"),
+        new Row("Smith","Armor Enhancement","DAMAGE_TAKEN_DOWN","SMITH","EXPLORATION_PASSIVE",v(10,15,20,25,30),"Whiteout Survival Wiki / WoSTools / Wolf Command; cross-checked 2026-09-10"),
+        new Row("Smith","Burnished Iron","IRON_MINE_OUTPUT_UP","CITY_IRON_MINE","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / WoSTools / One Chilled Gamer; cross-checked 2026-09-10"),
+        new Row("Smith","Craftsmanship","IRON_GATHERING_SPEED_UP","IRON_GATHERING","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / WoSTools / One Chilled Gamer; cross-checked 2026-09-10"),
+        new Row("Eugene","Axe Whirl","DAMAGE_DEALT_PER_0_5S","NEARBY_ENEMIES","EXPLORATION_FOR_3S",v(80,88,96,104,110),"Whiteout Survival Wiki / Wolf Command / whiteout-survival.com; cross-checked 2026-09-10"),
+        new Row("Eugene","Razor Sharp","DAMAGE_DEALT_UP_PER_SECOND","EUGENE","EXPLORATION_PASSIVE",v(10,15,20,25,30),"Whiteout Survival Wiki / Wolf Command / whiteout-survival.com; cross-checked 2026-09-10"),
+        new Row("Eugene","Woodland Inheritor","SAWMILL_OUTPUT_UP","CITY_SAWMILL","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / Community Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
+        new Row("Eugene","Master Woodcutter","WOOD_GATHERING_SPEED_UP","WOOD_GATHERING","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / Community Wiki / whiteout-survival.com; cross-checked 2026-09-10")
     ));
     private VerifiedHeroSkillGen0(){}
 }
