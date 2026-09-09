@@ -13,6 +13,12 @@ public final class VerifiedHeroSkillGen16 {
     }
     private static double[] v(double...x){return x;}
     public static final List<Row> DATA=Collections.unmodifiableList(Arrays.asList(
+        new Row("Seigel","Armor of Night","TROOP_HEALTH_UP","ALL_TROOPS","PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Seigel","Night's Defense Infantry","TROOP_ATTACK_DOWN","INFANTRY","PASSIVE_TRADEOFF",v(4,8,12,16,20),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Seigel","Night's Defense Enemy Lancer Marksman","ENEMY_ATTACK_DOWN","ENEMY_LANCER_MARKSMAN","PASSIVE_TRADEOFF",v(7,14,21,28,35),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Seigel","Vanguard of Eternity Normal","NORMAL_ATTACK_DAMAGE_TAKEN_DOWN","INFANTRY","PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Seigel","Vanguard of Eternity Skill","SKILL_DAMAGE_TAKEN_DOWN","INFANTRY","PASSIVE",v(6,12,18,24,30),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Seigel","Hell's Vow","DEFENDER_LETHALITY_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData / H5Joy; cross-checked 2026-09-09"),
         new Row("Ursar","Forest Spores","ENEMY_ATTACK_DOWN","ENEMY_ALL","PASSIVE",v(5,10,15,20,25),"WhiteoutData / WSCO; cross-checked 2026-09-09"),
         new Row("Ursar","Horn of the Ancients Lethality","LETHALITY_UP","LANCER_MARKSMAN","2_TURNS",v(6,12,18,24,30),"WhiteoutData / WSCO; cross-checked 2026-09-09"),
         new Row("Ursar","Horn of the Ancients Defense","ENEMY_DEFENSE_DOWN","ENEMY_ALL","1_TURN",v(6,12,18,24,30),"WhiteoutData / WSCO; cross-checked 2026-09-09"),
