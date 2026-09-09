@@ -20,7 +20,9 @@ public final class VerifiedHeroSkillGen6 {
         new Row("Renee","Dream Vision Marked Damage","DAMAGE_DEALT_UP","STAR_MARKED_TARGET","EXPLORATION_PASSIVE",v(4,6,8,10,12),"WhiteoutData / H5Joy; cross-checked 2026-09-09"),
         new Row("Renee","Nightmare Trace","EXTRA_LANCER_DAMAGE_UP","DREAM_MARKED_TARGET","EXPEDITION_EVERY_2_TURNS_NEXT_TURN_MARK_LASTS_1_TURN",v(40,80,120,160,200),"WhiteoutData / Whiteout Survival Community Wiki / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Renee","Dreamcatcher","DAMAGE_DEALT_UP","LANCERS_VS_DREAM_MARKED_TARGET","EXPEDITION_PASSIVE",v(30,60,90,120,150),"WhiteoutData / Whiteout Survival Community Wiki / Whiteout Survival Wiki; cross-checked 2026-09-09"),
-        new Row("Renee","Dreamslice","DAMAGE_DEALT_UP","ALL_TROOPS_VS_DREAM_MARKED_TARGET","EXPEDITION_PASSIVE",v(15,30,45,60,75),"WhiteoutData / Whiteout Survival Community Wiki / Whiteout Survival Wiki; cross-checked 2026-09-09")
+        new Row("Renee","Dreamslice","DAMAGE_DEALT_UP","ALL_TROOPS_VS_DREAM_MARKED_TARGET","EXPEDITION_PASSIVE",v(15,30,45,60,75),"WhiteoutData / Whiteout Survival Community Wiki / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Renee","Dream Illusion","CONFUSION_CHANCE","TARGET","EXCLUSIVE_EXPLORATION_CONFUSES_FOR_1S",v(2,3.5,5,6.5,8),"WOS Heroes / whiteout-survival.com / H5Joy; cross-checked 2026-09-09"),
+        new Row("Renee","Wistful Enchantment","RALLY_TROOPS_LETHALITY_UP","RALLY_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / whiteout-survival.com / H5Joy; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen6(){}
 }
