@@ -26,7 +26,11 @@ public final class VerifiedHeroSkillGen6 {
         new Row("Wu Ming","Cyclone Barrier","DAMAGE_DEALT","AREA_OF_EFFECT","EXPLORATION_INVULNERABLE_FOR_2S",v(100,110,120,130,140),"WOS Heroes / WhiteoutData / H5Joy; cross-checked 2026-09-09"),
         new Row("Wu Ming","Inner Clarity Attack","ATTACK_UP","WU_MING","EXPLORATION_FOR_4S",v(8,12,16,20,24),"WOS Heroes / WhiteoutData / H5Joy; cross-checked 2026-09-09"),
         new Row("Wu Ming","Inner Clarity Defense","DEFENSE_UP","WU_MING","EXPLORATION_FOR_4S",v(16,24,32,40,48),"WOS Heroes / WhiteoutData / H5Joy; cross-checked 2026-09-09"),
-        new Row("Wu Ming","Remote Impact","DAMAGE_DEALT","RANDOM_ENEMY","EXPLORATION_EVERY_NORMAL_ATTACK",v(20,22,24,26,28),"WOS Heroes / WhiteoutData / H5Joy; cross-checked 2026-09-09")
+        new Row("Wu Ming","Remote Impact","DAMAGE_DEALT","RANDOM_ENEMY","EXPLORATION_EVERY_NORMAL_ATTACK",v(20,22,24,26,28),"WOS Heroes / WhiteoutData / H5Joy; cross-checked 2026-09-09"),
+        new Row("Wu Ming","Shadow's Evasion Normal Attack","DAMAGE_TAKEN_DOWN","INFANTRY","EXPEDITION_NORMAL_ATTACKS",v(5,10,15,20,25),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Wu Ming","Shadow's Evasion Skill","SKILL_DAMAGE_TAKEN_DOWN","INFANTRY","EXPEDITION_SKILLS",v(6,12,18,24,30),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Wu Ming","Crescent Uplift","DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Wu Ming","Elemental Resonance","SKILL_DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen6(){}
 }
