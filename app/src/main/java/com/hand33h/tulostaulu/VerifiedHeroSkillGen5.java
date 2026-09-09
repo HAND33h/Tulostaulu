@@ -29,7 +29,10 @@ public final class VerifiedHeroSkillGen5 {
         new Row("Norah","Combined Arms Damage Dealt","DAMAGE_DEALT_UP","INFANTRY_AND_MARKSMEN","EXPEDITION_PASSIVE",v(3,6,9,12,15),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Norah","Sneak Strike","EXTRA_DAMAGE_DEALT","LANCERS_VS_ALL_ENEMIES","EXPEDITION_20_PERCENT_CHANCE_ON_ATTACK",v(20,40,60,80,100),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Norah","Momentum Damage Dealt","DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_EVERY_5_LANCER_ATTACKS_FOR_2_TURNS",v(5,10,15,20,25),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
-        new Row("Norah","Momentum Damage Taken","DAMAGE_TAKEN_DOWN","ALL_TROOPS","EXPEDITION_EVERY_5_LANCER_ATTACKS_FOR_2_TURNS",v(5,10,15,20,25),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09")
+        new Row("Norah","Momentum Damage Taken","DAMAGE_TAKEN_DOWN","ALL_TROOPS","EXPEDITION_EVERY_5_LANCER_ATTACKS_FOR_2_TURNS",v(5,10,15,20,25),"WhiteoutData / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Norah","Disruptor Stun Chance","STUN_CHANCE","BARRAGE_TARGET","EXCLUSIVE_EXPLORATION_BARRAGE_GRENADE",v(25,27.5,30,32.5,35),"WhiteoutData exact ladder / H5Joy and Heaven Guardian max 35; cross-checked 2026-09-09"),
+        new Row("Norah","Disruptor Stun Time","STUN_DURATION_SECONDS","BARRAGE_TARGET","EXCLUSIVE_EXPLORATION_BARRAGE_GRENADE",v(0.6,0.7,0.8,0.9,1),"WhiteoutData exact ladder / H5Joy and Heaven Guardian max 1s; cross-checked 2026-09-09"),
+        new Row("Norah","True Grit","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData exact ladder / H5Joy and Heaven Guardian max 15; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen5(){}
 }
