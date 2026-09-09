@@ -11,6 +11,8 @@ import java.util.Set;
 public final class PublicHeroCatalogAudit {
     public static final int EXPECTED_PUBLIC_EXPEDITION_SKILLS = 167;
     public static final int EXPECTED_PUBLIC_HEROES = 67;
+    public static final String VERIFICATION_STATE = "PARTIALLY_VERIFIED";
+    public static final String LAST_PUBLIC_CROSS_CHECK = "2026-09-09";
 
     public static final class Report {
         public final int rows;
@@ -38,6 +40,9 @@ public final class PublicHeroCatalogAudit {
         }
         if (heroes.size() < EXPECTED_PUBLIC_HEROES) warnings.add("Hero coverage " + heroes.size() + "/" + EXPECTED_PUBLIC_HEROES);
         if (all.size() < EXPECTED_PUBLIC_EXPEDITION_SKILLS) warnings.add("Row coverage " + all.size() + "/" + EXPECTED_PUBLIC_EXPEDITION_SKILLS);
+        // Repository-wide public-data verification is not complete. Do not treat file/class names containing
+        // 'Verified' as proof that every value has been independently cross-checked.
+        warnings.add("AUDIT_STATE " + VERIFICATION_STATE + ": repository-wide hero/battle/progression data has not yet been independently cross-checked row-by-row; only explicitly sourced/cross-checked rows may be treated as verified.");
         // Known source conflict: WhiteoutData Gen2 description says Defender Attack +15%, preview labels Defense Up.
         warnings.add("SOURCE_CONFLICT Flint/Dragonbreath: Defender Attack description vs Defense upgrade-preview label; do not auto-calibrate from this row.");
         return new Report(all.size(), heroes.size(), warnings);
