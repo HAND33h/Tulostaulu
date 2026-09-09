@@ -4,88 +4,39 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Dawn Academy Expert metadata used by native planners.
- * Official mechanics are kept separate from community strategy metadata.
- * Never invent missing per-generation costs: null means not verified.
- * Checked 2026-09-09.
- */
+/** Dawn Academy Expert metadata used by native planners. Checked 2026-09-09. */
 public final class ExpertSystemRules {
     private ExpertSystemRules() {}
-
-    public static final String COMMUNITY_SOURCE = "https://www.whiteoutsurvival-community.com/tools/wiki/events/expert-wsco.html";
-    public static final String OFFICIAL_SKILL_RESEARCH_SOURCE = "https://centurygames.helpshift.com/hc/en/64-whiteout-survival/faq/8418-how-do-i-unlock-expert-skill-research/";
-    public static final String OFFICIAL_BOOK_SOURCE = "https://centurygames.helpshift.com/hc/en/64-whiteout-survival/faq/8404-what-is-the-book-of-knowledge-and-how-do-i-acquire-it/";
-
-    public static final int AFFINITY_MIN = 0;
-    public static final int AFFINITY_MAX = 100;
-    public static final int SKILLS_PER_EXPERT = 4;
-    public static final int SKILL_RESEARCH_UNLOCK_AFFINITY = 100;
-    public static final int BOOK_PHASE_GATE_LEVEL = 10;
-    public static final int SIGIL_MILESTONE_STEP = 10;
-
-    public static final int COMPASS_AFFINITY = 10;
-    public static final int FIERY_HEART_AFFINITY = 100;
-    public static final int SAIL_OF_CONQUEST_AFFINITY = 1000;
-
+    public static final String COMMUNITY_SOURCE="https://www.whiteoutsurvival-community.com/tools/wiki/events/expert-wsco.html";
+    public static final String OFFICIAL_SKILL_RESEARCH_SOURCE="https://centurygames.helpshift.com/hc/en/64-whiteout-survival/faq/8418-how-do-i-unlock-expert-skill-research/";
+    public static final int AFFINITY_MIN=0, AFFINITY_MAX=100, SKILLS_PER_EXPERT=4, SKILL_RESEARCH_UNLOCK_AFFINITY=100, SIGIL_MILESTONE_STEP=10;
+    public static final int COMPASS_AFFINITY=10, FIERY_HEART_AFFINITY=100, SAIL_OF_CONQUEST_AFFINITY=1000;
     public enum Focus { ECONOMY, BEAR, ARENA, ALLIANCE_EVENTS, FOUNDRY, SVS, TRADE_ROUTE, FROSTFIRE, UNIVERSAL_COMBAT, RECOVERY }
-
     public static final class Expert {
-        public final String name;
-        public final int generation;
-        public final int typicalServerDay;
-        public final Integer intimateCostClass;
-        public final Focus focus;
-        public final boolean svsDirect;
-        public final String recommendedStop;
-        public final String role;
-        public final String[] skills;
-        public final String talent;
-        public final String note;
-        Expert(String n,int g,int d,Integer c,Focus f,boolean svs,String stop,String role,String[] skills,String talent,String note){
-            name=n;generation=g;typicalServerDay=d;intimateCostClass=c;focus=f;svsDirect=svs;recommendedStop=stop;this.role=role;this.skills=skills;this.talent=talent;this.note=note;
-        }
+        public final String name; public final int generation,typicalServerDay; public final Integer intimateCostClass,totalSigils,totalBooks; public final Focus focus; public final boolean svsDirect; public final String recommendedStop,role; public final String[] skills; public final String talent,note;
+        Expert(String n,int g,int d,Integer c,Integer sigils,Integer books,Focus f,boolean svs,String stop,String role,String[] skills,String talent,String note){name=n;generation=g;typicalServerDay=d;intimateCostClass=c;totalSigils=sigils;totalBooks=books;focus=f;svsDirect=svs;recommendedStop=stop;this.role=role;this.skills=skills;this.talent=talent;this.note=note;}
     }
-
-    private static final List<Expert> EXPERTS = Collections.unmodifiableList(Arrays.asList(
-        new Expert("Agnes",1,150,50,Focus.ECONOMY,false,"Affinity 70","City / daily utility",new String[]{"Efficient Recon","Optimization","Project Management","Covert Knowledge"},"Earthbreaker","Strong economy priority; community strategy metadata"),
-        new Expert("Cyrille",1,150,50,Focus.BEAR,false,"Affinity 60","Bear Hunt specialist",new String[]{"Entrapment","Scavenging","Weapon Master","Ursa's Bane"},"Hunter's Heart","Bear progression and gear-material utility"),
-        new Expert("Holger",1,150,80,Focus.ARENA,false,"Affinity 50","Arena specialist",new String[]{"Arena Elite","Crowd Pleaser","Arena Star","Legacy"},"Blade Dancing","Situational outside Arena"),
-        new Expert("Romulus",1,150,360,Focus.UNIVERSAL_COMBAT,false,"Affinity 40 F2P","Universal combat / rally",new String[]{"Call of War","Last Line","Spirit of Aeetis","One Heart"},"Commander's Crest","High cost; deeper investment mainly for rally leads"),
-        new Expert("Baldur",2,195,60,Focus.ALLIANCE_EVENTS,false,"Affinity 60","Alliance event progression",new String[]{"Blazing Sunrise","Honored Conquest","Bounty Hunter","Dawn Hymn"},"Master Negotiator","High account-growth utility"),
-        new Expert("Fabian",2,195,120,Focus.FOUNDRY,false,"Skill 2 / Skill 4 rally lead","Foundry / Tundra Arms specialist",new String[]{"Salvager","Crisis Rescue","Heightened Firepower","Battle Bulwark"},"Craftsman of War","Mode specialist"),
-        new Expert("Valeria",2,195,200,Focus.SVS,true,"Skills 1-2; Skill 4 rally lead","State of Power / SvS specialist",new String[]{"Well Prepared","Radiant Honor","Battle Concerto","Crushing Force"},"Conqueror's Spirit","Top SvS-priority Expert; preparation and battle-phase utility"),
-        new Expert("Ronne",2,195,80,Focus.TRADE_ROUTE,false,"Affinity 40-60","Tundra Trade Route specialist",new String[]{"Cartographic Memory","Treasure Sent","Giving Back","Gold Class"},"Trade Dominion","Alliance Showdown / truck utility"),
-        new Expert("Kathy",3,240,80,Focus.FROSTFIRE,false,"Affinity 50","Frostfire Mine specialist",new String[]{"Icefire Hunter","Valorous Cold","Winter Treasures","Efficient Mining"},"Child of Frost","Frostfire-specific ROI"),
-        new Expert("Gareth",4,0,null,Focus.RECOVERY,false,"Verify live state","Recovery / squad durability",new String[]{"Regrouping","Gifts of Iron","Porcupine","Undefeated Will"},"Fearsome Reputation","Eligible states only; exact Sigil cost class not published, never guess")
+    private static final List<Expert> EXPERTS=Collections.unmodifiableList(Arrays.asList(
+      new Expert("Agnes",1,150,50,275,21000,Focus.ECONOMY,false,"Affinity 70","City / daily utility",new String[]{"Efficient Recon","Optimization","Project Management","Covert Knowledge"},"Earthbreaker","Economy priority"),
+      new Expert("Cyrille",1,150,50,275,21150,Focus.BEAR,false,"Affinity 60","Bear Hunt specialist",new String[]{"Entrapment","Scavenging","Weapon Master","Ursa's Bane"},"Hunter's Heart","Bear priority"),
+      new Expert("Holger",1,150,80,440,81000,Focus.ARENA,false,"Affinity 50","Arena specialist",new String[]{"Arena Elite","Crowd Pleaser","Arena Star","Legacy"},"Blade Dancing","Arena priority"),
+      new Expert("Romulus",1,150,360,1820,413500,Focus.UNIVERSAL_COMBAT,false,"Rally leads","Universal combat / rally",new String[]{"Call of War","Last Line","Spirit of Aeetis","One Heart"},"Commander's Crest","High cost"),
+      new Expert("Baldur",2,195,60,330,63000,Focus.ALLIANCE_EVENTS,false,"Affinity 60","Alliance events",new String[]{"Blazing Sunrise","Honored Conquest","Bounty Hunter","Dawn Hymn"},"Master Negotiator","Alliance-event ROI"),
+      new Expert("Fabian",2,195,120,660,156500,Focus.FOUNDRY,false,"Skill 2 / Skill 4 rally lead","Foundry / Tundra Arms",new String[]{"Salvager","Crisis Rescue","Heightened Firepower","Battle Bulwark"},"Craftsman of War","Mode specialist"),
+      new Expert("Valeria",2,195,200,1100,345000,Focus.SVS,true,"SvS priority","State of Power / SvS",new String[]{"Well Prepared","Radiant Honor","Battle Concerto","Crushing Force"},"Conqueror's Spirit","Direct SvS preparation and battle value"),
+      new Expert("Ronne",2,195,80,440,108000,Focus.TRADE_ROUTE,false,"Affinity 40-60","Tundra Trade Route",new String[]{"Cartographic Memory","Treasure Sent","Giving Back","Gold Class"},"Trade Dominion","Truck utility"),
+      new Expert("Kathy",3,240,80,550,126000,Focus.FROSTFIRE,false,"Affinity 50","Frostfire Mine",new String[]{"Icefire Hunter","Valorous Cold","Winter Treasures","Efficient Mining"},"Child of Frost","Frostfire ROI"),
+      new Expert("Gareth",4,0,null,null,null,Focus.RECOVERY,false,"Verify live state","Recovery / squad durability",new String[]{"Regrouping","Gifts of Iron","Porcupine","Undefeated Will"},"Fearsome Reputation","Eligible states only; exact totals intentionally unverified")
     ));
-
-    public static List<Expert> all(){ return EXPERTS; }
-    public static boolean affinityValid(int affinity){ return affinity >= AFFINITY_MIN && affinity <= AFFINITY_MAX; }
-    public static boolean skillResearchUnlocked(int affinity){ return affinity >= SKILL_RESEARCH_UNLOCK_AFFINITY; }
-
-    /** Count the 10-level Expert Sigil milestone rolls crossed by a current -> target plan. */
-    public static int sigilMilestonesCrossed(int currentAffinity,int targetAffinity){
-        if(!affinityValid(currentAffinity)||!affinityValid(targetAffinity)||targetAffinity<=currentAffinity) return 0;
-        return targetAffinity/SIGIL_MILESTONE_STEP-currentAffinity/SIGIL_MILESTONE_STEP;
-    }
-
-    /** Stable gift denominations. Does not pretend that Expert level == raw Affinity points. */
-    public static long affinityFromGifts(long compass,long fieryHeart,long sail){
-        return Math.max(0,compass)*COMPASS_AFFINITY + Math.max(0,fieryHeart)*FIERY_HEART_AFFINITY + Math.max(0,sail)*SAIL_OF_CONQUEST_AFFINITY;
-    }
-
-    /** Books gate the next skill phase after level 10 once skill XP is full. */
-    public static boolean bookPhaseGateReached(int skillLevel,boolean skillXpFull){ return skillLevel >= BOOK_PHASE_GATE_LEVEL && skillXpFull; }
-
-    public static Expert byName(String name){
-        if(name==null) return null;
-        for(Expert e:EXPERTS) if(e.name.equalsIgnoreCase(name)) return e;
-        return null;
-    }
-
-    public static boolean isSvsPriority(Expert e){ return e != null && e.svsDirect; }
-
-    /** Typical-day helper only; state eligibility and rollout conditions can override it. */
-    public static boolean typicallyAvailableByDay(Expert e,int serverDay){ return e.typicalServerDay > 0 && serverDay >= e.typicalServerDay; }
+    public static List<Expert> all(){return EXPERTS;}
+    public static Expert byName(String name){if(name==null)return null;for(Expert e:EXPERTS)if(e.name.equalsIgnoreCase(name))return e;return null;}
+    public static boolean affinityValid(int x){return x>=0&&x<=100;}
+    public static boolean skillResearchUnlocked(int x){return x>=100;}
+    public static int sigilMilestonesCrossed(int current,int target){if(!affinityValid(current)||!affinityValid(target)||target<=current)return 0;return target/10-current/10;}
+    public static long affinityFromGifts(long compass,long heart,long sail){return Math.max(0,compass)*10+Math.max(0,heart)*100+Math.max(0,sail)*1000;}
+    public static boolean isSvsPriority(Expert e){return e!=null&&e.svsDirect;}
+    public static boolean hasVerifiedMaxTotals(Expert e){return e!=null&&e.totalSigils!=null&&e.totalBooks!=null;}
+    public static boolean typicallyAvailableByDay(Expert e,int day){return e!=null&&e.typicalServerDay>0&&day>=e.typicalServerDay;}
+    /** Planner ranking: direct SvS value first, then verified progression data. */
+    public static int svsPlannerPriority(Expert e){if(e==null)return 0;if(e.svsDirect)return 100;if(e.focus==Focus.UNIVERSAL_COMBAT)return 70;if(e.focus==Focus.BEAR||e.focus==Focus.ALLIANCE_EVENTS)return 50;return 20;}
 }
