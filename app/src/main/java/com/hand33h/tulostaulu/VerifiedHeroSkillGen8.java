@@ -19,7 +19,10 @@ public final class VerifiedHeroSkillGen8 {
         new Row("Sonya","Treasure Hunter","DAMAGE_DEALT_UP","ALL_TROOPS","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Sonya","Bounty Temptation Lancer Damage","DAMAGE_DEALT_UP","LANCERS","EVERY_2_ATTACKS",v(15,30,45,60,75),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Sonya","Bounty Temptation Troop Attack","TROOP_ATTACK_UP","ALL_TROOPS","EVERY_2_ATTACKS_FOR_1_TURN",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
-        new Row("Sonya","Torrential Impact","DAMAGE_DEALT","LANCERS","EVERY_5_TURNS",v(50,100,150,200,250),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09; stun duration is 1 turn in both sources")
+        new Row("Sonya","Torrential Impact","DAMAGE_DEALT","LANCERS","EVERY_5_TURNS",v(50,100,150,200,250),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09; stun duration is 1 turn in both sources"),
+        new Row("Gatot","Golden Guard","DEFENSE_UP","INFANTRY","PASSIVE",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Gatot","King's Bestowal","SHIELD_VALUE_UP","INFANTRY","EACH_ATTACK_FOR_1_TURN",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Gatot","Royal Legion","ENEMY_ATTACK_DOWN","ALL_ENEMY_TROOPS","PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen8(){}
 }
