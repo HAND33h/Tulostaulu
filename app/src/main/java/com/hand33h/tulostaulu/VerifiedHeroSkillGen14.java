@@ -18,6 +18,7 @@ public final class VerifiedHeroSkillGen14 {
         new Row("Elif","Exotic Formation Attack",2,"TROOP_ATTACK_UP","ALL_TROOPS","PASSIVE",v(3,6,9,12,15),"WSCO Gen14 / WoS Tools"),
         new Row("Elif","Exotic Formation Defense",2,"TROOP_DEFENSE_UP","ALL_TROOPS","PASSIVE",v(2,4,6,8,10),"WSCO Gen14 / WoS Tools"),
         new Row("Elif","Ribbon Shield",3,"SHIELD_ATTACK_PERCENT","INFANTRY","ON_ATTACK_1_TURN",v(6,12,18,24,30),"WSCO Gen14 / WoS Tools"),
+        new Row("Elif","Guardian's Grace",0,"DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WoS Tools / WOS Heroes; cross-checked 2026-09-09"),
         new Row("Dominic","Magic Props",1,"DAMAGE_DEALT_UP","ALL_TROOPS","PASSIVE",v(4,8,12,16,20),"WSCO Gen14"),
         new Row("Dominic","Poison Spikes Damage",2,"DAMAGE_DEALT_UP","LANCER","EACH_ATTACK",v(12,24,36,48,60),"WSCO Gen14"),
         new Row("Dominic","Poison Spikes Debuff",2,"ENEMY_DAMAGE_TAKEN_UP","TARGET","POISONED_1_TURN",v(5,10,15,20,25),"WSCO Gen14"),
