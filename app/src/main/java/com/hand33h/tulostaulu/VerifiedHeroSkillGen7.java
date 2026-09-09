@@ -34,6 +34,8 @@ public final class VerifiedHeroSkillGen7 {
         new Row("Gordon","Chemical Terror Enemy Damage","ENEMY_DAMAGE_DEALT_DOWN","ALL_ENEMY_TROOPS","EXPEDITION_EVERY_3_TURNS_FOR_1_TURN",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Gordon","Toxic Release Infantry","ENEMY_DAMAGE_TAKEN_UP","ENEMY_INFANTRY","EXPEDITION_EVERY_4_TURNS_FOR_2_TURNS",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Gordon","Toxic Release Marksmen","ENEMY_DAMAGE_DEALT_DOWN","ENEMY_MARKSMEN","EXPEDITION_EVERY_4_TURNS_FOR_2_TURNS",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Gordon","Potion #1325 Damage","DAMAGE_DEALT_UP","GORDON","EXCLUSIVE_EXPLORATION",v(5,10,15,20,25),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Gordon","Potion #1325 Poison Attack Reduction","ATTACK_DOWN","POISONED_TARGET","EXCLUSIVE_EXPLORATION_CONSTANT_EFFECT",v(15,15,15,15,15),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; fixed 15 percent across skill levels; cross-checked 2026-09-09"),
         new Row("Gordon","Bio Assault","RALLY_SQUADS_LETHALITY_UP","RALLY_SQUADS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Bradley","Destructor","DAMAGE_DEALT","AREA_OF_EFFECT","EXPLORATION",v(300,330,360,390,420),"WhiteoutData / whiteout-survival.com / H5Joy; cross-checked 2026-09-09"),
         new Row("Bradley","Incendiary Shell Impact","DAMAGE_DEALT","AREA_OF_EFFECT","EXPLORATION",v(60,66,72,78,84),"WhiteoutData / whiteout-survival.com / H5Joy; cross-checked 2026-09-09"),
