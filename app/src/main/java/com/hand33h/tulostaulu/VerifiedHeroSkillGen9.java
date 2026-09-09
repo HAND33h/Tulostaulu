@@ -20,7 +20,11 @@ public final class VerifiedHeroSkillGen9 {
         new Row("Fred","Hydraulic Suppression","ENEMY_LETHALITY_DOWN","ALL_ENEMY_TROOPS","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Fred","Acidification","ENEMY_DAMAGE_TAKEN_UP","ENEMY_INFANTRY","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Fred","Floodbringer Damage","DAMAGE_UP","LANCERS_EVERY_4_STRIKES","PASSIVE",v(40,80,120,160,200),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
-        new Row("Fred","Floodbringer Enemy Damage Dealt","ENEMY_DAMAGE_DEALT_DOWN","ALL_ENEMY_TROOPS_NEXT_TURN","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
+        new Row("Fred","Floodbringer Enemy Damage Dealt","ENEMY_DAMAGE_DEALT_DOWN","ALL_ENEMY_TROOPS_NEXT_TURN","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Magnus","Rapacious","TROOP_ATTACK_UP","ALL_FRIENDLY_TROOPS","PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Magnus","Iron Phalanx","DEFENSE_UP","INFANTRY_WHEN_ATTACKING","40_PERCENT_CHANCE_1_TURN",v(10,20,30,40,50),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Magnus","Iceman Damage Taken","DAMAGE_TAKEN_DOWN","FRIENDLY_INFANTRY","PASSIVE",v(2,4,6,8,10),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Magnus","Iceman Damage Dealt","DAMAGE_UP","FRIENDLY_MARKSMEN","PASSIVE",v(2,4,6,8,10),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen9(){}
 }
