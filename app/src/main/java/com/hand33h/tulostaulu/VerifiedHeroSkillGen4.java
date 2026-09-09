@@ -20,7 +20,9 @@ public final class VerifiedHeroSkillGen4 {
         new Row("Ahmose","Viper Formation Infantry","DAMAGE_TAKEN_DOWN","INFANTRY","EXPEDITION_INFANTRY_PAUSES_ONCE_EVERY_4_ATTACKS_FOR_2_TURNS",v(10,25,40,55,70),"WhiteoutData / WoSForge Wiki; cross-checked 2026-09-09; WSCO summary conflicts and is excluded"),
         new Row("Ahmose","Prayer of Flame","DAMAGE_DEALT_UP","FRIENDLY_INFANTRY","EXPEDITION_PASSIVE",v(20,40,60,80,100),"WhiteoutData / WoSForge Wiki; cross-checked 2026-09-09; WSCO summary conflicts and is excluded"),
         new Row("Ahmose","Blade of Light Extra Damage","EXTRA_DAMAGE_PER_ATTACK","FRIENDLY_INFANTRY","EXPEDITION_TARGET_VULNERABILITY_FOR_1_TURN",v(12,24,36,48,60),"WhiteoutData / WoSForge Wiki; cross-checked 2026-09-09; WSCO summary conflicts and is excluded"),
-        new Row("Ahmose","Blade of Light Vulnerability","DAMAGE_TAKEN_UP","ENEMY_TARGET","EXPEDITION_FOR_1_TURN",v(5,10,15,20,25),"WhiteoutData / WoSForge Wiki; cross-checked 2026-09-09; WSCO summary conflicts and is excluded")
+        new Row("Ahmose","Blade of Light Vulnerability","DAMAGE_TAKEN_UP","ENEMY_TARGET","EXPEDITION_FOR_1_TURN",v(5,10,15,20,25),"WhiteoutData / WoSForge Wiki; cross-checked 2026-09-09; WSCO summary conflicts and is excluded"),
+        new Row("Ahmose","Unyielding Determination","ATTACK_UP","FRIENDLY_TROOPS_UNDER_CTHUGHAS_PROTECTION","EXCLUSIVE_EXPLORATION_FOR_2_5S",v(30,33,36,39,42),"WhiteoutData exact ladder / H5Joy max 42 and 2.5s / Whiteout Survival Wiki max 42 and 2.5s; cross-checked 2026-09-09"),
+        new Row("Ahmose","Oath of Guardian","DEFENDER_HEALTH_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION_CITY_DEFENSE",v(5,7.5,10,12.5,15),"WhiteoutData exact ladder / H5Joy and Whiteout Survival Wiki max 15 / Community Wiki widget progression corroborates 5-15 ladder; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen4(){}
 }
