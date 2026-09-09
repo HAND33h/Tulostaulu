@@ -73,7 +73,13 @@ public final class VerifiedHeroSkillGen0 {
         new Row("Charlie","Grenadier Stun Chance","STUN_CHANCE","TARGET","EXPLORATION_GRENADE",v(10,15,15,20,20),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WOS Heroes; cross-checked 2026-09-10"),
         new Row("Charlie","Grenadier Stun Time","STUN_TIME_SECONDS","TARGET","EXPLORATION_GRENADE",v(0.5,0.5,1,1,1.5),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WOS Heroes; cross-checked 2026-09-10"),
         new Row("Charlie","Demolitions Expert","COAL_MINE_OUTPUT_UP","CITY_COAL_MINE","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WOS Heroes; cross-checked 2026-09-10"),
-        new Row("Charlie","Coal Extraction","COAL_GATHERING_SPEED_UP","COAL_GATHERING","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WOS Heroes; cross-checked 2026-09-10")
+        new Row("Charlie","Coal Extraction","COAL_GATHERING_SPEED_UP","COAL_GATHERING","EXPEDITION_GROWTH_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / whiteout-survival.com / One Chilled Gamer / WOS Heroes; cross-checked 2026-09-10"),
+        new Row("Gina","Incendiary Arrow Primary","DAMAGE_DEALT","TARGET","EXPLORATION_ACTIVE",v(210,230,250,270,290),"Whiteout Survival Wiki / whiteout-survival.com / WOS Heroes / Community Wiki; cross-checked 2026-09-10"),
+        new Row("Gina","Incendiary Arrow Splash","DAMAGE_DEALT","NEARBY_ENEMIES","EXPLORATION_ACTIVE",v(70,77,84,91,98),"Whiteout Survival Wiki / whiteout-survival.com / WOS Heroes / Community Wiki; cross-checked 2026-09-10"),
+        new Row("Gina","Windtalker","ATTACK_SPEED_UP","GINA","EXPLORATION_PASSIVE",v(10,15,20,25,30),"Whiteout Survival Wiki / whiteout-survival.com / WOS Heroes / Heaven Guardian; cross-checked 2026-09-10"),
+        new Row("Gina","Eagle Eyes","CRIT_RATE_UP","GINA","EXPLORATION_PASSIVE",v(7,10,13,16,20),"Whiteout Survival Wiki / whiteout-survival.com / WOS Heroes / Heaven Guardian; cross-checked 2026-09-10"),
+        new Row("Gina","Endurance Training","STAMINA_COST_DOWN","WILDERNESS_HUNTING","EXPEDITION_GROWTH_PASSIVE",v(10,12,15,18,20),"Whiteout Survival Wiki / whiteout-survival.com / WOS Heroes / Heaven Guardian; cross-checked 2026-09-10"),
+        new Row("Gina","Quick Paced","WILDERNESS_MARCH_SPEED_UP","WILDERNESS_HUNTING_MARCH","EXPEDITION_GROWTH_PASSIVE",v(20,40,60,80,100),"Whiteout Survival Wiki / whiteout-survival.com / WOS Heroes / Community Wiki; cross-checked 2026-09-10")
     ));
     private VerifiedHeroSkillGen0(){}
 }
