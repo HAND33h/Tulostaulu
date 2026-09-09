@@ -14,7 +14,8 @@ public final class VerifiedHeroSkillGen15 {
     }
     private static double[] v(double... x){return x;}
     public static final List<Row> DATA=Collections.unmodifiableList(Arrays.asList(
-        new Row("Hank","Wall of Despair",0,"DEFENDER_HEALTH_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / H5Joy; cross-checked 2026-09-09")
+        new Row("Hank","Wall of Despair",0,"DEFENDER_HEALTH_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / H5Joy; cross-checked 2026-09-09"),
+        new Row("Estrella","Homeland Defense",0,"DEFENDER_ATTACK_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / H5Joy / Whiteout Survival Wiki; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen15(){}
 }
