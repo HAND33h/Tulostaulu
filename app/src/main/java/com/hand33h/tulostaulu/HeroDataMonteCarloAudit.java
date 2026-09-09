@@ -69,10 +69,13 @@ public final class HeroDataMonteCarloAudit {
         if (blank(r.hero) || blank(r.skill) || blank(r.effect) || blank(r.target) || blank(r.trigger) || blank(r.source)) return -1;
         if (r.values == null || r.values.length == 0) return -1;
         for (double value : r.values) if (Double.isNaN(value) || Double.isInfinite(value) || value < 0) return -1;
-        if (!r.source.contains("cross-checked")) return -1;
 
-        // Public-source conflicts are preserved but must never silently enter automatic battle math.
-        if ("SOURCE_CONFLICT".equals(r.effect) || r.source.toLowerCase().contains("conflict")) return 0;
+        String source = r.source.toLowerCase();
+        if (!(source.contains("cross-checked") || source.contains("updated 2026-") || source.contains("audited 2026-"))) return -1;
+
+        // Only an explicit data-state marker is a live conflict. Historical source notes may
+        // legitimately mention that an older version conflicted with the current verified value.
+        if ("SOURCE_CONFLICT".equals(r.effect) || "EXPEDITION_DO_NOT_AUTO_SIMULATE".equals(r.trigger)) return 0;
 
         // Exact lower-level ladder not encoded: usable as max-only reference, not as a full 1-5 ladder.
         if (r.values.length != 5) return 0;
