@@ -16,7 +16,11 @@ public final class VerifiedHeroSkillGen9 {
         new Row("Xura","Piercing Arrow Damage","DAMAGE_UP","MARKSMEN_EVERY_2_STRIKES","PASSIVE",v(20,40,60,80,100),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Xura","Piercing Arrow Vulnerability","ENEMY_DAMAGE_TAKEN_UP","PIERCING_ARROW_TARGET","PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Xura","Unorthodoxy Damage Taken","DAMAGE_TAKEN_DOWN","MARKSMEN","PASSIVE",v(3,6,9,12,15),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
-        new Row("Xura","Unorthodoxy Damage Dealt","DAMAGE_UP","MARKSMEN","PASSIVE",v(2,4,6,8,10),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
+        new Row("Xura","Unorthodoxy Damage Dealt","DAMAGE_UP","MARKSMEN","PASSIVE",v(2,4,6,8,10),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Fred","Hydraulic Suppression","ENEMY_LETHALITY_DOWN","ALL_ENEMY_TROOPS","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Fred","Acidification","ENEMY_DAMAGE_TAKEN_UP","ENEMY_INFANTRY","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Fred","Floodbringer Damage","DAMAGE_UP","LANCERS_EVERY_4_STRIKES","PASSIVE",v(40,80,120,160,200),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Fred","Floodbringer Enemy Damage Dealt","ENEMY_DAMAGE_DEALT_DOWN","ALL_ENEMY_TROOPS_NEXT_TURN","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen9(){}
 }
