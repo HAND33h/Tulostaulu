@@ -10,6 +10,10 @@ import java.util.List;
  * Cross-checked 2026-09-10 against current WOS Forge and WoS Guru data.
  * Levels 17 and 18 unlock with Gen 8 state progression and each contain 9 sub-stages.
  * Costs below are totals to complete one charm's full level, not per sub-stage.
+ *
+ * Important: this class only owns the verified high-level 17-18 gate. It must not
+ * claim that every level <=16 is universally unlocked, because lower high-level
+ * charm caps are also state-progression gated in the live game.
  */
 public final class VerifiedChiefCharmLevels2026 {
     public static final class Row {
@@ -39,9 +43,15 @@ public final class VerifiedChiefCharmLevels2026 {
         new Row(18, 1300, 1130, 180, 118.0, 2832000, 9, 8)
     ));
 
-    public static boolean isUnlocked(int charmLevel, int unlockedHeroGeneration) {
-        if (charmLevel <= 16) return true;
-        if (charmLevel <= 18) return unlockedHeroGeneration >= 8;
+    /**
+     * Returns whether this high-level data set verifies the requested level as
+     * available for the supplied state hero generation. Lower levels are left
+     * to the app's normal progression table instead of being assumed unlocked.
+     */
+    public static boolean isHighLevelUnlocked(int charmLevel, int unlockedHeroGeneration) {
+        if (charmLevel == 17 || charmLevel == 18) {
+            return unlockedHeroGeneration >= 8;
+        }
         return false;
     }
 
