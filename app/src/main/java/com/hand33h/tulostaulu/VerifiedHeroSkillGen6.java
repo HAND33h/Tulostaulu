@@ -17,7 +17,10 @@ public final class VerifiedHeroSkillGen6 {
         new Row("Renee","Starpaint Damage","DAMAGE_DEALT","TARGET","EXPLORATION_APPLIES_STAR_MARK_FOR_4S",v(50,55,60,65,70),"WhiteoutData / H5Joy; cross-checked 2026-09-09"),
         new Row("Renee","Starpaint Vulnerability","DAMAGE_TAKEN_UP","STAR_MARKED_TARGET","EXPLORATION_FOR_4S",v(2,3,4,5,6),"WhiteoutData / H5Joy; cross-checked 2026-09-09"),
         new Row("Renee","Dream Vision Attack","ATTACK_UP","RENEE","EXPLORATION_PASSIVE_VS_STAR_MARKED_TARGETS",v(8,12,16,20,24),"WhiteoutData / H5Joy; cross-checked 2026-09-09"),
-        new Row("Renee","Dream Vision Marked Damage","DAMAGE_DEALT_UP","STAR_MARKED_TARGET","EXPLORATION_PASSIVE",v(4,6,8,10,12),"WhiteoutData / H5Joy; cross-checked 2026-09-09")
+        new Row("Renee","Dream Vision Marked Damage","DAMAGE_DEALT_UP","STAR_MARKED_TARGET","EXPLORATION_PASSIVE",v(4,6,8,10,12),"WhiteoutData / H5Joy; cross-checked 2026-09-09"),
+        new Row("Renee","Nightmare Trace","EXTRA_LANCER_DAMAGE_UP","DREAM_MARKED_TARGET","EXPEDITION_EVERY_2_TURNS_NEXT_TURN_MARK_LASTS_1_TURN",v(40,80,120,160,200),"WhiteoutData / Whiteout Survival Community Wiki / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Renee","Dreamcatcher","DAMAGE_DEALT_UP","LANCERS_VS_DREAM_MARKED_TARGET","EXPEDITION_PASSIVE",v(30,60,90,120,150),"WhiteoutData / Whiteout Survival Community Wiki / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Renee","Dreamslice","DAMAGE_DEALT_UP","ALL_TROOPS_VS_DREAM_MARKED_TARGET","EXPEDITION_PASSIVE",v(15,30,45,60,75),"WhiteoutData / Whiteout Survival Community Wiki / Whiteout Survival Wiki; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen6(){}
 }
