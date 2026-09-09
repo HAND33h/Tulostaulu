@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/** Public-source cross-checked Generation 0 epic hero skill data. */
+/** Public-source cross-checked Generation 0 epic/rare hero skill data. */
 public final class VerifiedHeroSkillGen0 {
     public static final class Row {
         public final String hero, skill, effect, target, trigger, source;
@@ -51,7 +51,12 @@ public final class VerifiedHeroSkillGen0 {
         new Row("Ling Xue","Galeforce","ATTACK_UP","LING_XUE","EXPLORATION_WHILE_HEALTH_ABOVE_50_PERCENT",v(16,24,32,40,48),"Whiteout Survival Wiki / WSCO / WOS Heroes / Out of Games; cross-checked 2026-09-10"),
         new Row("Ling Xue","Desperate Measures","DEFENSE_UP","LING_XUE","EXPLORATION_WHILE_HEALTH_BELOW_50_PERCENT",v(50,75,100,125,150),"Whiteout Survival Wiki / WSCO / WOS Heroes / Out of Games; cross-checked 2026-09-10"),
         new Row("Ling Xue","Fearsome Aura","ATTACK_DOWN","ALL_ENEMY_TROOPS","EXPEDITION_PASSIVE",v(4,8,12,16,20),"Whiteout Survival Wiki / WSCO / WOS Heroes / Out of Games; cross-checked 2026-09-10"),
-        new Row("Ling Xue","Total Control","TRAINING_SPEED_UP","CITY_TROOP_TRAINING","EXPEDITION_GROWTH_PASSIVE",v(4,8,12,16,20),"Whiteout Survival Wiki / WSCO / WOS Heroes / Out of Games; cross-checked 2026-09-10")
+        new Row("Ling Xue","Total Control","TRAINING_SPEED_UP","CITY_TROOP_TRAINING","EXPEDITION_GROWTH_PASSIVE",v(4,8,12,16,20),"Whiteout Survival Wiki / WSCO / WOS Heroes / Out of Games; cross-checked 2026-09-10"),
+        new Row("Lumak Bokan","Earthshake","ATTACK_DOWN","ALL_ENEMY_TROOPS","EXPLORATION_FOR_2S",v(1,2,3,4,5),"Whiteout Survival Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
+        new Row("Lumak Bokan","Echoing Boost","ATTACK_UP","LUMAK_AND_NEARBY_FRIENDLY_TROOPS","EXPLORATION_AFTER_EARTHSHAKE_FOR_2S",v(15,20,25,30,35),"Whiteout Survival Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
+        new Row("Lumak Bokan","Jungle-Born Agility","ATTACK_SPEED_UP","LUMAK_BOKAN","EXPLORATION_PASSIVE",v(10,15,20,25,30),"Whiteout Survival Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
+        new Row("Lumak Bokan","Tactical Deception","DAMAGE_DEALT_DOWN","ALL_ENEMY_TROOPS","EXPEDITION_PASSIVE",v(4,8,12,16,20),"Whiteout Survival Wiki / whiteout-survival.com; cross-checked 2026-09-10"),
+        new Row("Lumak Bokan","Emerald Warrior","HUNTING_MARCH_SPEED_UP","HUNTING_MARCH","EXPEDITION_GROWTH_PASSIVE",v(20,40,60,80,100),"Whiteout Survival Wiki / whiteout-survival.com; cross-checked 2026-09-10")
     ));
     private VerifiedHeroSkillGen0(){}
 }
