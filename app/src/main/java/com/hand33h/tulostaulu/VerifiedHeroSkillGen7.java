@@ -36,7 +36,11 @@ public final class VerifiedHeroSkillGen7 {
         new Row("Bradley","Destructor","DAMAGE_DEALT","AREA_OF_EFFECT","EXPLORATION",v(300,330,360,390,420),"WhiteoutData / whiteout-survival.com / H5Joy; cross-checked 2026-09-09"),
         new Row("Bradley","Incendiary Shell Impact","DAMAGE_DEALT","AREA_OF_EFFECT","EXPLORATION",v(60,66,72,78,84),"WhiteoutData / whiteout-survival.com / H5Joy; cross-checked 2026-09-09"),
         new Row("Bradley","Incendiary Shell Crater","DAMAGE_DEALT","ENEMIES_IN_FLAMING_CRATER","EXPLORATION_EVERY_0_5S_FOR_2S",v(17,19,21,23,25),"WhiteoutData / whiteout-survival.com / H5Joy; cross-checked 2026-09-09"),
-        new Row("Bradley","Audacious","ATTACK_UP","BRADLEY","EXPLORATION_PASSIVE",v(10,14,18,22,26),"WhiteoutData / whiteout-survival.com / H5Joy; cross-checked 2026-09-09")
+        new Row("Bradley","Audacious","ATTACK_UP","BRADLEY","EXPLORATION_PASSIVE",v(10,14,18,22,26),"WhiteoutData / whiteout-survival.com / H5Joy; cross-checked 2026-09-09"),
+        new Row("Bradley","Veteran's Might","ATTACK_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Bradley","Power Shot vs Lancers","DAMAGE_DEALT_UP","ENEMY_LANCERS","EXPEDITION_ALL_TROOPS",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Bradley","Power Shot vs Infantry","DAMAGE_DEALT_UP","ENEMY_INFANTRY","EXPEDITION_ALL_TROOPS",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Bradley","Tactical Assistance","DAMAGE_DEALT_UP","ALL_TROOPS","EXPEDITION_EVERY_4_TURNS_FOR_2_TURNS",v(6,12,18,24,30),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen7(){}
 }
