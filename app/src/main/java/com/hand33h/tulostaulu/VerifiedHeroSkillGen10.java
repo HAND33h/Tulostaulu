@@ -23,6 +23,8 @@ public final class VerifiedHeroSkillGen10 {
         new Row("Freya","Night's Vengeance Damage Taken","DAMAGE_TAKEN_DOWN","INFANTRY_AND_MARKSMEN","PASSIVE",v(3,6,9,12,15),"WOS Heroes / whiteoutdata.com / whiteoutsurvival.wiki; cross-checked 2026-09-09"),
         new Row("Freya","Night's Vengeance Damage Dealt","DAMAGE_DEALT_UP","INFANTRY_AND_MARKSMEN","PASSIVE",v(3,6,9,12,15),"WOS Heroes / whiteoutdata.com / whiteoutsurvival.wiki; cross-checked 2026-09-09"),
         new Row("Freya","Defender of the Watch","DEFENSE_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData / WOS Battlemaster; cross-checked 2026-09-09"),
+        new Row("Freya","Night Raid Damage","DAMAGE_DEALT_UP","FREYA","EXCLUSIVE_EXPLORATION",v(10,15,20,25,30),"WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
+        new Row("Freya","Night Raid Summonee Damage","DAMAGE_DEALT","ENEMY_SUMMONEES","EXCLUSIVE_EXPLORATION_ON_SUMMON",v(100,150,200,250,300),"WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Blanchette","Armed to the Teeth","LETHALITY_UP","ALL_TROOPS","PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Blanchette","Blood Hunter","DAMAGE_UP","MARKSMEN_EVERY_3_ROUNDS","PASSIVE",v(15,30,45,60,75),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Blanchette","Crimson Sniper vs Lancers","EXTRA_DAMAGE_UP","ENEMY_LANCERS","MARKSMEN_EVERY_2_STRIKES",v(8,16,24,32,40),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
