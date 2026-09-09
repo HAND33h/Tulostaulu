@@ -24,7 +24,10 @@ public final class VerifiedHeroSkillGen9 {
         new Row("Magnus","Rapacious","TROOP_ATTACK_UP","ALL_FRIENDLY_TROOPS","PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Magnus","Iron Phalanx","DEFENSE_UP","INFANTRY_WHEN_ATTACKING","40_PERCENT_CHANCE_1_TURN",v(10,20,30,40,50),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Magnus","Iceman Damage Taken","DAMAGE_TAKEN_DOWN","FRIENDLY_INFANTRY","PASSIVE",v(2,4,6,8,10),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
-        new Row("Magnus","Iceman Damage Dealt","DAMAGE_UP","FRIENDLY_MARKSMEN","PASSIVE",v(2,4,6,8,10),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
+        new Row("Magnus","Iceman Damage Dealt","DAMAGE_UP","FRIENDLY_MARKSMEN","PASSIVE",v(2,4,6,8,10),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Magnus","Heroic Stock Damage Taken","DAMAGE_TAKEN_DOWN","MAGNUS","EXCLUSIVE_EXPLORATION",v(5,7.5,10,12.5,15),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Magnus","Heroic Stock Frozen Fury Defense Bonus","DEFENSE_UP","FROZEN_FURY","EXCLUSIVE_EXPLORATION",v(25,37.5,50,62.5,75),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Magnus","Valoric Inspiration","DEFENDER_HEALTH_UP","DEFENDER_SQUADS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen9(){}
 }
