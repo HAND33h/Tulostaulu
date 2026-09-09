@@ -39,7 +39,10 @@ public final class VerifiedHeroSkillGen6 {
         new Row("Wayne","Thunder Strike","EXTRA_ATTACK_DAMAGE","FRIENDLY_TROOPS","EXPEDITION_EVERY_4_TURNS",v(20,40,60,80,100),"Whiteout Survival Community Wiki / WSCO / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Wayne","Roundabout Hit vs Lancers","EXTRA_DAMAGE_DEALT","MARKSMEN_VS_ENEMY_LANCERS","EXPEDITION_EVERY_OTHER_ATTACK",v(8,16,24,32,40),"Whiteout Survival Wiki / Whiteout Survival Community Wiki / WSCO; cross-checked 2026-09-09"),
         new Row("Wayne","Roundabout Hit vs Marksmen","EXTRA_DAMAGE_DEALT","MARKSMEN_VS_ENEMY_MARKSMEN","EXPEDITION_EVERY_OTHER_ATTACK",v(4,8,12,16,20),"Whiteout Survival Wiki / Whiteout Survival Community Wiki / WSCO; cross-checked 2026-09-09"),
-        new Row("Wayne","Fleet","CRIT_RATE_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / Whiteout Survival Community Wiki / WSCO; cross-checked 2026-09-09")
+        new Row("Wayne","Fleet","CRIT_RATE_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / Whiteout Survival Community Wiki / WSCO; cross-checked 2026-09-09"),
+        new Row("Wayne","Gunslinger Damage","DAMAGE_DEALT","RANDOM_ENEMY","EXCLUSIVE_EXPLORATION_FIVE_SHOT_BARRAGE",v(40,44,48,52,56),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Wayne","Gunslinger Escort Knockdown","KNOCKDOWN_CHANCE","ESCORT_TARGET","EXCLUSIVE_EXPLORATION_ON_GUNSLINGER",v(40,55,70,85,100),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Wayne","Offensive Defense","DEFENDER_LETHALITY_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / WhiteoutData / Whiteout Survival Wiki; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen6(){}
 }
