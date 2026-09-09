@@ -17,6 +17,7 @@ public final class VerifiedHeroSkillGen9 {
         new Row("Xura","Piercing Arrow Vulnerability","ENEMY_DAMAGE_TAKEN_UP","PIERCING_ARROW_TARGET","PASSIVE",v(5,10,15,20,25),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Xura","Unorthodoxy Damage Taken","DAMAGE_TAKEN_DOWN","MARKSMEN","PASSIVE",v(3,6,9,12,15),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Xura","Unorthodoxy Damage Dealt","DAMAGE_UP","MARKSMEN","PASSIVE",v(2,4,6,8,10),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
+        new Row("Xura","War Cry","DAMAGE_DEALT_UP","HIGHEST_ATTACK_ALLY","EXCLUSIVE_EXPLORATION_4S",v(20,30,40,50,60),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Xura","Gaiac Hymn","DEFENDER_ATTACK_UP","CITY_DEFENDERS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Fred","Hydraulic Suppression","ENEMY_LETHALITY_DOWN","ALL_ENEMY_TROOPS","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
         new Row("Fred","Acidification","ENEMY_DAMAGE_TAKEN_UP","ENEMY_INFANTRY","PASSIVE",v(4,8,12,16,20),"WOS Heroes / WhiteoutData; cross-checked 2026-09-09"),
