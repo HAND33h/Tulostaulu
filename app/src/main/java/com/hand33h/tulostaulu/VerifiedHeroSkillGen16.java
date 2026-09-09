@@ -19,7 +19,11 @@ public final class VerifiedHeroSkillGen16 {
         new Row("Ursar","Poison Tips Damage","EXTRA_DAMAGE","LANCER","EVERY_2_ATTACKS",v(20,40,60,80,100),"WhiteoutData / WSCO; cross-checked 2026-09-09"),
         new Row("Ursar","Poison Tips Debuff","ENEMY_DAMAGE_TAKEN_UP","TARGET","1_TURN",v(5,10,15,20,25),"WhiteoutData / WSCO; cross-checked 2026-09-09"),
         new Row("Ursar","Typhoon Drums","RALLY_ATTACK_UP","RALLY_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / H5Joy / Whiteout Battlemaster; cross-checked 2026-09-09"),
-        new Row("Aisling","Forest Guardian","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / Whiteout Survival Wiki; cross-checked 2026-09-09")
+        new Row("Aisling","Songs of the Ancestors","DAMAGE_DEALT_UP","ALL_TROOPS","PASSIVE",v(4,8,12,16,20),"Whiteout Survival Wiki / WhiteoutData / Heaven Guardian; cross-checked 2026-09-09"),
+        new Row("Aisling","Rock Storm Damage","EXTRA_DAMAGE","MARKSMAN","EVERY_3_TURNS",v(30,60,90,120,150),"Whiteout Survival Wiki / WhiteoutData / Heaven Guardian; cross-checked 2026-09-09"),
+        new Row("Aisling","Rock Storm Debuff","ENEMY_DAMAGE_DEALT_DOWN","ENEMY_ALL","EVERY_3_TURNS_1_TURN",v(6,12,18,24,30),"Whiteout Survival Wiki / WhiteoutData / Heaven Guardian; cross-checked 2026-09-09"),
+        new Row("Aisling","Forest Fury","EXTRA_DAMAGE","MARKSMAN","EVERY_3_TURNS",v(8,16,24,32,40),"Whiteout Survival Wiki / WhiteoutData / Heaven Guardian; cross-checked 2026-09-09"),
+        new Row("Aisling","Forest Guardian","DEFENDER_DEFENSE_UP","DEFENDER_TROOPS","WIDGET_EXPEDITION",v(5,7.5,10,12.5,15),"WOS Heroes / Whiteout Survival Wiki / H5Joy; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen16(){}
 }
