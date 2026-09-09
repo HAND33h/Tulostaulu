@@ -48,7 +48,7 @@ public final class VerifiedHeroSkillGen1 {
         new Row("Zinman","Implacable Health","HEALTH_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(2,4,6,8,10),"WOS Forge / Whiteout Survival Wiki; cross-checked 2026-09-09"),
         new Row("Zinman","Bastionist Resource Cost","BASIC_RESOURCE_COST_DOWN","CITY_BUILDING_UPGRADES","EXPEDITION_DEVELOPMENT_PASSIVE",v(3,6,9,12,15),"Whiteout Survival Wiki / WSCO; cross-checked 2026-09-09"),
         new Row("Zinman","Bastionist Building Speed","BUILDING_UPGRADE_SPEED_UP","CITY_BUILDING_UPGRADES","EXPEDITION_DEVELOPMENT_PASSIVE",v(3,6,9,12,15),"Whiteout Survival Wiki / WSCO; cross-checked 2026-09-09"),
-        new Row("Zinman","Positional Battler","LETHALITY_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"Whiteout Survival Wiki / WSCO; cross-checked 2026-09-09"),
+        new Row("Zinman","Positional Battler","LETHALITY_UP","ALL_TROOPS","EXPEDITION_PASSIVE",v(5,10,15,20,25),"Current 2026 sources Whiteout Survival Wiki / WOS Heroes / Whiteout Battlemaster / Heaven Guardian agree on Lethality +5/10/15/20/25; One Chilled Gamer and WoS Guru retain conflicting Damage Dealt wording. Simulator keeps current-majority Lethality semantics; audited 2026-09-10"),
         new Row("Zinman","Overclocked Nail Gun","ATTACK_UP","ZINMAN","EXCLUSIVE_EXPLORATION_OVERCHARGED_MODE",v(8,12,16,20,24),"One Chilled Gamer exact ladder / WSCO max 24 / H5Joy max 24; cross-checked 2026-09-10"),
         new Row("Zinman","Defend to Attack","DEFENDER_ATTACK_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION_CITY_DEFENSE",v(5,7.5,10,12.5,15),"One Chilled Gamer exact ladder / WSCO max 15 / H5Joy max 15; cross-checked 2026-09-10")
     ));
