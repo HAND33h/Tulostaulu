@@ -21,7 +21,8 @@ public final class VerifiedHeroSkillGen10 {
         new Row("Freya","Fog of War","TROOP_ATTACK_DOWN","ALL_ENEMY_TROOPS","PASSIVE",v(4,8,12,16,20),"WOS Heroes / whiteoutdata.com / whiteoutsurvival.wiki; cross-checked 2026-09-09"),
         new Row("Freya","Blood Moon Scythe","REAP_DAMAGE","LANCER_NORMAL_ATTACKS","50_PERCENT_CHANCE",v(20,40,60,80,100),"WOS Heroes / whiteoutdata.com / whiteoutsurvival.wiki; cross-checked 2026-09-09"),
         new Row("Freya","Night's Vengeance Damage Taken","DAMAGE_TAKEN_DOWN","INFANTRY_AND_MARKSMEN","PASSIVE",v(3,6,9,12,15),"WOS Heroes / whiteoutdata.com / whiteoutsurvival.wiki; cross-checked 2026-09-09"),
-        new Row("Freya","Night's Vengeance Damage Dealt","DAMAGE_DEALT_UP","INFANTRY_AND_MARKSMEN","PASSIVE",v(3,6,9,12,15),"WOS Heroes / whiteoutdata.com / whiteoutsurvival.wiki; cross-checked 2026-09-09")
+        new Row("Freya","Night's Vengeance Damage Dealt","DAMAGE_DEALT_UP","INFANTRY_AND_MARKSMEN","PASSIVE",v(3,6,9,12,15),"WOS Heroes / whiteoutdata.com / whiteoutsurvival.wiki; cross-checked 2026-09-09"),
+        new Row("Freya","Defender of the Watch","DEFENSE_UP","DEFENDER_TROOPS","EXCLUSIVE_EXPEDITION",v(5,7.5,10,12.5,15),"WhiteoutData / WOS Battlemaster; cross-checked 2026-09-09")
     ));
     private VerifiedHeroSkillGen10(){}
 }
