@@ -44,7 +44,10 @@ public final class HeroBattleData {
     }
 
     public static String nameOf(String selected){
-        if(selected==null)return "None";int p=selected.indexOf(" — ");return p<0?selected:selected.substring(0,p);
+        if(selected==null)return "None";
+        int p=selected.indexOf(" — ");
+        String raw=p<0?selected:selected.substring(0,p);
+        return HeroNameAliases.canonicalize(raw);
     }
     public static int generationOf(String selected){
         if(selected==null)return 0;int p=selected.indexOf("Gen ");if(p<0)return 0;int s=p+4,e=s;while(e<selected.length()&&Character.isDigit(selected.charAt(e)))e++;try{return Integer.parseInt(selected.substring(s,e));}catch(Exception ignored){return 0;}
