@@ -62,6 +62,7 @@ public final class HeroDataMonteCarloAudit {
         for(VerifiedHeroSkillGen13.Entry r:VerifiedHeroSkillGen13.DATA)out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,"Gen13 source "+r.sourceUrl+"; cross-checked 2026-09-10"));
         for(VerifiedHeroSkillGen14.Row r:VerifiedHeroSkillGen14.DATA)out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
         for(VerifiedHeroSkillGen15.Row r:VerifiedHeroSkillGen15.DATA)out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
+        for(VerifiedHeroSkillGen16.Row r:VerifiedHeroSkillGen16.DATA)out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
         return out;
     }
     private HeroDataMonteCarloAudit(){}
