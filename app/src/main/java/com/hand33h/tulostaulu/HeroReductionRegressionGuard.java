@@ -39,10 +39,23 @@ public final class HeroReductionRegressionGuard {
         return close(scores[0], 1000.0) && close(scores[1], 800.0);
     }
 
+    /** Extreme imported values must stay finite because reduction helpers clamp at +/-95%. */
+    public static boolean extremeReductionsStayFinite() {
+        HeroCombatAccumulator.Totals attacker = new HeroCombatAccumulator.Totals();
+        HeroCombatAccumulator.Totals defender = new HeroCombatAccumulator.Totals();
+        attacker.damageTakenReduction = 500.0;
+        defender.enemyDamageDealtReduction = 500.0;
+        double[] scores = HeroCombatAccumulator.applyReductionsToDamageAdjustedScores(
+                1000.0, 1000.0, attacker, defender);
+        return Double.isFinite(scores[0]) && Double.isFinite(scores[1])
+                && scores[0] > 0.0 && scores[1] > 0.0;
+    }
+
     public static boolean allChecksPass() {
         return reductionOnlyMathIsSafe()
                 && zeroReductionsAreNeutral()
-                && enemyReductionIsDirectional();
+                && enemyReductionIsDirectional()
+                && extremeReductionsStayFinite();
     }
 
     private static boolean close(double a, double b) {
