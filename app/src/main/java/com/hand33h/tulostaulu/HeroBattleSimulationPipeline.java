@@ -29,6 +29,11 @@ public final class HeroBattleSimulationPipeline {
             Spinner[] attackerHeroes, Spinner[] attackerSkills, Spinner[] attackerExclusive,
             Spinner[] defenderHeroes, Spinner[] defenderSkills, Spinner[] defenderExclusive) {
 
+        if (!HeroReductionRegressionGuard.allChecksPass()) {
+            return new Output(false, attackerDamageAdjustedScore, defenderDamageAdjustedScore,
+                    "⚠️ HERO MODEL\nHero reduction regression guard failed; simulation stopped to avoid an unreliable result.");
+        }
+
         if (!validBaseScore(attackerDamageAdjustedScore) || !validBaseScore(defenderDamageAdjustedScore)) {
             return new Output(false, attackerDamageAdjustedScore, defenderDamageAdjustedScore,
                     "⚠️ HERO SCORE\nBase battle score is invalid; simulation stopped before hero reductions.");
