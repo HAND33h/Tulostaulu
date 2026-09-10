@@ -4,7 +4,8 @@ import android.widget.Spinner;
 
 /**
  * Single entry point for Battle Simulator hero validation, permanent scoring
- * and result diagnostics. Keeps Activity integration small and auditable.
+ * and result diagnostics. BattleSimulatorActivity's armyScore already includes
+ * hero Damage Dealt, so this pipeline deliberately applies reductions only.
  */
 public final class HeroBattleSimulationPipeline {
     private HeroBattleSimulationPipeline() {}
@@ -24,17 +25,17 @@ public final class HeroBattleSimulationPipeline {
     }
 
     public static Output run(
-            double attackerBaseScore, double defenderBaseScore,
+            double attackerDamageAdjustedScore, double defenderDamageAdjustedScore,
             Spinner[] attackerHeroes, Spinner[] attackerSkills, Spinner[] attackerExclusive,
             Spinner[] defenderHeroes, Spinner[] defenderSkills, Spinner[] defenderExclusive) {
 
-        HeroBattleUiBridge.CheckedResult checked = HeroBattleUiBridge.validateAndApply(
-                attackerBaseScore, defenderBaseScore,
+        HeroBattleUiBridge.CheckedResult checked = HeroBattleUiBridge.validateAndApplyReductions(
+                attackerDamageAdjustedScore, defenderDamageAdjustedScore,
                 attackerHeroes, attackerSkills, attackerExclusive,
                 defenderHeroes, defenderSkills, defenderExclusive);
 
         if (!checked.safe || checked.score == null) {
-            return new Output(false, attackerBaseScore, defenderBaseScore,
+            return new Output(false, attackerDamageAdjustedScore, defenderDamageAdjustedScore,
                     HeroBattleResultFormatter.format(checked));
         }
 
