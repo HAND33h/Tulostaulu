@@ -35,6 +35,24 @@ public final class HeroBattleUiBridge {
         return new CheckedResult(true, null, check.accuracyNotice, score);
     }
 
+    /**
+     * Validated path for BattleSimulatorActivity scores where hero Damage Dealt
+     * has already been included by armyScore(). Applies only missing reductions.
+     */
+    public static CheckedResult validateAndApplyReductions(
+            double attackerDamageAdjustedScore, double defenderDamageAdjustedScore,
+            Spinner[] attackerHeroes, Spinner[] attackerSkills, Spinner[] attackerExclusive,
+            Spinner[] defenderHeroes, Spinner[] defenderSkills, Spinner[] defenderExclusive) {
+        HeroBattleDiagnostics.SelectionResult check = HeroBattlePreflight.validate(
+                attackerHeroes, attackerSkills, defenderHeroes, defenderSkills);
+        if (!check.safe) return new CheckedResult(false, check.blockingWarning, check.accuracyNotice, null);
+        HeroBattleScoreBridge.Result score = HeroBattleScoreBridge.applyReductionsToDamageAdjustedScores(
+                attackerDamageAdjustedScore, defenderDamageAdjustedScore,
+                strings(attackerHeroes), ints(attackerSkills), ints(attackerExclusive),
+                strings(defenderHeroes), ints(defenderSkills), ints(defenderExclusive));
+        return new CheckedResult(true, null, check.accuracyNotice, score);
+    }
+
     public static HeroBattleScoreBridge.Result apply(
             double attackerBaseScore, double defenderBaseScore,
             Spinner[] attackerHeroes, Spinner[] attackerSkills, Spinner[] attackerExclusive,
