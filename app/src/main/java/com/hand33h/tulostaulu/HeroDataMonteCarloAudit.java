@@ -63,6 +63,7 @@ public final class HeroDataMonteCarloAudit {
         for(VerifiedHeroSkillGen14.Row r:VerifiedHeroSkillGen14.DATA)out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
         for(VerifiedHeroSkillGen15.Row r:VerifiedHeroSkillGen15.DATA)out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
         for(VerifiedHeroSkillGen16.Row r:VerifiedHeroSkillGen16.DATA)out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
+        for(VerifiedHeroSkillGen17.Row r:VerifiedHeroSkillGen17.DATA)out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
         return out;
     }
     private HeroDataMonteCarloAudit(){}
