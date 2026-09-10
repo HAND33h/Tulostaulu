@@ -87,8 +87,6 @@ public final class HeroDataMonteCarloAudit {
     private static List<Entry> allRows() {
         List<Entry> out = new ArrayList<>();
         for (VerifiedHeroSkillGen0.Row r : VerifiedHeroSkillGen0.DATA) out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
-        // Gina is currently maintained as a standalone Gen0 integration source; include it
-        // explicitly so new/current Gina values cannot bypass the 2,000-round data audit.
         for (VerifiedHeroSkillGina.Row r : VerifiedHeroSkillGina.DATA) out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
         for (VerifiedHeroSkillGen1.Row r : VerifiedHeroSkillGen1.DATA) out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
         for (VerifiedHeroSkillGen2.Row r : VerifiedHeroSkillGen2.DATA) out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
@@ -101,6 +99,7 @@ public final class HeroDataMonteCarloAudit {
         for (VerifiedHeroSkillGen9.Row r : VerifiedHeroSkillGen9.DATA) out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
         for (VerifiedHeroSkillGen10.Row r : VerifiedHeroSkillGen10.DATA) out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
         for (VerifiedHeroSkillGen11.Row r : VerifiedHeroSkillGen11.DATA) out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
+        for (VerifiedHeroSkillGen12.Row r : VerifiedHeroSkillGen12.DATA) out.add(new Entry(r.hero,r.skill,r.effect,r.target,r.trigger,r.values,r.source));
         return out;
     }
 
