@@ -41,8 +41,8 @@ public final class HeroBattleScoreBridge {
 
     /**
      * BattleSimulatorActivity already includes hero Damage Dealt inside armyScore().
-     * This path applies only the two missing permanent reduction mechanics so
-     * Damage Dealt is never counted twice.
+     * This path delegates to the canonical reduction-only accumulator math so
+     * Damage Dealt is never counted twice and the formula has one source of truth.
      */
     public static Result applyReductionsToDamageAdjustedScores(
             double attackerDamageAdjustedScore, double defenderDamageAdjustedScore,
@@ -54,14 +54,9 @@ public final class HeroBattleScoreBridge {
         HeroCombatAccumulator.Totals defender = HeroCombatAccumulator.collect(
                 defenderHeroes, defenderSkills, defenderExclusive, true);
 
-        double adjustedAttacker = attackerDamageAdjustedScore
-                * HeroCombatScore.durabilityFactor(attacker.damageTakenReduction)
-                * HeroCombatScore.enemyOutgoingFactor(defender.enemyDamageDealtReduction);
-        double adjustedDefender = defenderDamageAdjustedScore
-                * HeroCombatScore.durabilityFactor(defender.damageTakenReduction)
-                * HeroCombatScore.enemyOutgoingFactor(attacker.enemyDamageDealtReduction);
-
-        return new Result(adjustedAttacker, adjustedDefender, attacker, defender);
+        double[] scores = HeroCombatAccumulator.applyReductionsToDamageAdjustedScores(
+                attackerDamageAdjustedScore, defenderDamageAdjustedScore, attacker, defender);
+        return new Result(scores[0], scores[1], attacker, defender);
     }
 
     public static String summary(Result r) {
