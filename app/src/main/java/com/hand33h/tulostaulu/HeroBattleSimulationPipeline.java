@@ -8,6 +8,7 @@ import android.widget.Spinner;
  * hero Damage Dealt, so this pipeline deliberately applies reductions only.
  */
 public final class HeroBattleSimulationPipeline {
+    private static final boolean HERO_MODEL_SELF_CHECK_OK = HeroReductionRegressionGuard.allChecksPass();
     private HeroBattleSimulationPipeline() {}
 
     public static final class Output {
@@ -29,7 +30,7 @@ public final class HeroBattleSimulationPipeline {
             Spinner[] attackerHeroes, Spinner[] attackerSkills, Spinner[] attackerExclusive,
             Spinner[] defenderHeroes, Spinner[] defenderSkills, Spinner[] defenderExclusive) {
 
-        if (!HeroReductionRegressionGuard.allChecksPass()) {
+        if (!HERO_MODEL_SELF_CHECK_OK) {
             return new Output(false, attackerDamageAdjustedScore, defenderDamageAdjustedScore,
                     "⚠️ HERO MODEL\nHero reduction regression guard failed; simulation stopped to avoid an unreliable result.");
         }
