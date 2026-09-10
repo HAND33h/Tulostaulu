@@ -13,7 +13,7 @@ public final class HeroBattleDataExpanded {
         if("Lumak Bokan".equals(n)){x.enemyDamageDealtReduction+=v(l,4,8,12,16,20);x.note="Tactical Deception enemy Damage Dealt reduction applied; hunting march speed excluded.";return true;}
         if("Gina".equals(n)){x.note="Wilderness stamina/march utility only; no direct troop combat modifier.";return true;}
         if("Charlie".equals(n)||"Cloris".equals(n)||"Eugene".equals(n)||"Smith".equals(n)){x.note="Growth/resource utility excluded from battle score.";return true;}
-        if("Seo-yoon".equals(n)){x.note="Healing Speed utility excluded from battle score.";return true;}
+        if("Seo-yoon".equals(n)){x.atk+=v(l,5,10,15,20,25);x.note="Rallying Beat all-troop Attack applied (5/10/15/20/25%); Soothing Dance Healing Speed excluded from combat.";return true;}
         if("Patrick".equals(n)){x.hp+=v(l,5,10,15,20,25);x.atk+=v(l,5,10,15,20,25);x.note="Super Nutrients Health + Caloric Booster Attack applied.";return true;}
         if("Seigel".equals(n)){x.hp+=v(l,5,10,15,20,25);x.note="Armor of Night Health applied; conditional effects excluded.";return true;}
         if("Ursar".equals(n)){x.enemyAtk+=v(l,5,10,15,20,25);x.note="Forest Spores enemy Attack reduction applied.";return true;}
