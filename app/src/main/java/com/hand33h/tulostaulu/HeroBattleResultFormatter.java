@@ -16,6 +16,12 @@ public final class HeroBattleResultFormatter {
         out.append(String.format(Locale.US,
                 "\nFinal hero-adjusted scores — A: %,.0f | D: %,.0f",
                 checked.score.attackerScore, checked.score.defenderScore));
+        out.append(String.format(Locale.US,
+                "\nReduction factors — A durability ×%.3f, enemy outgoing ×%.3f | D durability ×%.3f, enemy outgoing ×%.3f",
+                HeroCombatScore.durabilityFactor(checked.score.attacker.damageTakenReduction),
+                HeroCombatScore.enemyOutgoingFactor(checked.score.defender.enemyDamageDealtReduction),
+                HeroCombatScore.durabilityFactor(checked.score.defender.damageTakenReduction),
+                HeroCombatScore.enemyOutgoingFactor(checked.score.attacker.enemyDamageDealtReduction)));
         out.append("\nDamage Dealt is included by armyScore; reduction pipeline does not apply it twice.");
         if (checked.accuracyNotice != null && !checked.accuracyNotice.trim().isEmpty()) {
             out.append("\n\nAccuracy notice:\n").append(checked.accuracyNotice.trim());
