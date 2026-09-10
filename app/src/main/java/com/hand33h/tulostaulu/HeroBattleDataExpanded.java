@@ -15,6 +15,8 @@ public final class HeroBattleDataExpanded {
         if("Charlie".equals(n)||"Cloris".equals(n)||"Eugene".equals(n)||"Smith".equals(n)){x.note="Growth/resource utility excluded from battle score.";return true;}
         if("Seo-yoon".equals(n)){x.atk+=v(l,5,10,15,20,25);x.note="Rallying Beat all-troop Attack applied (5/10/15/20/25%); Soothing Dance Healing Speed excluded from combat.";return true;}
         if("Patrick".equals(n)){x.hp+=v(l,5,10,15,20,25);x.atk+=v(l,5,10,15,20,25);x.note="Super Nutrients Health + Caloric Booster Attack applied.";return true;}
+        if("Wayne".equals(n)){x.note="Thunder Strike (extra attack every 4 turns), Roundabout Hit (Marksman target-specific damage every other attack) and Fleet (Crit Rate) are verified; aggregate score has no turn/proc/crit model, so no invented permanent bonus is applied.";return true;}
+        if("Flora".equals(n)){x.note="Enmiring Vines, Plantage and Confusion Pollen are verified proc/troop/turn-specific Expedition effects; retained as conditional instead of inventing a permanent aggregate bonus.";return true;}
         if("Seigel".equals(n)){x.hp+=v(l,5,10,15,20,25);x.note="Armor of Night Health applied; conditional effects excluded.";return true;}
         if("Ursar".equals(n)){x.enemyAtk+=v(l,5,10,15,20,25);x.note="Forest Spores enemy Attack reduction applied.";return true;}
         if("Aisling".equals(n)){x.damageDealt+=v(l,4,8,12,16,20);x.note="Songs of the Ancestors damage dealt applied.";return true;}
