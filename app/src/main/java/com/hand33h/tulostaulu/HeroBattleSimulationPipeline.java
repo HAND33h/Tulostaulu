@@ -29,6 +29,11 @@ public final class HeroBattleSimulationPipeline {
             Spinner[] attackerHeroes, Spinner[] attackerSkills, Spinner[] attackerExclusive,
             Spinner[] defenderHeroes, Spinner[] defenderSkills, Spinner[] defenderExclusive) {
 
+        if (!validBaseScore(attackerDamageAdjustedScore) || !validBaseScore(defenderDamageAdjustedScore)) {
+            return new Output(false, attackerDamageAdjustedScore, defenderDamageAdjustedScore,
+                    "⚠️ HERO SCORE\nBase battle score is invalid; simulation stopped before hero reductions.");
+        }
+
         HeroBattleUiBridge.CheckedResult checked = HeroBattleUiBridge.validateAndApplyReductions(
                 attackerDamageAdjustedScore, defenderDamageAdjustedScore,
                 attackerHeroes, attackerSkills, attackerExclusive,
@@ -39,9 +44,21 @@ public final class HeroBattleSimulationPipeline {
                     HeroBattleResultFormatter.format(checked));
         }
 
-        return new Output(true,
-                checked.score.attackerScore,
-                checked.score.defenderScore,
-                HeroBattleResultFormatter.format(checked));
+        double attacker = checked.score.attackerScore;
+        double defender = checked.score.defenderScore;
+        if (!validAdjustedScore(attacker) || !validAdjustedScore(defender) || attacker + defender <= 0.0) {
+            return new Output(false, attackerDamageAdjustedScore, defenderDamageAdjustedScore,
+                    "⚠️ HERO SCORE\nHero-adjusted score is invalid; result was not used.");
+        }
+
+        return new Output(true, attacker, defender, HeroBattleResultFormatter.format(checked));
+    }
+
+    private static boolean validBaseScore(double value) {
+        return Double.isFinite(value) && value >= 0.0;
+    }
+
+    private static boolean validAdjustedScore(double value) {
+        return Double.isFinite(value) && value >= 0.0;
     }
 }
