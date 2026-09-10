@@ -40,12 +40,29 @@ public final class HeroCombatAccumulator {
         return totals;
     }
 
-    /** Applies both sides' permanent damage modifiers to their existing aggregate scores. */
+    /** Applies all permanent hero damage modifiers to scores that do not yet include Damage Dealt. */
     public static double[] applyToScores(double attackerScore, double defenderScore, Totals attacker, Totals defender) {
         if (attacker == null) attacker = new Totals();
         if (defender == null) defender = new Totals();
         double adjustedAttacker = attackerScore * attacker.scoreFactor(defender.enemyDamageDealtReduction);
         double adjustedDefender = defenderScore * defender.scoreFactor(attacker.enemyDamageDealtReduction);
+        return new double[]{adjustedAttacker, adjustedDefender};
+    }
+
+    /**
+     * Applies only reduction mechanics to scores that already contain hero Damage Dealt.
+     * This is the canonical path for BattleSimulatorActivity and prevents double counting.
+     */
+    public static double[] applyReductionsToDamageAdjustedScores(
+            double attackerScore, double defenderScore, Totals attacker, Totals defender) {
+        if (attacker == null) attacker = new Totals();
+        if (defender == null) defender = new Totals();
+        double adjustedAttacker = attackerScore
+                * HeroCombatScore.durabilityFactor(attacker.damageTakenReduction)
+                * HeroCombatScore.enemyOutgoingFactor(defender.enemyDamageDealtReduction);
+        double adjustedDefender = defenderScore
+                * HeroCombatScore.durabilityFactor(defender.damageTakenReduction)
+                * HeroCombatScore.enemyOutgoingFactor(attacker.enemyDamageDealtReduction);
         return new double[]{adjustedAttacker, adjustedDefender};
     }
 
