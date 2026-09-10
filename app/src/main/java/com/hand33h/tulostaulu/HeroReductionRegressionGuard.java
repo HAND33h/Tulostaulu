@@ -52,9 +52,25 @@ public final class HeroReductionRegressionGuard {
         return close(scores[0],expectedAttacker);
     }
 
+    /** Wayne and Flora are structured conditional heroes and must not become invented permanent reduction bonuses. */
+    public static boolean conditionalHeroesStayConditional() {
+        HeroCombatAccumulator.Totals wayne = HeroCombatAccumulator.collect(new String[]{"Wayne"},new int[]{5},new int[]{0},false);
+        HeroCombatAccumulator.Totals flora = HeroCombatAccumulator.collect(new String[]{"Flora"},new int[]{5},new int[]{0},false);
+        boolean noPermanentFlattening = close(wayne.damageDealt,0.0)
+                && close(wayne.damageTakenReduction,0.0)
+                && close(wayne.enemyDamageDealtReduction,0.0)
+                && close(flora.damageDealt,0.0)
+                && close(flora.damageTakenReduction,0.0)
+                && close(flora.enemyDamageDealtReduction,0.0);
+        return noPermanentFlattening
+                && HeroConditionalEffects.hasStructuredEffects("Wayne")
+                && HeroConditionalEffects.hasStructuredEffects("Flora");
+    }
+
     public static boolean allChecksPass() {
         return reductionOnlyMathIsSafe() && zeroReductionsAreNeutral() && enemyReductionIsDirectional()
-                && extremeReductionsStayFinite() && verifiedHeroDataFlowsThroughAccumulator();
+                && extremeReductionsStayFinite() && verifiedHeroDataFlowsThroughAccumulator()
+                && conditionalHeroesStayConditional();
     }
 
     private static boolean close(double a,double b){return Math.abs(a-b)<=EPSILON;}
