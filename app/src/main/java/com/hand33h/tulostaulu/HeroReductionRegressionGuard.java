@@ -8,7 +8,7 @@ public final class HeroReductionRegressionGuard {
     public static boolean reductionOnlyMathIsSafe() {
         HeroCombatAccumulator.Totals attacker = new HeroCombatAccumulator.Totals();
         HeroCombatAccumulator.Totals defender = new HeroCombatAccumulator.Totals();
-        attacker.damageDealt = 25.0; // already included in the incoming score; must not be applied again
+        attacker.damageDealt = 25.0;
         attacker.damageTakenReduction = 20.0;
         defender.enemyDamageDealtReduction = 10.0;
         double alreadyDamageAdjusted = 1250.0;
@@ -32,6 +32,20 @@ public final class HeroReductionRegressionGuard {
         return close(scores[0],1000.0) && close(scores[1],800.0);
     }
 
+    /** Both sides can own durability and enemy-outgoing reductions at the same time. */
+    public static boolean bilateralReductionsAreSymmetric() {
+        HeroCombatAccumulator.Totals attacker = new HeroCombatAccumulator.Totals();
+        HeroCombatAccumulator.Totals defender = new HeroCombatAccumulator.Totals();
+        attacker.damageTakenReduction = 20.0;
+        attacker.enemyDamageDealtReduction = 15.0;
+        defender.damageTakenReduction = 30.0;
+        defender.enemyDamageDealtReduction = 10.0;
+        double[] scores = HeroCombatAccumulator.applyReductionsToDamageAdjustedScores(1200.0,900.0,attacker,defender);
+        double expectedA = 1200.0 * HeroCombatScore.durabilityFactor(20.0) * HeroCombatScore.enemyOutgoingFactor(10.0);
+        double expectedD = 900.0 * HeroCombatScore.durabilityFactor(30.0) * HeroCombatScore.enemyOutgoingFactor(15.0);
+        return close(scores[0],expectedA) && close(scores[1],expectedD);
+    }
+
     public static boolean extremeReductionsStayFinite() {
         HeroCombatAccumulator.Totals attacker = new HeroCombatAccumulator.Totals();
         HeroCombatAccumulator.Totals defender = new HeroCombatAccumulator.Totals();
@@ -41,7 +55,6 @@ public final class HeroReductionRegressionGuard {
         return Double.isFinite(scores[0]) && Double.isFinite(scores[1]) && scores[0] > 0.0 && scores[1] > 0.0;
     }
 
-    /** Uses actual verified hero records instead of synthetic totals. */
     public static boolean verifiedHeroDataFlowsThroughAccumulator() {
         HeroCombatAccumulator.Totals jessie = HeroCombatAccumulator.collect(new String[]{"Jessie"},new int[]{5},new int[]{0},false);
         HeroCombatAccumulator.Totals lumak = HeroCombatAccumulator.collect(new String[]{"Lumak Bokan"},new int[]{5},new int[]{0},false);
@@ -52,7 +65,6 @@ public final class HeroReductionRegressionGuard {
         return close(scores[0],expectedAttacker);
     }
 
-    /** Wayne and Flora are structured conditional heroes and must not become invented permanent reduction bonuses. */
     public static boolean conditionalHeroesStayConditional() {
         HeroCombatAccumulator.Totals wayne = HeroCombatAccumulator.collect(new String[]{"Wayne"},new int[]{5},new int[]{0},false);
         HeroCombatAccumulator.Totals flora = HeroCombatAccumulator.collect(new String[]{"Flora"},new int[]{5},new int[]{0},false);
@@ -69,8 +81,8 @@ public final class HeroReductionRegressionGuard {
 
     public static boolean allChecksPass() {
         return reductionOnlyMathIsSafe() && zeroReductionsAreNeutral() && enemyReductionIsDirectional()
-                && extremeReductionsStayFinite() && verifiedHeroDataFlowsThroughAccumulator()
-                && conditionalHeroesStayConditional();
+                && bilateralReductionsAreSymmetric() && extremeReductionsStayFinite()
+                && verifiedHeroDataFlowsThroughAccumulator() && conditionalHeroesStayConditional();
     }
 
     private static boolean close(double a,double b){return Math.abs(a-b)<=EPSILON;}
