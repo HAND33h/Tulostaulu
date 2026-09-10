@@ -3,6 +3,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application android:allowBackup="false" android:fullBackupContent="false" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:label="WOS Bunny King" android:theme="@style/Theme.Tulostaulu" android:usesCleartextTraffic="false" android:networkSecurityConfig="@xml/network_security_config">
         <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:exported="false" android:grantUriPermissions="true"><meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/share_paths" /></provider>
+        <activity android:name=".ExpertPlannerActivity" android:exported="false" />
         <activity android:name=".ExpertSettingsActivity" android:exported="false" />
         <activity android:name=".Wos73Activity" android:exported="false" />
         <activity android:name=".Wos72UpdateActivity" android:exported="false" />
@@ -11,22 +12,7 @@
         <activity android:name=".DataCatalogActivity" android:exported="false" />
         <activity android:name=".OperationsSuite6Activity" android:exported="false" />
         <activity android:name=".BattleReportAnalyzerActivity" android:exported="true" android:label="WOS Battle Report Analyzer"><intent-filter><action android:name="android.intent.action.SEND" /><category android:name="android.intent.category.DEFAULT" /><data android:mimeType="image/*" /></intent-filter><intent-filter><action android:name="android.intent.action.SEND_MULTIPLE" /><category android:name="android.intent.category.DEFAULT" /><data android:mimeType="image/*" /></intent-filter></activity>
-        <activity android:name=".AdvancedOpsActivity" android:exported="false" />
-        <activity android:name=".SmartCommandCenterActivity" android:exported="false" />
-        <activity android:name=".CommunityStrategyActivity" android:exported="false" />
-        <activity android:name=".DataHubActivity" android:exported="false" />
-        <activity android:name=".DataSourcesActivity" android:exported="false" />
-        <activity android:name=".ForumActivity" android:exported="false" />
-        <activity android:name=".MyAccountActivity" android:exported="false" />
-        <activity android:name=".BattleSimulatorActivity" android:exported="false" />
-        <activity android:name=".WarAcademyActivity" android:exported="false" />
-        <activity android:name=".MasterUpgradePlannerActivity" android:exported="false" />
-        <activity android:name=".UpgradePlannerActivity" android:exported="false" />
-        <activity android:name=".NativeCalculatorActivity" android:exported="false" />
-        <activity android:name=".CalculatorHubActivity" android:exported="false" />
-        <activity android:name=".MemeActivity" android:exported="false" />
-        <activity android:name=".UnifiedActivity" android:exported="false" />
-        <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".AdvancedOpsActivity" android:exported="false" /><activity android:name=".SmartCommandCenterActivity" android:exported="false" /><activity android:name=".CommunityStrategyActivity" android:exported="false" /><activity android:name=".DataHubActivity" android:exported="false" /><activity android:name=".DataSourcesActivity" android:exported="false" /><activity android:name=".ForumActivity" android:exported="false" /><activity android:name=".MyAccountActivity" android:exported="false" /><activity android:name=".BattleSimulatorActivity" android:exported="false" /><activity android:name=".WarAcademyActivity" android:exported="false" /><activity android:name=".MasterUpgradePlannerActivity" android:exported="false" /><activity android:name=".UpgradePlannerActivity" android:exported="false" /><activity android:name=".NativeCalculatorActivity" android:exported="false" /><activity android:name=".CalculatorHubActivity" android:exported="false" /><activity android:name=".MemeActivity" android:exported="false" /><activity android:name=".UnifiedActivity" android:exported="false" /><activity android:name=".MainActivity" android:exported="false" />
         <activity android:name=".ScreenshotImportActivity" android:exported="true" android:label="WOS Ranking Import"><intent-filter><action android:name="android.intent.action.SEND" /><category android:name="android.intent.category.DEFAULT" /><data android:mimeType="image/*" /></intent-filter><intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter></activity>
         <activity android:name=".SplashActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter></activity>
     </application>
