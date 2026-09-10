@@ -1,8 +1,9 @@
 package com.hand33h.tulostaulu;
 
 /**
- * Chief Charm progression, re-audited against current WOS Forge and 2026 Gen8 cap sources on 2026-09-10.
+ * Chief Charm progression, re-audited against current WOS Forge on 2026-09-10.
  * Values are per single charm and the published stat is Health & Lethality.
+ * Keep event/SvS scoring separate unless the exact live scoring rule is verified.
  */
 public final class ChiefCharmData {
     private ChiefCharmData() {}
@@ -50,12 +51,13 @@ public final class ChiefCharmData {
     public static int maxLevel(){return 18;}
     public static boolean isUnlocked(int furnaceLevel){return furnaceLevel>=UNLOCK_FURNACE_LEVEL;}
     public static boolean materialExchangeUnlocked(int highestCharmLevel){return highestCharmLevel>=MATERIAL_EXCHANGE_UNLOCK_LEVEL;}
+    public static boolean secretsRequiredForTarget(int targetLevel){return targetLevel>=SECRETS_START_LEVEL;}
 
-    /** Published number of star/sub-stage upgrades within the level. Lv16-Lv18 use nine sub-stages. */
+    /** Published star/sub-stage count inside levels that are climbed in sub-stages. Lv18 is max and has no next-level climb. */
     public static int starStepsAtLevel(int charmLevel){
         if(charmLevel>=4 && charmLevel<=10)return 4;
         if(charmLevel>=11 && charmLevel<=15)return 5;
-        if(charmLevel>=16 && charmLevel<=18)return 9;
+        if(charmLevel>=16 && charmLevel<=17)return 9;
         return 0;
     }
 
@@ -75,6 +77,16 @@ public final class ChiefCharmData {
         int g=0,d=0,s=0;
         for(int i=from+1;i<=to;i++){g+=LEVELS[i].charmGuide;d+=LEVELS[i].charmDesign;s+=LEVELS[i].charmSecrets;}
         return new Cost(g,d,s,LEVELS[to].power-LEVELS[from].power);
+    }
+
+    /** Aggregate any 18-slot current/target plan without asking the user to enter required materials manually. */
+    public static Cost costForSlots(int[] current,int[] target){
+        if(current==null||target==null||current.length!=SLOT_COUNT||target.length!=SLOT_COUNT) throw new IllegalArgumentException("Expected 18 current and 18 target charm levels");
+        int g=0,d=0,s=0; long p=0;
+        for(int i=0;i<SLOT_COUNT;i++){
+            Cost c=costBetween(current[i],target[i]); g+=c.guides; d+=c.designs; s+=c.secrets; p+=c.powerGain;
+        }
+        return new Cost(g,d,s,p);
     }
 
     public static int totalGuidesTo(int target){return costBetween(0,target).guides;}
