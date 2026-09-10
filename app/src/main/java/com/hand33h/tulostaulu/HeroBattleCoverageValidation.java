@@ -4,26 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Guardrail for hero Expedition coverage in the aggregate Battle Simulator.
- *
- * A hero counts as covered when HeroBattleData can resolve verified Expedition
- * handling for the selected skill level. Covered does not mean every conditional
- * proc/turn/crit mechanic is flattened into the aggregate score; those mechanics
- * stay conditional until the simulator has an explicit model for them.
- */
+/** Guardrail for verified Expedition hero handling in the aggregate Battle Simulator. */
 public final class HeroBattleCoverageValidation {
     private HeroBattleCoverageValidation() {}
 
     public static List<String> missingSkillCoverage() {
         List<String> missing = new ArrayList<>();
         for (String hero : HeroBattleData.HEROES) {
-            if (hero == null || "None".equals(HeroBattleData.nameOf(hero))) continue;
-            HeroBattleData.Effect attacker = HeroBattleData.directEffect(hero, 5, 0, false);
-            HeroBattleData.Effect defender = HeroBattleData.directEffect(hero, 5, 0, true);
-            if (!attacker.hasVerifiedSkillData || !defender.hasVerifiedSkillData) {
-                missing.add(HeroBattleData.nameOf(hero));
-            }
+            if (skip(hero)) continue;
+            if (!verifiedAtEverySkillLevel(hero)) missing.add(HeroBattleData.nameOf(hero));
         }
         return Collections.unmodifiableList(missing);
     }
@@ -32,13 +21,10 @@ public final class HeroBattleCoverageValidation {
     public static List<String> conditionalOnlySkillCoverage() {
         List<String> conditional = new ArrayList<>();
         for (String hero : HeroBattleData.HEROES) {
-            if (hero == null || "None".equals(HeroBattleData.nameOf(hero))) continue;
+            if (skip(hero) || !verifiedAtEverySkillLevel(hero)) continue;
             HeroBattleData.Effect attacker = HeroBattleData.directEffect(hero, 5, 0, false);
             HeroBattleData.Effect defender = HeroBattleData.directEffect(hero, 5, 0, true);
-            boolean verified = attacker.hasVerifiedSkillData && defender.hasVerifiedSkillData;
-            if (verified && !hasNumericAggregateEffect(attacker) && !hasNumericAggregateEffect(defender)) {
-                conditional.add(HeroBattleData.nameOf(hero));
-            }
+            if (!hasNumericAggregateEffect(attacker) && !hasNumericAggregateEffect(defender)) conditional.add(HeroBattleData.nameOf(hero));
         }
         return Collections.unmodifiableList(conditional);
     }
@@ -47,86 +33,95 @@ public final class HeroBattleCoverageValidation {
     public static List<String> numericAggregateSkillCoverage() {
         List<String> aggregate = new ArrayList<>();
         for (String hero : HeroBattleData.HEROES) {
-            if (hero == null || "None".equals(HeroBattleData.nameOf(hero))) continue;
+            if (skip(hero) || !verifiedAtEverySkillLevel(hero)) continue;
             HeroBattleData.Effect attacker = HeroBattleData.directEffect(hero, 5, 0, false);
             HeroBattleData.Effect defender = HeroBattleData.directEffect(hero, 5, 0, true);
-            boolean verified = attacker.hasVerifiedSkillData && defender.hasVerifiedSkillData;
-            if (verified && (hasNumericAggregateEffect(attacker) || hasNumericAggregateEffect(defender))) {
-                aggregate.add(HeroBattleData.nameOf(hero));
-            }
+            if (hasNumericAggregateEffect(attacker) || hasNumericAggregateEffect(defender)) aggregate.add(HeroBattleData.nameOf(hero));
         }
         return Collections.unmodifiableList(aggregate);
     }
 
-    /** Heroes whose aggregate skill output differs between attacker and defender side. */
+    /** Heroes whose aggregate output differs between attacker and defender side at max EW. */
     public static List<String> sideSensitiveSkillCoverage() {
         List<String> sideSensitive = new ArrayList<>();
         for (String hero : HeroBattleData.HEROES) {
-            if (hero == null || "None".equals(HeroBattleData.nameOf(hero))) continue;
+            if (skip(hero) || !verifiedAtEverySkillLevel(hero)) continue;
             HeroBattleData.Effect attacker = HeroBattleData.directEffect(hero, 5, 10, false);
             HeroBattleData.Effect defender = HeroBattleData.directEffect(hero, 5, 10, true);
-            if (attacker.hasVerifiedSkillData && defender.hasVerifiedSkillData && !sameNumericEffects(attacker, defender)) {
-                sideSensitive.add(HeroBattleData.nameOf(hero));
-            }
+            if (!sameNumericEffects(attacker, defender)) sideSensitive.add(HeroBattleData.nameOf(hero));
         }
         return Collections.unmodifiableList(sideSensitive);
     }
 
-    public static boolean allHeroesHaveVerifiedSkillHandling() {
-        return missingSkillCoverage().isEmpty();
+    /** Detects broken/non-monotonic permanent aggregate values between skill levels 1..5. */
+    public static List<String> nonMonotonicSkillScaling() {
+        List<String> broken = new ArrayList<>();
+        for (String hero : HeroBattleData.HEROES) {
+            if (skip(hero) || !verifiedAtEverySkillLevel(hero)) continue;
+            if (!monotonicForSide(hero, false) || !monotonicForSide(hero, true)) broken.add(HeroBattleData.nameOf(hero));
+        }
+        return Collections.unmodifiableList(broken);
     }
 
-    public static int coveredHeroCount() {
-        return numericAggregateSkillCoverage().size() + conditionalOnlySkillCoverage().size();
-    }
+    public static boolean allHeroesHaveVerifiedSkillHandling() { return missingSkillCoverage().isEmpty(); }
+
+    public static int coveredHeroCount() { return numericAggregateSkillCoverage().size() + conditionalOnlySkillCoverage().size(); }
 
     public static int totalHeroCount() {
         int total = 0;
-        for (String hero : HeroBattleData.HEROES) {
-            if (hero != null && !"None".equals(HeroBattleData.nameOf(hero))) total++;
-        }
+        for (String hero : HeroBattleData.HEROES) if (!skip(hero)) total++;
         return total;
     }
 
-    /** Compact diagnostic suitable for debug/about screens and build checks. */
     public static String coverageSummary() {
         return "Hero skills: " + coveredHeroCount() + "/" + totalHeroCount()
-                + " verified (" + numericAggregateSkillCoverage().size() + " aggregate, "
+                + " verified all levels (" + numericAggregateSkillCoverage().size() + " aggregate, "
                 + conditionalOnlySkillCoverage().size() + " conditional-only, "
                 + sideSensitiveSkillCoverage().size() + " side-sensitive), "
-                + missingSkillCoverage().size() + " missing";
+                + missingSkillCoverage().size() + " missing, "
+                + nonMonotonicSkillScaling().size() + " scaling warnings";
+    }
+
+    private static boolean verifiedAtEverySkillLevel(String hero) {
+        for (int level = 1; level <= 5; level++) {
+            HeroBattleData.Effect attacker = HeroBattleData.directEffect(hero, level, 0, false);
+            HeroBattleData.Effect defender = HeroBattleData.directEffect(hero, level, 0, true);
+            if (!attacker.hasVerifiedSkillData || !defender.hasVerifiedSkillData) return false;
+        }
+        return true;
+    }
+
+    private static boolean monotonicForSide(String hero, boolean defender) {
+        HeroBattleData.Effect previous = HeroBattleData.directEffect(hero, 1, 0, defender);
+        for (int level = 2; level <= 5; level++) {
+            HeroBattleData.Effect current = HeroBattleData.directEffect(hero, level, 0, defender);
+            if (decreased(previous, current)) return false;
+            previous = current;
+        }
+        return true;
+    }
+
+    private static boolean decreased(HeroBattleData.Effect a, HeroBattleData.Effect b) {
+        return less(b.atk,a.atk)||less(b.def,a.def)||less(b.hp,a.hp)||less(b.leth,a.leth)
+                ||less(b.enemyAtk,a.enemyAtk)||less(b.enemyDef,a.enemyDef)||less(b.enemyHp,a.enemyHp)||less(b.enemyLeth,a.enemyLeth)
+                ||less(b.infAtk,a.infAtk)||less(b.infDef,a.infDef)||less(b.infHp,a.infHp)||less(b.infLeth,a.infLeth)
+                ||less(b.lanAtk,a.lanAtk)||less(b.lanDef,a.lanDef)||less(b.lanHp,a.lanHp)||less(b.lanLeth,a.lanLeth)
+                ||less(b.marAtk,a.marAtk)||less(b.marDef,a.marDef)||less(b.marHp,a.marHp)||less(b.marLeth,a.marLeth)
+                ||less(b.damageDealt,a.damageDealt)||less(b.damageTakenReduction,a.damageTakenReduction)
+                ||less(b.enemyDamageDealtReduction,a.enemyDamageDealtReduction);
     }
 
     private static boolean hasNumericAggregateEffect(HeroBattleData.Effect x) {
-        return nonZero(x.atk, x.def, x.hp, x.leth,
-                x.enemyAtk, x.enemyDef, x.enemyHp, x.enemyLeth,
-                x.infAtk, x.infDef, x.infHp, x.infLeth,
-                x.lanAtk, x.lanDef, x.lanHp, x.lanLeth,
-                x.marAtk, x.marDef, x.marHp, x.marLeth,
-                x.damageDealt, x.damageTakenReduction, x.enemyDamageDealtReduction);
+        return nonZero(x.atk,x.def,x.hp,x.leth,x.enemyAtk,x.enemyDef,x.enemyHp,x.enemyLeth,
+                x.infAtk,x.infDef,x.infHp,x.infLeth,x.lanAtk,x.lanDef,x.lanHp,x.lanLeth,
+                x.marAtk,x.marDef,x.marHp,x.marLeth,x.damageDealt,x.damageTakenReduction,x.enemyDamageDealtReduction);
     }
 
     private static boolean sameNumericEffects(HeroBattleData.Effect a, HeroBattleData.Effect b) {
-        return same(a.atk,b.atk) && same(a.def,b.def) && same(a.hp,b.hp) && same(a.leth,b.leth)
-                && same(a.enemyAtk,b.enemyAtk) && same(a.enemyDef,b.enemyDef)
-                && same(a.enemyHp,b.enemyHp) && same(a.enemyLeth,b.enemyLeth)
-                && same(a.infAtk,b.infAtk) && same(a.infDef,b.infDef)
-                && same(a.infHp,b.infHp) && same(a.infLeth,b.infLeth)
-                && same(a.lanAtk,b.lanAtk) && same(a.lanDef,b.lanDef)
-                && same(a.lanHp,b.lanHp) && same(a.lanLeth,b.lanLeth)
-                && same(a.marAtk,b.marAtk) && same(a.marDef,b.marDef)
-                && same(a.marHp,b.marHp) && same(a.marLeth,b.marLeth)
-                && same(a.damageDealt,b.damageDealt)
-                && same(a.damageTakenReduction,b.damageTakenReduction)
-                && same(a.enemyDamageDealtReduction,b.enemyDamageDealtReduction);
+        return !decreased(a,b) && !decreased(b,a);
     }
 
-    private static boolean same(double a, double b) {
-        return Math.abs(a - b) <= 0.000001d;
-    }
-
-    private static boolean nonZero(double... values) {
-        for (double value : values) if (Math.abs(value) > 0.000001d) return true;
-        return false;
-    }
+    private static boolean skip(String hero) { return hero == null || "None".equals(HeroBattleData.nameOf(hero)); }
+    private static boolean less(double a,double b) { return a < b - 0.000001d; }
+    private static boolean nonZero(double... values) { for(double value:values) if(Math.abs(value)>0.000001d)return true; return false; }
 }
