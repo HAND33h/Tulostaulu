@@ -16,7 +16,7 @@ public final class HeroBattleDataExpanded {
         if("Gina".equals(n)){x.note="Gina's Expedition effects are wilderness stamina-cost and march-speed utility; no direct troop combat modifier is added.";return true;}
         if("Charlie".equals(n)||"Cloris".equals(n)||"Eugene".equals(n)||"Smith".equals(n)){x.note="Gen0 Rare Growth hero: Expedition effects are gathering/resource utility and intentionally excluded from battle score.";return true;}
         if("Seo-yoon".equals(n)){x.note="Gen0 Growth hero: Healing Speed utility is excluded from battle score; no unverified combat value is invented.";return true;}
-        if("Patrick".equals(n)){x.note="Patrick has combat Expedition buffs, but effects not safely representable from the currently audited aggregate mapping remain explicit rather than guessed.";return true;}
+        if("Patrick".equals(n)){x.hp+=v(l,5,10,15,20,25);x.atk+=v(l,5,10,15,20,25);x.note="Super Nutrients all-troop Health + Caloric Booster all-troop Attack applied (Lv1–5: 5/10/15/20/25%).";return true;}
 
         if("Seigel".equals(n)){x.hp+=v(l,5,10,15,20,25);x.note="Armor of Night Health applied. Other effects remain troop/turn specific.";return true;}
         if("Ursar".equals(n)){x.enemyAtk+=v(l,5,10,15,20,25);x.note="Forest Spores enemy Attack reduction applied; other effects remain conditional.";return true;}
