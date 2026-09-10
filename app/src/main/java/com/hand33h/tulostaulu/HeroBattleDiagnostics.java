@@ -1,5 +1,6 @@
 package com.hand33h.tulostaulu;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +43,35 @@ public final class HeroBattleDiagnostics {
     /** Returns true when a three-slot Expedition selection is safe for aggregate scoring. */
     public static boolean selectionIsSafe(String... selectedHeroes) {
         return selectionWarning(selectedHeroes) == null;
+    }
+
+    /**
+     * Returns selected heroes whose verified Expedition skills are conditional/proc/turn based
+     * and therefore intentionally not converted into invented permanent aggregate bonuses.
+     */
+    public static List<String> selectedConditionalOnlyHeroes(String... selectedHeroes) {
+        List<String> selectedConditional = new ArrayList<>();
+        if (selectedHeroes == null || selectedHeroes.length == 0) return selectedConditional;
+        List<String> conditional = HeroBattleCoverageValidation.conditionalOnlySkillCoverage();
+        Set<String> seen = new HashSet<>();
+        for (String selected : selectedHeroes) {
+            String name = HeroBattleData.nameOf(selected);
+            if (name == null || "None".equals(name) || !seen.add(name)) continue;
+            if (conditional.contains(name)) selectedConditional.add(name);
+        }
+        return selectedConditional;
+    }
+
+    /** Human-readable notice for the current selection; null when every selected hero is aggregate-scored. */
+    public static String conditionalOnlyNotice(String... selectedHeroes) {
+        List<String> heroes = selectedConditionalOnlyHeroes(selectedHeroes);
+        if (heroes.isEmpty()) return null;
+        StringBuilder out = new StringBuilder("Conditional hero skills not flattened into permanent score: ");
+        for (int i = 0; i < heroes.size(); i++) {
+            if (i > 0) out.append(", ");
+            out.append(heroes.get(i));
+        }
+        return out.toString();
     }
 
     public static String report() {
