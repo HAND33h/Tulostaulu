@@ -14,8 +14,9 @@ public final class HeroBattleResultFormatter {
         StringBuilder out = new StringBuilder();
         out.append(HeroBattleScoreBridge.summary(checked.score));
         out.append(String.format(Locale.US,
-                "\nAdjusted hero scores — A: %,.0f | D: %,.0f",
+                "\nFinal hero-adjusted scores — A: %,.0f | D: %,.0f",
                 checked.score.attackerScore, checked.score.defenderScore));
+        out.append("\nDamage Dealt is included by armyScore; reduction pipeline does not apply it twice.");
         if (checked.accuracyNotice != null && !checked.accuracyNotice.trim().isEmpty()) {
             out.append("\n\nAccuracy notice:\n").append(checked.accuracyNotice.trim());
         }
