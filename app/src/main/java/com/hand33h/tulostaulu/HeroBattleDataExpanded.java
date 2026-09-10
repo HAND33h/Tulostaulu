@@ -6,12 +6,18 @@ public final class HeroBattleDataExpanded {
     private static double v(int l,double a,double b,double c,double d,double e){int i=Math.max(1,Math.min(5,l));return new double[]{a,b,c,d,e}[i-1];}
 
     public static boolean apply(HeroBattleData.Effect x,String n,int l,boolean defenderSide){
-        // Gen 0 combat effects. Utility-only skills are documented but do not alter battle score.
+        // Gen 0. Growth/utility-only Expedition skills are explicitly represented without altering battle score.
         if("Sergey".equals(n)){x.damageTakenReduction+=v(l,4,8,12,16,20);x.enemyAtk+=v(l,4,8,12,16,20);x.note="Defenders' Edge damage-taken reduction + Weaken enemy Attack reduction applied.";return true;}
         if("Jessie".equals(n)){x.damageDealt+=v(l,5,10,15,20,25);x.damageTakenReduction+=v(l,4,8,12,16,20);x.note="Stand of Arms damage dealt + Bulwarks damage-taken reduction applied.";return true;}
-        if("Bahiti".equals(n)){x.damageTakenReduction+=v(l,4,8,12,16,20);x.note="Sixth Sense damage-taken reduction applied. Fluorescence is a 50% proc and is not converted into an invented deterministic average.";return true;}
+        if("Bahiti".equals(n)){x.damageTakenReduction+=v(l,4,8,12,16,20);x.note="Sixth Sense damage-taken reduction applied. Proc effects are not converted into invented averages.";return true;}
         if("Jasser".equals(n)){x.damageDealt+=v(l,5,10,15,20,25);x.note="Tactical Genius damage dealt applied. Enlightened Warfare is Research Speed and excluded from combat.";return true;}
         if("Ling Xue".equals(n)){x.enemyAtk+=v(l,4,8,12,16,20);x.note="Fearsome Aura enemy Attack reduction applied. Total Control is Training Speed and excluded from combat.";return true;}
+        if("Lumak Bokan".equals(n)){x.note="Tactical Deception reduces enemy damage output 4/8/12/16/20%; aggregate Effect has no enemy-damage-dealt field, so it remains explicit rather than mapped to the wrong stat. Emerald Warrior is hunt march speed.";return true;}
+        if("Gina".equals(n)){x.note="Gina's Expedition effects are wilderness stamina-cost and march-speed utility; no direct troop combat modifier is added.";return true;}
+        if("Charlie".equals(n)||"Cloris".equals(n)||"Eugene".equals(n)||"Smith".equals(n)){x.note="Gen0 Rare Growth hero: Expedition effects are gathering/resource utility and intentionally excluded from battle score.";return true;}
+        if("Seo-yoon".equals(n)){x.note="Gen0 Growth hero: Healing Speed utility is excluded from battle score; no unverified combat value is invented.";return true;}
+        if("Patrick".equals(n)){x.note="Patrick has combat Expedition buffs, but effects not safely representable from the currently audited aggregate mapping remain explicit rather than guessed.";return true;}
+
         if("Seigel".equals(n)){x.hp+=v(l,5,10,15,20,25);x.note="Armor of Night Health applied. Other effects remain troop/turn specific.";return true;}
         if("Ursar".equals(n)){x.enemyAtk+=v(l,5,10,15,20,25);x.note="Forest Spores enemy Attack reduction applied; other effects remain conditional.";return true;}
         if("Aisling".equals(n)){x.damageDealt+=v(l,4,8,12,16,20);x.note="Songs of the Ancestors damage dealt applied; timed Marksman effects remain conditional.";return true;}
