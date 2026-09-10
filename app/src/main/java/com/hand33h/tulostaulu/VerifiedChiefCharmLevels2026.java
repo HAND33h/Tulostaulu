@@ -6,29 +6,18 @@ import java.util.List;
 
 /**
  * Verified high-level Chief Charm data for the current 2026 progression.
+ * Re-audited 2026-09-10 against the official Century Games update and current WOS Forge data.
  *
- * Re-audited 2026-09-10 against WOS Forge, WoS Guru, Heaven Guardian,
- * WhiteoutSurvival.dev and current community references.
- *
- * Stable consensus:
+ * Verified current progression:
  * - Levels 12+ require Charm Secrets.
  * - Lv12-15 have 5 sub-stages; Lv16-18 have 9 sub-stages.
- * - Levels 17-18 unlock with Gen 8 state progression.
- * - Material costs/stat totals below are cross-checked across current sources.
- *
- * Progression conflict intentionally preserved:
- * - Some recent 2026 sources place Lv12-16 at Gen5.
- * - Other current references describe later state gating for the highest levels.
- * Therefore this class does NOT auto-unlock Lv12-16 from a disputed generation gate.
- *
- * Power note:
- * - Lv12-16 values use the 124,000-per-level progression corroborated by
- *   WhiteoutSurvival.dev, Heaven Guardian and current community tables.
- * - WOS Forge currently publishes higher Lv12-16 power values; that conflict is
- *   documented rather than silently accepted.
+ * - Lv12-16 and Chief Charm Material Exchange unlock with Gen 5 state progression.
+ * - Lv17-18 unlock with Gen 8 state progression.
+ * - Current WOS Forge power values are used consistently with ChiefCharmData.
  */
 public final class VerifiedChiefCharmLevels2026 {
     public static final int CHARM_SECRETS_START_LEVEL = 12;
+    public static final int LEVEL_12_TO_16_UNLOCK_HERO_GENERATION = 5;
     public static final int LEVEL_17_TO_18_UNLOCK_HERO_GENERATION = 8;
 
     public static final class Row {
@@ -53,27 +42,30 @@ public final class VerifiedChiefCharmLevels2026 {
         }
     }
 
-    // unlockHeroGeneration == -1 means current public sources conflict on the exact gate.
     public static final List<Row> DATA = Collections.unmodifiableList(Arrays.asList(
-        new Row(12, 580, 450, 15, 64.0, 1444000, 5, -1),
-        new Row(13, 580, 450, 30, 73.0, 1568000, 5, -1),
-        new Row(14, 600, 500, 45, 82.0, 1692000, 5, -1),
-        new Row(15, 600, 500, 70, 91.0, 1816000, 5, -1),
-        new Row(16, 650, 550, 100, 100.0, 1940000, 9, -1),
+        new Row(12, 580, 450, 15, 64.0, 1536000, 5, 5),
+        new Row(13, 580, 450, 30, 73.0, 1752000, 5, 5),
+        new Row(14, 600, 500, 45, 82.0, 1968000, 5, 5),
+        new Row(15, 600, 500, 70, 91.0, 2184000, 5, 5),
+        new Row(16, 650, 550, 100, 100.0, 2400000, 9, 5),
         new Row(17, 765, 630, 135, 109.0, 2616000, 9, 8),
         new Row(18, 1300, 1130, 180, 118.0, 2832000, 9, 8)
     ));
 
-    /** Returns true only for a generation gate that is non-conflicting in current sources. */
+    /** Returns whether the verified state-progression gate for this high charm level is open. */
     public static boolean isVerifiedHighLevelUnlocked(int charmLevel, int unlockedHeroGeneration) {
+        if (charmLevel >= 12 && charmLevel <= 16) {
+            return unlockedHeroGeneration >= LEVEL_12_TO_16_UNLOCK_HERO_GENERATION;
+        }
         if (charmLevel == 17 || charmLevel == 18) {
             return unlockedHeroGeneration >= LEVEL_17_TO_18_UNLOCK_HERO_GENERATION;
         }
         return false;
     }
 
+    /** Kept for callers compiled against the earlier conflict-aware API. */
     public static boolean hasProgressionSourceConflict(int charmLevel) {
-        return charmLevel >= 12 && charmLevel <= 16;
+        return false;
     }
 
     private VerifiedChiefCharmLevels2026() {}
