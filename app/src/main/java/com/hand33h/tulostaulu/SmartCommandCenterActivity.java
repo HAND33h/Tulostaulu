@@ -30,7 +30,7 @@ public class SmartCommandCenterActivity extends Activity {
         cardTitle("👑  "+tr("WOS SMART COMMAND CENTER 7.1","WOS SMART COMMAND CENTER 7.1"),tr("Scan → data → inventory → upgrades → heroes → battle → alliance ops → events → share.","Scan → data → inventory → upgrades → heroes → battle → alliance ops → events → share."));
 
         section(tr("PELAAJAPROFIILI","PLAYER PROFILE"));
-        state=input(tr("State / server","State / server"),true);state.setText(p.getString("state","1674"));root.addView(state);
+        state=input(tr("State / server","State / server"),true);state.setText(p.getString("state",""));root.addView(state);
         playstyle=spin(new String[]{"F2P","Low spender","Spender / Rally leader"});root.addView(playstyle);
         goal=spin(new String[]{tr("Yleinen kehitys","General progression"),"Bear Joiner","Bear Rally Leader","SvS / PvP",tr("Nopea power-kasvu","Fast power growth")});root.addView(goal);
         Button save=button(tr("TALLENNA PROFIILI JA SUOSITUS","SAVE PROFILE & RECOMMENDATION"));root.addView(save,mp(0,6,0,8));

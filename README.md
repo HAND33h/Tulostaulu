@@ -1,24 +1,29 @@
-# WOS Tulostaulu
+# Bunny King / WOS Tulostaulu
 
-Android-sovellus Whiteout Survival -serverien tulostaulujen hallintaan.
+HAND33h:n Android-projekti Whiteout Survivalin rankingien, sankaritietojen, taistelumallin ja kehitysplannerien hallintaan.
 
-## Nykyinen versio
-- Android-sovellus
-- Serverinumero vaihdettavissa sovelluksesta
-- Oletusserveri 1674
-- GitHub Actions rakentaa APK:n automaattisesti
+Jatkokehityksen päämoduuli on `app` (`com.hand33h.tulostaulu`). `android-bunny` on erillinen suppeampi projekti eikä korvaa päämoduulin ominaisuuksia.
 
-## APK
-Avaa GitHubissa **Actions → Build Android APK → uusin onnistunut ajo → Artifacts → WOS-Tulostaulu-APK**.
+## Käyttö
 
-## Seuraavat ominaisuudet
-- WOS ranking-datan haku
-- Pelaajien Might-ranking
-- TOP 10 / TOP 50 / TOP 100
-- CSV/Excel-vienti
-- serverin vaihto yhdellä kentällä
+State valitaan itse. Uuden käyttäjän kenttä on tyhjä; aiemmin tallennettu oma valinta säilyy. Ranking-rekisteriä täydentävät FID-haut ja kuvakaappausten OCR-tuonti. WOS Controlin leaderboardia ei käsitellä automaattisesti koko staten pelaajalistana.
 
-## Data / API
-Ranking- ja pelidatan integraatiossa hyödynnetään WOS Control API:a.
+Battle Simulatorissa molemmat puolet alkavat samoista arvoista. Kopiointipainike siirtää koko hyökkääjän kokoonpanon puolustajalle, jonka jälkeen arvoja voi muuttaa. Prosenttitulos tarkoittaa mallin pisteosuutta; sitä ei ole kalibroitu voittotodennäköisyydeksi.
 
-Powered by [WOS Control](https://woscontrol.com/)
+Koodissa on sankaritietoja, Gear-, Charm-, Pet- ja Expert-osuuksia, raporttien käsittelyä, XLSX-vienti sekä foorumin ja API-yhteyksien osia. Ominaisuuden löytyminen koodista ei yksin vahvista verkkopalvelun tai laskennan toimivuutta.
+
+## Rakentaminen
+
+JDK 17, Gradle 8.9 ja Android SDK 35: `gradle assembleDebug`. GitHub Actionsin APK-työnkulut ovat `.github/workflows`-hakemistossa.
+
+## Syötteiden regressiotestit
+
+```sh
+mkdir -p /tmp/wos-validation
+javac -d /tmp/wos-validation app/src/main/java/com/hand33h/tulostaulu/BattleInputValidation.java tests/BattleInputValidationTest.java
+java -cp /tmp/wos-validation BattleInputValidationTest
+```
+
+Katso [9.10.2026 muutokset](CHANGELOG-2026-10-09.md).
+
+Powered by [WOS Control](https://woscontrol.com/) • Owned by HAND33h

@@ -56,7 +56,7 @@ public class DataSourcesActivity extends Activity {
         root.addView(text("🧊 "+tr("WOS DATAKESKUS","WOS DATA CENTER"),27,true,Color.WHITE));
         root.addView(text(tr("Toimii millä tahansa Whiteout Survival -serverinumerolla. Tunnetut FID:t kerätään omaan rekisteriin ja päivitetään live-haulla.","Works with any Whiteout Survival state number. Known FIDs are kept in a local registry and refreshed with live lookups."),13,false,Color.rgb(170,201,218)));
 
-        state=input(tr("Serverinumero, esim. 1674","State number, e.g. 1674"),p.getString("state","1674"),true,false);root.addView(state,margin(0,16,0,8));
+        state=input(tr("Serverinumero, esim. 1674","State number, e.g. 1674"),p.getString("state",""),true,false);root.addView(state,margin(0,16,0,8));
         fids=input(tr("FID:t: yksi per rivi tai pilkulla eroteltuna","FIDs: one per line or comma separated"),"",true,true);root.addView(fids,margin(0,0,0,8));
 
         Button importBtn=button(tr("HAE / TALLENNA FID:T","FETCH / SAVE FIDS"));root.addView(importBtn);
@@ -77,7 +77,7 @@ public class DataSourcesActivity extends Activity {
         importBtn.setOnClickListener(v->startFidImport());
         refreshBtn.setOnClickListener(v->refreshKnown());
         showBtn.setOnClickListener(v->showLocal());
-        ocrBtn.setOnClickListener(v->{saveState();startActivity(new Intent(this,ScreenshotImportActivity.class));});
+        ocrBtn.setOnClickListener(v->{if(saveState().isEmpty())return;startActivity(new Intent(this,ScreenshotImportActivity.class));});
         setContentView(sc);
     }
 
@@ -155,7 +155,7 @@ public class DataSourcesActivity extends Activity {
         data.setText(b.toString());
     }
 
-    private String saveState(){String s=state.getText().toString().trim();if(s.isEmpty()){Toast.makeText(this,tr("Anna serverinumero","Enter a state number"),Toast.LENGTH_SHORT).show();return"";}getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s).apply();return s;}
+    private String saveState(){String s=state.getText().toString().trim();if(!StateSelection.valid(s)){Toast.makeText(this,tr("Anna serverinumero","Enter a state number"),Toast.LENGTH_SHORT).show();return"";}getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s).apply();return s;}
     private Set<String> parseFids(String raw){Set<String> out=new LinkedHashSet<>();if(raw==null)return out;for(String x:raw.split("[^0-9]+"))if(x.matches("\\d{6,14}"))out.add(x);return out;}
     private void collect(Object n,List<JSONObject> o,int d){if(n==null||d>7)return;if(n instanceof JSONObject){JSONObject j=(JSONObject)n;o.add(j);Iterator<String> it=j.keys();while(it.hasNext())collect(j.opt(it.next()),o,d+1);}else if(n instanceof JSONArray){JSONArray a=(JSONArray)n;for(int i=0;i<a.length();i++)collect(a.opt(i),o,d+1);}}
     private String str(JSONObject o,String...ks){for(String k:ks){Object v=o.opt(k);if(v!=null&&v!=JSONObject.NULL&&!String.valueOf(v).trim().isEmpty())return String.valueOf(v).trim();}return"";}

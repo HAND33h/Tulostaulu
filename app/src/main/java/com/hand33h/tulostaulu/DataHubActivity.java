@@ -39,7 +39,7 @@ public class DataHubActivity extends Activity {
 
         stateInput=new EditText(this);
         stateInput.setHint("State / server");
-        stateInput.setText(p.getString("state","77"));
+        stateInput.setText(p.getString("state",""));
         stateInput.setSingleLine(true);
         stateInput.setTextColor(Color.WHITE);
         stateInput.setHintTextColor(Color.rgb(160,180,195));
