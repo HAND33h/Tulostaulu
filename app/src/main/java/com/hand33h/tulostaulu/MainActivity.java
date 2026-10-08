@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
     private TextView statusText, resultsText;
     private Button exportButton;
     private final List<PlayerRow> rows = new ArrayList<>();
-    private String currentState = "77";
+    private String currentState = "";
     private boolean english;
     private PlayerDataStore store;
 
@@ -81,8 +81,7 @@ public class MainActivity extends Activity {
             public void onNothingSelected(AdapterView<?> p){}
         });
 
-        String saved=prefs.getString("state","77").trim();
-        if(saved.length()==0)saved="77";
+        String saved=prefs.getString("state","").trim();
         currentState=saved;
         stateInput=input(tr("Serverinumero","Server number"),saved,true);
         fidInput=input(tr("Pelaajan FID (valinnainen)","Player FID (optional)"),prefs.getString("fid",""),true);
@@ -90,8 +89,8 @@ public class MainActivity extends Activity {
         root.addView(fidInput,lp(0,14,0,0));
 
         root.addView(text(tr(
-                "Oletusserveri on 77. Ilman FID:tä näytetään tämän staten oma WOS-rekisteri. FID-haut ja OCR täydentävät sitä. WOS Controlin /leaderboard-kutsua ei käytetä pelaajalistana.",
-                "Default state is 77. Without a FID the app shows its own WOS state registry. FID lookups and OCR grow it. WOS Control /leaderboard is not used as a player list."),
+                "Valitse serverinumero. Ilman FID:tä näytetään tämän staten oma WOS-rekisteri. FID-haut ja OCR täydentävät sitä. WOS Controlin /leaderboard-kutsua ei käytetä pelaajalistana.",
+                "Choose a state number. Without a FID the app shows its own WOS state registry. FID lookups and OCR grow it. WOS Control /leaderboard is not used as a player list."),
                 13,true,MUTED,Gravity.CENTER),lp(0,12,0,0));
 
         Button load=button(tr("NÄYTÄ SERVERIN DATA / HAE FID","SHOW STATE DATA / FETCH FID"),ACCENT,16);
@@ -102,7 +101,7 @@ public class MainActivity extends Activity {
         root.addView(dataCenter,lp(0,0,0,10));
         root.addView(exportButton,new LinearLayout.LayoutParams(-1,-2));
 
-        statusText=text(tr("Valmis • oletus State #77","Ready • default State #77"),16,true,TEXT,Gravity.CENTER);
+        statusText=text(saved.isEmpty()?tr("Valitse serverinumero","Choose a state number"):tr("Valmis • State #","Ready • State #")+saved,16,true,TEXT,Gravity.CENTER);
         resultsText=text(tr("Paina NÄYTÄ SERVERIN DATA. Jos rekisteri on tyhjä, lisää FID:t Datakeskuksessa tai tuo WOS-rankingkuvia.","Press SHOW STATE DATA. If the registry is empty, add FIDs in Data Center or import WOS ranking screenshots."),15,false,TEXT,Gravity.START);
         resultsText.setLineSpacing(0,1.12f);
         root.addView(statusText,lp(0,24,0,16));
@@ -117,9 +116,9 @@ public class MainActivity extends Activity {
 
     private void loadBestData(){
         String rawState=stateInput.getText().toString().trim();
-        final String state=rawState.length()==0?"77":rawState;
+        final String state=rawState;
+        if(state.isEmpty()){stateInput.setError(tr("Anna serverinumero","Enter a state number"));stateInput.requestFocus();return;}
         final String fid=fidInput.getText().toString().trim();
-        if(rawState.length()==0)stateInput.setText(state);
         currentState=state;
         getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",state).putString("fid",fid).apply();
         hideKeyboard();
@@ -143,7 +142,7 @@ public class MainActivity extends Activity {
 
     private void saveInputs(){
         String raw=stateInput.getText().toString().trim();
-        String state=raw.length()==0?"77":raw;
+        String state=raw;
         getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",state).putString("fid",fidInput.getText().toString().trim()).apply();
     }
 

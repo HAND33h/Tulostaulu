@@ -56,7 +56,7 @@ public class DataSourcesActivity extends Activity {
         root.addView(text("🧊 "+tr("WOS DATAKESKUS","WOS DATA CENTER"),27,true,Color.WHITE));
         root.addView(text(tr("Toimii millä tahansa Whiteout Survival -serverinumerolla. Tunnetut FID:t kerätään omaan rekisteriin ja päivitetään live-haulla.","Works with any Whiteout Survival state number. Known FIDs are kept in a local registry and refreshed with live lookups."),13,false,Color.rgb(170,201,218)));
 
-        state=input(tr("Serverinumero, esim. 1674","State number, e.g. 1674"),p.getString("state","1674"),true,false);root.addView(state,margin(0,16,0,8));
+        state=input(tr("Serverinumero, esim. 1674","State number, e.g. 1674"),p.getString("state",""),true,false);root.addView(state,margin(0,16,0,8));
         fids=input(tr("FID:t: yksi per rivi tai pilkulla eroteltuna","FIDs: one per line or comma separated"),"",true,true);root.addView(fids,margin(0,0,0,8));
 
         Button importBtn=button(tr("HAE / TALLENNA FID:T","FETCH / SAVE FIDS"));root.addView(importBtn);

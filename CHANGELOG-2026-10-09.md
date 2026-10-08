@@ -9,7 +9,7 @@ Jatketaan HAND33h/Tulostaulu-projektin laajaa app-moduulia. Alkuperäisiä APK:i
 3. Puuttuvat ja ei-äärelliset numerot hylätään kentän nimellä; desimaalipilkku toimii.
 4. Joukkomäärä vaatii positiivisen kokonaisluvun; jokainen joukko-osuus on 0–100 ja summa 100 %. Negatiiviset syötettävät bonukset hylätään.
 5. Tulos ilmoittaa mallin pisteosuuden, ei kalibroimatonta voittotodennäköisyyttä. Pisteosuuden laskenta kestää myös erittäin suurten äärellisten lukujen summan ylivuodon.
-6. Uuden käyttäjän oletusstate palautettu arvoon 77. Tallennettu käyttäjän valinta säilyy.
+6. Oletusserveri poistettu kaikista state-kentistä. Uuden käyttäjän kenttä on tyhjä; aiemmin tallennettu oma valinta säilyy. Tyhjä state estää ranking-haun ja OCR-tuonnin.
 
 Sankarien ability-prosentteja, ehdollisia efektejä ja tietotaulukoita ei muutettu. Rally leader + neljä joineria on yhä erikseen tarkistettava ja kytkettävä käyttöliittymään; sitä ei väitetä tässä toteutetuksi.
 

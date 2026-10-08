@@ -27,7 +27,7 @@ public class Wos7IntelligenceActivity extends Activity {
 
         section("SVS MATCH ARCHIVE");
         info("Local archive for Prep/Castle results. Verified external archive submissions can be checked in WSCO; this app keeps your own notes separate.");
-        svsState=input("Our state",true);svsState.setText(p.getString("state","1674"));svsOpponent=input("Opponent state",true);svsPrep=input("Prep result / score",false);svsCastle=input("Castle result / score",false);svsNotes=input("Notes / source",false);
+        svsState=input("Our state",true);svsState.setText(p.getString("state",""));svsOpponent=input("Opponent state",true);svsPrep=input("Prep result / score",false);svsCastle=input("Castle result / score",false);svsNotes=input("Notes / source",false);
         add(svsState,svsOpponent,svsPrep,svsCastle,svsNotes);
         Button saveSvs=button("SAVE SVS MATCH");saveSvs.setOnClickListener(v->saveSvs());root.addView(saveSvs);
         Button wscoSvs=button("OPEN WSCO SVS CENTER");wscoSvs.setOnClickListener(v->open("https://www.whiteoutsurvival-community.com/"));root.addView(wscoSvs);

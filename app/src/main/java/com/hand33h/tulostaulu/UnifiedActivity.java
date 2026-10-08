@@ -27,7 +27,7 @@ public class UnifiedActivity extends Activity {
   super.onCreate(b);
   SharedPreferences p=getSharedPreferences(PREFS,MODE_PRIVATE);
   english="en".equals(p.getString("lang","fi"));anonymous=p.getBoolean("anonymous_mode",false);
-  String savedState=p.getString("state","1674").trim();if(savedState.isEmpty())savedState="1674";
+  String savedState=p.getString("state","").trim();
 
   ScrollView sc=new ScrollView(this); LinearLayout root=new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(18),dp(20),dp(18),dp(40));root.setBackgroundColor(Color.rgb(7,23,39));sc.addView(root);
   LinearLayout hero=box(Color.rgb(13,48,76),22); hero.setPadding(dp(22),dp(22),dp(22),dp(22)); hero.addView(label("👑  BUNNY KING",30,true,Color.WHITE));hero.addView(label(tr("WOS KOMENTOKESKUS 7.3","WOS COMMAND CENTER 7.3"),15,true,Color.rgb(130,211,255)));hero.addView(label(tr("Kaikki tärkeät WOS-työkalut yhdessä paikassa","Your WOS tools, intel and creative studio in one place"),13,false,Color.rgb(202,224,238)));if(anonymous)hero.addView(label(tr("🕶️ ANONYYMI TILA KÄYTÖSSÄ","🕶️ ANONYMOUS MODE ON"),12,true,Color.rgb(145,230,255)));root.addView(hero,mp(0,0,0,14));
@@ -52,7 +52,7 @@ public class UnifiedActivity extends Activity {
 
   root.addView(section(tr("PIKATOIMINNOT","QUICK ACCESS")),mp(0,18,0,7));LinearLayout quick=new LinearLayout(this);quick.setOrientation(LinearLayout.HORIZONTAL);Button gifts=mini("🎁\n"+tr("Koodit","Codes")),svs=mini("⚔️\nSvS"),data=mini("🧊\nData"),tools=mini("🗺️\nTools");quick.addView(gifts,new LinearLayout.LayoutParams(0,dp(78),1));quick.addView(svs,new LinearLayout.LayoutParams(0,dp(78),1));quick.addView(data,new LinearLayout.LayoutParams(0,dp(78),1));quick.addView(tools,new LinearLayout.LayoutParams(0,dp(78),1));root.addView(quick);
 
-  status=label(anonymous?tr("Anonyymi tila • paikalliset työkalut käytössä","Anonymous mode • local tools enabled"):tr("Valmis • State #","Ready • State #")+savedState,14,true,Color.rgb(126,211,255));result=label(tr("Serverin TOP 100 muodostetaan omasta WOS-pelaajarekisteristä. FID-haut ja OCR kasvattavat dataa.","State TOP 100 is built from the local WOS player registry. FID lookups and OCR grow the data."),13,false,Color.rgb(210,225,235));root.addView(status,mp(0,20,0,5));root.addView(result);root.addView(label("Powered by WOS community  •  HAND33h",11,true,Color.rgb(120,150,170)),mp(0,28,0,0));
+  status=label(anonymous?tr("Anonyymi tila • paikalliset työkalut käytössä","Anonymous mode • local tools enabled"):(savedState.isEmpty()?tr("Valitse serverinumero","Choose a state number"):tr("Valmis • State #","Ready • State #")+savedState),14,true,Color.rgb(126,211,255));result=label(tr("Serverin TOP 100 muodostetaan omasta WOS-pelaajarekisteristä. FID-haut ja OCR kasvattavat dataa.","State TOP 100 is built from the local WOS player registry. FID lookups and OCR grow the data."),13,false,Color.rgb(210,225,235));root.addView(status,mp(0,20,0,5));root.addView(result);root.addView(label("Powered by WOS community  •  HAND33h",11,true,Color.rgb(120,150,170)),mp(0,28,0,0));
 
   account.setOnClickListener(v->startActivity(new Intent(this,MyAccountActivity.class)));
   forum.setOnClickListener(v->startActivity(new Intent(this,ForumActivity.class)));
@@ -69,8 +69,8 @@ public class UnifiedActivity extends Activity {
   setContentView(sc);
  }
 
- private void saveStateAndKey(){String s=server.getText().toString().trim();if(s.isEmpty())s="1674";SharedPreferences.Editor e=getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s);if(!anonymous){String k=key.getText().toString().trim();if(!k.isEmpty())e.putString("api_key",k);}e.apply();}
- private void openStateData(){saveStateAndKey();String s=server.getText().toString().trim();if(s.isEmpty())s="1674";status.setText(tr("Avataan State #","Opening State #")+s+"…");startActivity(new Intent(this,MainActivity.class));}
+ private void saveStateAndKey(){String s=server.getText().toString().trim();SharedPreferences.Editor e=getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s);if(!anonymous){String k=key.getText().toString().trim();if(!k.isEmpty())e.putString("api_key",k);}e.apply();}
+ private void openStateData(){String s=server.getText().toString().trim();if(s.isEmpty()){server.setError(tr("Anna serverinumero","Enter a state number"));server.requestFocus();return;}saveStateAndKey();status.setText(tr("Avataan State #","Opening State #")+s+"…");startActivity(new Intent(this,MainActivity.class));}
  @Override protected void onResume(){super.onResume();if(getSharedPreferences(PREFS,MODE_PRIVATE).getBoolean("anonymous_mode",false)!=anonymous)recreate();}
  private String tr(String fi,String en){return english?en:fi;} private TextView section(String s){return label(s,13,true,Color.rgb(119,205,255));}
  private LinearLayout box(int c,int r){LinearLayout l=new LinearLayout(this);l.setOrientation(LinearLayout.VERTICAL);GradientDrawable g=new GradientDrawable();g.setColor(c);g.setCornerRadius(dp(r));g.setStroke(dp(1),Color.rgb(37,78,105));l.setBackground(g);return l;}

@@ -6,7 +6,7 @@ Jatkokehityksen päämoduuli on `app` (`com.hand33h.tulostaulu`). `android-bunny
 
 ## Käyttö
 
-State on vaihdettavissa; uuden käyttäjän oletus on 77. Aiemmin tallennettu state säilyy. Ranking-rekisteriä täydentävät FID-haut ja kuvakaappausten OCR-tuonti. WOS Controlin leaderboardia ei käsitellä automaattisesti koko staten pelaajalistana.
+State valitaan itse. Uuden käyttäjän kenttä on tyhjä; aiemmin tallennettu oma valinta säilyy. Ranking-rekisteriä täydentävät FID-haut ja kuvakaappausten OCR-tuonti. WOS Controlin leaderboardia ei käsitellä automaattisesti koko staten pelaajalistana.
 
 Battle Simulatorissa molemmat puolet alkavat samoista arvoista. Kopiointipainike siirtää koko hyökkääjän kokoonpanon puolustajalle, jonka jälkeen arvoja voi muuttaa. Prosenttitulos tarkoittaa mallin pisteosuutta; sitä ei ole kalibroitu voittotodennäköisyydeksi.
 
