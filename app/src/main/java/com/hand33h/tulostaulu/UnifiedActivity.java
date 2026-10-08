@@ -70,7 +70,7 @@ public class UnifiedActivity extends Activity {
  }
 
  private void saveStateAndKey(){String s=server.getText().toString().trim();SharedPreferences.Editor e=getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s);if(!anonymous){String k=key.getText().toString().trim();if(!k.isEmpty())e.putString("api_key",k);}e.apply();}
- private void openStateData(){String s=server.getText().toString().trim();if(s.isEmpty()){server.setError(tr("Anna serverinumero","Enter a state number"));server.requestFocus();return;}saveStateAndKey();status.setText(tr("Avataan State #","Opening State #")+s+"…");startActivity(new Intent(this,MainActivity.class));}
+ private void openStateData(){String s=server.getText().toString().trim();if(!StateSelection.valid(s)){server.setError(tr("Anna serverinumero","Enter a state number"));server.requestFocus();return;}saveStateAndKey();status.setText(tr("Avataan State #","Opening State #")+s+"…");startActivity(new Intent(this,MainActivity.class));}
  @Override protected void onResume(){super.onResume();if(getSharedPreferences(PREFS,MODE_PRIVATE).getBoolean("anonymous_mode",false)!=anonymous)recreate();}
  private String tr(String fi,String en){return english?en:fi;} private TextView section(String s){return label(s,13,true,Color.rgb(119,205,255));}
  private LinearLayout box(int c,int r){LinearLayout l=new LinearLayout(this);l.setOrientation(LinearLayout.VERTICAL);GradientDrawable g=new GradientDrawable();g.setColor(c);g.setCornerRadius(dp(r));g.setStroke(dp(1),Color.rgb(37,78,105));l.setBackground(g);return l;}

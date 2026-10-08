@@ -39,7 +39,8 @@ public final class XlsxExporter {
      * API-provided Personal Power rows are combined with local screenshot imports.
      * Screenshot-imported rows can populate all 14 sheets in the current app session.
      */
-    public static void write(OutputStream output, List<String[]> personalRows) throws Exception {
+    public static void write(OutputStream output, String state, List<String[]> personalRows) throws Exception {
+        if(!StateSelection.valid(state)) throw new IllegalArgumentException("Choose a valid state before exporting");
         try (ZipOutputStream zip = new ZipOutputStream(output, StandardCharsets.UTF_8)) {
             put(zip, "[Content_Types].xml", contentTypes());
             put(zip, "_rels/.rels", rootRels());
@@ -49,7 +50,7 @@ public final class XlsxExporter {
             put(zip, "xl/_rels/workbook.xml.rels", workbookRels());
             put(zip, "xl/styles.xml", styles());
             for (int i = 0; i < SHEETS.length; i++) {
-                List<String[]> data = RankingStore.getRows(SHEETS[i]);
+                List<String[]> data = RankingStore.getRows(state,SHEETS[i]);
                 if (i == 1) data = mergePersonal(personalRows, data);
                 put(zip, "xl/worksheets/sheet" + (i + 1) + ".xml", sheetXml(HEADERS[i], data));
             }
@@ -135,7 +136,7 @@ public final class XlsxExporter {
                 s.append("<row r=\"").append(r).append("\">");
                 for (int c = 0; c < headers.length; c++) {
                     String v = c < row.length && row[c] != null ? row[c] : "";
-                    boolean numeric = (c == 0 || c == 2 || c == 3) && v.matches("-?\\d+(\\.\\d+)?");
+                    boolean numeric = (c == 0 || (headers.length == 3 && c == 2) || c == 3) && v.matches("-?\\d+(\\.\\d+)?");
                     s.append(numeric ? numberCell(col(c + 1) + r, v) : textCell(col(c + 1) + r, v, false));
                 }
                 s.append("</row>");
@@ -161,7 +162,7 @@ public final class XlsxExporter {
 
     private static String xml(String s) {
         if (s == null) return "";
-        return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;");
+        return s.replaceAll("[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]", "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;");
     }
 
     private static String appProps() {

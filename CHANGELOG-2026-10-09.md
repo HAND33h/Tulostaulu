@@ -20,3 +20,14 @@ Sankarien ability-prosentteja, ehdollisia efektejä ja tietotaulukoita ei muutet
 ## Palautettavuus
 
 Muutos omalla Git-haaralla. Alkuperäiset APK:t ovat aiemmassa palautuspaketissa. Lähdekoodirepo on ensisijainen jatkokehityksen pohja, ei aiempi riisuttu android-bunny-moduuli.
+
+## Datatyökalujen jatkopäivitys
+
+- OCR-rankingit rajataan serverin ja ranking-tyypin mukaan. Eri serverien tiedot eivät sekoitu Excel-viennissä.
+- Saman FID:n uusi OCR-rivi korvaa vanhan rivin; alliance-rankingissa tunnisteena käytetään alliance-nimeä.
+- Serveriksi hyväksytään käyttäjän antama positiivinen kokonaislukutunniste. Oletusserveriä ei lisätä.
+- Datakeskus ei avaa OCR-tuontia, jos serverivalinta on tyhjä tai virheellinen.
+- Excel säilyttää FID-tunnukset tekstinä, myös etunollat. Virheelliset XML-ohjausmerkit poistetaan tekstikentistä.
+- 19 ranking-/vientitestiä ja 18 taistelusyötetestiä läpäisivät. Testissä tarkistettiin kaikkien 14 välilehden XML sekä serverirajaus, päivitykset ja FID-muoto.
+
+OCR-rankingien välilehtimuisti on edelleen istuntokohtainen. Pelaajarekisterin pysyvä tallennus toimii erikseen. Tässä päivityksessä ei väitetä kaikkien ranking-kategorioiden säilyvän sovelluksen sulkemisen yli. Koko APK-build ja puhelintesti ovat vielä tekemättä.

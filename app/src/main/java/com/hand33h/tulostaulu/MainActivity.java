@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
     private void loadBestData(){
         String rawState=stateInput.getText().toString().trim();
         final String state=rawState;
-        if(state.isEmpty()){stateInput.setError(tr("Anna serverinumero","Enter a state number"));stateInput.requestFocus();return;}
+        if(!StateSelection.valid(state)){stateInput.setError(tr("Anna serverinumero","Enter a state number"));stateInput.requestFocus();return;}
         final String fid=fidInput.getText().toString().trim();
         currentState=state;
         getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",state).putString("fid",fid).apply();
@@ -278,7 +278,7 @@ public class MainActivity extends Activity {
         try(OutputStream out=getContentResolver().openOutputStream(uri)){
             if(out==null)throw new Exception("File open failed");List<String[]> personal=new ArrayList<>();
             for(PlayerRow p:rows){personal.add(new String[]{String.valueOf(p.rank),p.name,p.fid,String.valueOf(p.might),p.alliance});if(personal.size()>=100)break;}
-            XlsxExporter.write(out,personal);Toast.makeText(this,tr("Excel tallennettu: ","Excel saved: ")+personal.size()+tr(" pelaajaa"," players"),Toast.LENGTH_LONG).show();
+            XlsxExporter.write(out,currentState,personal);Toast.makeText(this,tr("Excel tallennettu: ","Excel saved: ")+personal.size()+tr(" pelaajaa"," players"),Toast.LENGTH_LONG).show();
         }catch(Exception e){Toast.makeText(this,tr("Excel-tallennus epäonnistui: ","Excel save failed: ")+e.getMessage(),Toast.LENGTH_LONG).show();}
     }
 

@@ -99,14 +99,14 @@ public class ScreenshotImportActivity extends Activity {
         List<Uri> uris=new ArrayList<>();ClipData clip=data.getClipData();if(clip!=null){for(int i=0;i<clip.getItemCount();i++)uris.add(clip.getItemAt(i).getUri());}else if(data.getData()!=null)uris.add(data.getData());processUris(uris);
     }
 
-    private void processUris(List<Uri> uris){if(stateId.isEmpty()){status.setText("Valitse serverinumero Datakeskuksessa ennen kuvien tuontia / Choose a state in Data Center before importing screenshots");return;}if(uris==null||uris.isEmpty())return;final String sheet=String.valueOf(category.getSelectedItem());status.setText("Luetaan "+uris.size()+" kuvaa…");processNext(uris,0,sheet,0,0);}
+    private void processUris(List<Uri> uris){if(!StateSelection.valid(stateId)){status.setText("Valitse serverinumero Datakeskuksessa ennen kuvien tuontia / Choose a state in Data Center before importing screenshots");return;}if(uris==null||uris.isEmpty())return;final String sheet=String.valueOf(category.getSelectedItem());status.setText("Luetaan "+uris.size()+" kuvaa…");processNext(uris,0,sheet,0,0);}
 
     private void processNext(List<Uri> uris,int index,String sheet,int added,int dbSaved){
         if(index>=uris.size()){status.setText("Valmis ✓  Ranking-rivejä "+added+" • pelaajarekisteriin tallennettu "+dbSaved+" • State #"+stateId);Toast.makeText(this,"WOS-rankingkuvat käsitelty",Toast.LENGTH_LONG).show();return;}
         try{
             InputImage image=InputImage.fromFilePath(this,uris.get(index));
             recognizer.process(image).addOnSuccessListener(result->{
-                List<String[]> rows=parseRankingText(result.getText(),sheet);RankingStore.addRows(sheet,rows);int saved=savePlayerRows(rows,sheet);processNext(uris,index+1,sheet,added+rows.size(),dbSaved+saved);
+                List<String[]> rows=parseRankingText(result.getText(),sheet);RankingStore.addRows(stateId,sheet,rows);int saved=savePlayerRows(rows,sheet);processNext(uris,index+1,sheet,added+rows.size(),dbSaved+saved);
             }).addOnFailureListener(e->processNext(uris,index+1,sheet,added,dbSaved));
         }catch(Exception e){processNext(uris,index+1,sheet,added,dbSaved);}
     }
