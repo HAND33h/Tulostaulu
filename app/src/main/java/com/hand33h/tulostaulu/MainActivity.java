@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
         ScrollView scroll=new ScrollView(this);
         LinearLayout root=new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
-        root.setPadding(40,60,40,60);
+        root.setPadding(30,34,30,38);
         root.setGravity(Gravity.CENTER_HORIZONTAL);
         root.setBackgroundColor(BG);
         scroll.setBackgroundColor(BG);
@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
         exportButton=button(tr("VIE EXCEL (.XLSX)","EXPORT EXCEL (.XLSX)"),Color.rgb(48,95,130),15);
         exportButton.setEnabled(false);
         root.addView(text(tr("VALITSE TOIMINTO","CHOOSE A FEATURE"),16,true,GOLD,Gravity.CENTER),lp(0,8,0,6));
-        root.addView(text(tr("OMAT PIKAVALINNAT","MY SHORTCUTS"),19,true,Color.rgb(244,201,95),Gravity.CENTER),lp(0,28,0,12));
+        root.addView(text(tr("OMAT PIKAVALINNAT","MY SHORTCUTS"),21,true,GOLD,Gravity.CENTER),lp(0,18,0,12));
         root.addView(text(tr("Pidä painiketta pohjassa vaihtaaksesi toiminnon","Long-press a tile to customize it"),13,false,MUTED,Gravity.CENTER),lp(0,0,0,12));
         String[] defaults={"data","battle","upgrades","forum"};
         for(int row=0;row<2;row++){
@@ -106,6 +106,9 @@ public class MainActivity extends Activity {
                 Button tile=button(featureLabel(feature),Color.rgb(24,61,92),15);
                 tile.setAllCaps(false);
                 tile.setMinHeight(240);
+                tile.setTextColor(GOLD);
+                tile.setTextSize(17);
+                tile.setElevation(7f);
                 LinearLayout.LayoutParams tileParams=new LinearLayout.LayoutParams(0,-2,1f);
                 tileParams.setMargins(5,5,5,5);
                 pair.addView(tile,tileParams);
@@ -132,8 +135,8 @@ public class MainActivity extends Activity {
         shell.addView(scroll,new LinearLayout.LayoutParams(-1,0,1f));
         LinearLayout tabs=new LinearLayout(this);
         tabs.setOrientation(LinearLayout.HORIZONTAL);
-        tabs.setPadding(8,8,8,8);
-        tabs.setBackgroundColor(Color.rgb(20,37,58));
+        tabs.setPadding(8,12,8,14);
+        tabs.setBackgroundColor(Color.rgb(16,35,58));
         addTab(tabs,tr("🏠 Koti","🏠 Home"),null);
         addTab(tabs,tr("📊 Data","📊 Data"),DataSourcesActivity.class);
         addTab(tabs,tr("⚔ Taistelu","⚔ Battle"),BattleSimulatorActivity.class);
@@ -149,10 +152,10 @@ public class MainActivity extends Activity {
     private static final String[] FEATURE_IDS={"data","battle","reports","upgrades","forum","calculator","sources","settings"};
     private String featureLabel(String id){
         switch(id){
-            case "data":return tr("📊 Pelaajat\\n& ranking","📊 Players\\n& ranking");
-            case "battle":return tr("⚔ Taistelu-\\nsimulaattori","⚔ Battle\\nsimulator");
-            case "reports":return tr("📋 Taistelu-\\nraportit","📋 Battle\\nreports");
-            case "upgrades":return tr("🔧 Kehitys\\n& laskurit","🔧 Upgrades\\n& tools");
+            case "data":return tr("📊 Pelaajat\n& ranking","📊 Players\n& ranking");
+            case "battle":return tr("⚔ Taistelu-\nsimulaattori","⚔ Battle\nsimulator");
+            case "reports":return tr("📋 Taistelu-\nraportit","📋 Battle\nreports");
+            case "upgrades":return tr("🔧 Kehitys\n& laskurit","🔧 Upgrades\n& tools");
             case "forum":return tr("💬 Foorumi","💬 Forum");
             case "calculator":return tr("🧮 Laskurit","🧮 Calculators");
             case "sources":return tr("🌐 Tietolähteet","🌐 Data sources");
