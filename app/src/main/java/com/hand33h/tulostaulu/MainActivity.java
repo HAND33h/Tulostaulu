@@ -107,12 +107,25 @@ public class MainActivity extends Activity {
         resultsText.setLineSpacing(0,1.12f);
         root.addView(statusText,lp(0,24,0,16));
         root.addView(resultsText,new LinearLayout.LayoutParams(-1,-2));
+        // Group existing features by topic without replacing or removing old screens.
+        root.addView(text(tr("PIKAVALIKKO • WOS TYÖKALUT","QUICK MENU • WOS TOOLS"),19,true,TEXT,Gravity.CENTER),lp(0,28,0,12));
+        addHubButton(root,tr("📊 Pelaajat ja ranking","📊 Players and ranking"),DataSourcesActivity.class);
+        addHubButton(root,tr("⚔ Taistelu ja raportit","⚔ Battle and reports"),BattleReportAnalyzerActivity.class);
+        addHubButton(root,tr("🛡 Taistelusimulaattori","🛡 Battle simulator"),BattleSimulatorActivity.class);
+        addHubButton(root,tr("🔧 Kehitys ja laskurit","🔧 Upgrades and calculators"),CalculatorHubActivity.class);
+        addHubButton(root,tr("⚙ Asetukset ja tietolähteet","⚙ Settings and data sources"),UnifiedActivity.class);
         root.addView(text("WOS community data • App owner: HAND33h",13,true,MUTED,Gravity.CENTER),lp(0,36,0,0));
 
         load.setOnClickListener(v->loadBestData());
         dataCenter.setOnClickListener(v->{saveInputs();startActivity(new Intent(this,DataSourcesActivity.class));});
         exportButton.setOnClickListener(v->chooseXlsxLocation());
         setContentView(scroll);
+    }
+
+    private void addHubButton(LinearLayout parent,String label,Class<? extends Activity> target){
+        Button item=button(label,Color.rgb(35,72,105),15);
+        parent.addView(item,lp(0,0,0,10));
+        item.setOnClickListener(v->{saveInputs();startActivity(new Intent(this,target));});
     }
 
     private void loadBestData(){
