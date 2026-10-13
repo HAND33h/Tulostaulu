@@ -66,6 +66,7 @@ public class MainActivity extends Activity {
         SharedPreferences prefs=getSharedPreferences(PREFS,MODE_PRIVATE);
         english="en".equals(prefs.getString("lang","fi"));
         store=new PlayerDataStore(this);
+        SecurePrefs.migrateLegacyApiKey(this);
 
         ScrollView scroll=new ScrollView(this);
         homeScroll=scroll;
@@ -80,8 +81,8 @@ public class MainActivity extends Activity {
         scroll.addView(root);
 
         ImageView bunnyLogo=new ImageView(this);
-        bunnyLogo.setImageResource(R.drawable.wos_bunny);
-        bunnyLogo.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        bunnyLogo.setImageResource(R.drawable.app_icon);
+        bunnyLogo.setScaleType(ImageView.ScaleType.FIT_CENTER);
         bunnyLogo.setContentDescription(tr("Bunny King -logo","Bunny King logo"));
         GradientDrawable logoFrame=new GradientDrawable();
         logoFrame.setColor(Color.rgb(24,50,73));
@@ -92,7 +93,7 @@ public class MainActivity extends Activity {
         LinearLayout.LayoutParams logoParams=new LinearLayout.LayoutParams(dp(110),dp(110));
         logoParams.setMargins(0,0,0,dp(10));
         root.addView(bunnyLogo,logoParams);
-        root.addView(text("BUNNY KING",32,true,GOLD,Gravity.CENTER),lp(0,0,0,4));
+        root.addView(text("Bunny 👑",32,true,GOLD,Gravity.CENTER),lp(0,0,0,4));
         root.addView(text("WHITEOUT SURVIVAL • COMMAND CENTER",13,true,MUTED,Gravity.CENTER),lp(0,0,0,18));
 
         Spinner language=new Spinner(this);
@@ -162,35 +163,7 @@ public class MainActivity extends Activity {
         load.setOnClickListener(v->loadBestData());
         exportButton.setOnClickListener(v->chooseXlsxLocation());
         root.addView(text("WOS community data • App owner: HAND33h",12,true,MUTED,Gravity.CENTER),lp(0,28,0,0));
-        // Persistent bottom navigation remains visible while scoreboard content scrolls.
-        LinearLayout shell=new LinearLayout(this);
-        shell.setOrientation(LinearLayout.VERTICAL);
-        shell.setBackgroundColor(BG);
-        shell.addView(scroll,new LinearLayout.LayoutParams(-1,0,1f));
-        LinearLayout tabs=new LinearLayout(this);
-        tabs.setOrientation(LinearLayout.HORIZONTAL);
-        tabs.setPadding(8,12,8,14);
-        tabs.setBackgroundColor(Color.rgb(16,35,58));
-        addTab(tabs,tr("🏠 Koti","🏠 Home"),null);
-        addTab(tabs,tr("📊 Data","📊 Data"),DataSourcesActivity.class);
-        addTab(tabs,tr("⚔ Taistelu","⚔ Battle"),BattleSimulatorActivity.class);
-        Button more=button(tr("••• Lisää","••• More"),Color.rgb(30,54,79),10);
-        more.setAllCaps(false);
-        LinearLayout.LayoutParams moreParams=new LinearLayout.LayoutParams(0,-2,1f);
-        moreParams.setMargins(2,0,2,0);
-        tabs.addView(more,moreParams);
-        more.setOnClickListener(v->showMore());
-        shell.addView(tabs,new LinearLayout.LayoutParams(-1,-2));
-
-        // Respect Android gesture and three-button navigation insets on Android 15/16.
-        shell.setOnApplyWindowInsetsListener((view,insets)->{
-            android.graphics.Insets bars=insets.getInsets(WindowInsets.Type.systemBars());
-            tabs.setPadding(8,12,8,14+bars.bottom);
-            root.setPadding(30,34+bars.top,30,38);
-            return insets;
-        });
-        setContentView(shell);
-        shell.requestApplyInsets();
+        BottomNavigation.show(this,scroll,BottomNavigation.HOME,this::saveInputs);
         if(savedInstanceState!=null){int y=savedInstanceState.getInt("home_scroll_y",0);scroll.post(()->scroll.scrollTo(0,y));}
     }
 
@@ -285,7 +258,7 @@ public class MainActivity extends Activity {
         hideKeyboard();
 
         if(fid.length()>0){
-            String apiKey=getSharedPreferences(PREFS,MODE_PRIVATE).getString("api_key","").trim();
+            String apiKey=SecurePrefs.getApiKey(this).trim();
             if(apiKey.length()==0){
                 Toast.makeText(this,tr("FID-livehaku tarvitsee WOS Control API-avaimen. Paikallinen state-data toimii ilman avainta.","Live FID lookup requires a WOS Control API key. Local state data works without it."),Toast.LENGTH_LONG).show();
                 showLocalState(state,false);
@@ -296,7 +269,7 @@ public class MainActivity extends Activity {
             new Thread(()->fetchPlayer(fid,state)).start();
         }else{
             showLocalState(state,false);
-            String apiKey=getSharedPreferences(PREFS,MODE_PRIVATE).getString("api_key","").trim();
+            String apiKey=SecurePrefs.getApiKey(this).trim();
             if(apiKey.length()>0)new Thread(()->syncStateEndpoint(state)).start();
         }
     }
@@ -315,7 +288,7 @@ public class MainActivity extends Activity {
     private ApiResponse get(String path){
         HttpURLConnection c=null;
         try{
-            String key=getSharedPreferences(PREFS,MODE_PRIVATE).getString("api_key","").trim();
+            String key=SecurePrefs.getApiKey(this).trim();
             if(key.toLowerCase(Locale.ROOT).startsWith("bearer "))key=key.substring(7).trim();
             if(key.length()==0)return new ApiResponse(401,"Missing API key");
             String clean=path.startsWith("/")?path.substring(1):path;
