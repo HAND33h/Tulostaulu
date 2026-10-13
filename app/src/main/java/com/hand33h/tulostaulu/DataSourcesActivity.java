@@ -52,11 +52,11 @@ public class DataSourcesActivity extends Activity {
 
         ScrollView sc=new ScrollView(this);
         LinearLayout root=new LinearLayout(this);
-        root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(18),dp(20),dp(18),dp(40));root.setBackgroundColor(Color.rgb(7,23,39));sc.addView(root);
-        root.addView(text("🧊 "+tr("WOS DATAKESKUS","WOS DATA CENTER"),27,true,Color.WHITE));
+        root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(18),dp(20),dp(18),dp(40));root.setBackgroundColor(Color.rgb(12,23,38));sc.addView(root);
+        root.addView(text("👑 "+tr("DATAKESKUS","DATA CENTER"),27,true,Color.rgb(239,192,90)));
         root.addView(text(tr("Toimii millä tahansa Whiteout Survival -serverinumerolla. Tunnetut FID:t kerätään omaan rekisteriin ja päivitetään live-haulla.","Works with any Whiteout Survival state number. Known FIDs are kept in a local registry and refreshed with live lookups."),13,false,Color.rgb(170,201,218)));
 
-        state=input(tr("Serverinumero, esim. 1674","State number, e.g. 1674"),p.getString("state","1674"),true,false);root.addView(state,margin(0,16,0,8));
+        state=input(tr("Serverinumero, esim. 1674","State number, e.g. 1674"),p.getString("state",""),true,false);root.addView(state,margin(0,16,0,8));
         fids=input(tr("FID:t: yksi per rivi tai pilkulla eroteltuna","FIDs: one per line or comma separated"),"",true,true);root.addView(fids,margin(0,0,0,8));
 
         Button importBtn=button(tr("HAE / TALLENNA FID:T","FETCH / SAVE FIDS"));root.addView(importBtn);
@@ -162,9 +162,9 @@ public class DataSourcesActivity extends Activity {
     private long num(JSONObject o,String...ks){for(String k:ks)try{Object v=o.opt(k);if(v instanceof Number)return((Number)v).longValue();String s=String.valueOf(v).replaceAll("[^0-9]","");if(!s.isEmpty())return Long.parseLong(s);}catch(Exception ignored){}return 0;}
     private String digits(String s){return s==null?"":s.replaceAll("[^0-9]","");}
     private void addSource(LinearLayout root,String title,String desc,String url){root.addView(text(title,15,true,Color.WHITE));root.addView(text(desc,12,false,Color.rgb(170,201,218)));Button b=button(tr("AVAA","OPEN"));root.addView(b,margin(0,4,0,12));b.setOnClickListener(v->startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(url))));}
-    private EditText input(String hint,String value,boolean numeric,boolean multi){EditText e=new EditText(this);e.setHint(hint);e.setText(value);e.setTextColor(Color.WHITE);e.setHintTextColor(Color.LTGRAY);e.setBackgroundColor(Color.rgb(31,72,96));e.setPadding(dp(12),dp(12),dp(12),dp(12));e.setInputType(numeric?InputType.TYPE_CLASS_NUMBER:InputType.TYPE_CLASS_TEXT);if(multi){e.setSingleLine(false);e.setMinLines(3);e.setGravity(Gravity.TOP);}else e.setSingleLine();return e;}
+    private EditText input(String hint,String value,boolean numeric,boolean multi){EditText e=new EditText(this);e.setHint(hint);e.setText(value);e.setTextColor(Color.WHITE);e.setHintTextColor(Color.LTGRAY);android.graphics.drawable.GradientDrawable inputBg=new android.graphics.drawable.GradientDrawable();inputBg.setColor(Color.rgb(24,50,73));inputBg.setCornerRadius(dp(12));e.setBackground(inputBg);e.setPadding(dp(12),dp(12),dp(12),dp(12));e.setInputType(numeric?InputType.TYPE_CLASS_NUMBER:InputType.TYPE_CLASS_TEXT);if(multi){e.setSingleLine(false);e.setMinLines(3);e.setGravity(Gravity.TOP);}else e.setSingleLine();return e;}
     private TextView text(String s,int z,boolean bold,int c){TextView v=new TextView(this);v.setText(s);v.setTextSize(z);v.setTextColor(c);if(bold)v.setTypeface(Typeface.DEFAULT_BOLD);return v;}
-    private Button button(String s){Button b=new Button(this);b.setText(s);b.setTextColor(Color.WHITE);b.setAllCaps(false);b.setTypeface(Typeface.DEFAULT_BOLD);b.setBackgroundColor(Color.rgb(39,165,211));return b;}
+    private Button button(String s){Button b=new Button(this);b.setText(s);b.setTextColor(Color.WHITE);b.setAllCaps(false);b.setTypeface(Typeface.DEFAULT_BOLD);android.graphics.drawable.GradientDrawable bg=new android.graphics.drawable.GradientDrawable();bg.setColor(Color.rgb(24,61,92));bg.setCornerRadius(dp(14));bg.setStroke(dp(1),Color.rgb(239,192,90));b.setBackground(bg);b.setPadding(dp(12),dp(12),dp(12),dp(12));return b;}
     private LinearLayout.LayoutParams margin(int l,int t,int r,int b){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(dp(l),dp(t),dp(r),dp(b));return p;}
     private int dp(int n){return(int)(n*getResources().getDisplayMetrics().density+.5f);}private String tr(String fi,String en){return english?en:fi;}
     static class Resp{int code;String body;Resp(int c,String b){code=c;body=b==null?"":b;}}
