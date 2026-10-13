@@ -45,7 +45,8 @@ public class MainActivity extends Activity {
     private static final int BG = Color.rgb(12,23,38);
     private static final int TEXT = Color.rgb(239,247,255);
     private static final int MUTED = Color.rgb(159,185,207);
-    private static final int ACCENT = Color.rgb(23,128,195);
+    private static final int ACCENT = Color.rgb(20,113,169);
+    private static final int GOLD = Color.rgb(239,192,90);
 
     private EditText stateInput, fidInput;
     private TextView statusText, resultsText;
@@ -70,8 +71,9 @@ public class MainActivity extends Activity {
         scroll.setBackgroundColor(BG);
         scroll.addView(root);
 
-        root.addView(text("👑 BUNNY KING • WOS",29,true,Color.rgb(244,201,95),Gravity.CENTER),lp(0,0,0,4));
-        root.addView(text(tr("WOS DATA / TULOSTAULU","WOS DATA / SCOREBOARD"),18,true,MUTED,Gravity.CENTER),lp(0,0,0,18));
+        root.addView(text("🐰 👑",42,true,GOLD,Gravity.CENTER),lp(0,0,0,4));
+        root.addView(text("BUNNY KING",32,true,GOLD,Gravity.CENTER),lp(0,0,0,4));
+        root.addView(text("WHITEOUT SURVIVAL • COMMAND CENTER",13,true,MUTED,Gravity.CENTER),lp(0,0,0,18));
 
         Spinner language=new Spinner(this);
         language.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"🇫🇮 Suomi","🇬🇧 English"}));
@@ -82,32 +84,16 @@ public class MainActivity extends Activity {
             public void onNothingSelected(AdapterView<?> p){}
         });
 
-        String saved=prefs.getString("state","1674").trim();
-        if(saved.length()==0)saved="1674";
+        String saved=prefs.getString("state","").trim();
         currentState=saved;
         stateInput=input(tr("Serverinumero","Server number"),saved,true);
         fidInput=input(tr("Pelaajan FID (valinnainen)","Player FID (optional)"),prefs.getString("fid",""),true);
-        root.addView(stateInput,lp(0,16,0,0));
-        root.addView(fidInput,lp(0,14,0,0));
-
-        root.addView(text(tr(
-                "Oletusserveri on 1674. Ilman FID:tä näytetään tämän staten oma WOS-rekisteri. FID-haut ja OCR täydentävät sitä. WOS Controlin /leaderboard-kutsua ei käytetä pelaajalistana.",
-                "Default state is 1674. Without a FID the app shows its own WOS state registry. FID lookups and OCR grow it. WOS Control /leaderboard is not used as a player list."),
-                13,true,MUTED,Gravity.CENTER),lp(0,12,0,0));
-
-        Button load=button(tr("NÄYTÄ SERVERIN DATA / HAE FID","SHOW STATE DATA / FETCH FID"),ACCENT,16);
-        Button dataCenter=button(tr("DATAKESKUS • FID-LISTA • OCR","DATA CENTER • FID LIST • OCR"),Color.rgb(39,165,211),15);
+        statusText=text(tr("Valitse serveri aloittaaksesi","Choose a server to begin"),16,true,TEXT,Gravity.CENTER);
+        resultsText=text("",15,false,TEXT,Gravity.START);
+        resultsText.setLineSpacing(0,1.12f);
         exportButton=button(tr("VIE EXCEL (.XLSX)","EXPORT EXCEL (.XLSX)"),Color.rgb(48,95,130),15);
         exportButton.setEnabled(false);
-        root.addView(load,lp(0,24,0,10));
-        root.addView(dataCenter,lp(0,0,0,10));
-        root.addView(exportButton,new LinearLayout.LayoutParams(-1,-2));
-
-        statusText=text(tr("Valmis • oletus State #1674","Ready • default State #1674"),16,true,TEXT,Gravity.CENTER);
-        resultsText=text(tr("Paina NÄYTÄ SERVERIN DATA. Jos rekisteri on tyhjä, lisää FID:t Datakeskuksessa tai tuo WOS-rankingkuvia.","Press SHOW STATE DATA. If the registry is empty, add FIDs in Data Center or import WOS ranking screenshots."),15,false,TEXT,Gravity.START);
-        resultsText.setLineSpacing(0,1.12f);
-        root.addView(statusText,lp(0,24,0,16));
-        root.addView(resultsText,new LinearLayout.LayoutParams(-1,-2));
+        root.addView(text(tr("VALITSE TOIMINTO","CHOOSE A FEATURE"),16,true,GOLD,Gravity.CENTER),lp(0,8,0,6));
         root.addView(text(tr("OMAT PIKAVALINNAT","MY SHORTCUTS"),19,true,Color.rgb(244,201,95),Gravity.CENTER),lp(0,28,0,12));
         root.addView(text(tr("Pidä painiketta pohjassa vaihtaaksesi toiminnon","Long-press a tile to customize it"),13,false,MUTED,Gravity.CENTER),lp(0,0,0,12));
         String[] defaults={"data","battle","upgrades","forum"};
@@ -117,9 +103,9 @@ public class MainActivity extends Activity {
             for(int col=0;col<2;col++){
                 final int slot=row*2+col;
                 String feature=prefs.getString("home_tile_"+slot,defaults[slot]);
-                Button tile=button(featureLabel(feature),Color.rgb(27,66,104),15);
+                Button tile=button(featureLabel(feature),Color.rgb(24,61,92),15);
                 tile.setAllCaps(false);
-                tile.setMinHeight(190);
+                tile.setMinHeight(240);
                 LinearLayout.LayoutParams tileParams=new LinearLayout.LayoutParams(0,-2,1f);
                 tileParams.setMargins(5,5,5,5);
                 pair.addView(tile,tileParams);
@@ -128,6 +114,16 @@ public class MainActivity extends Activity {
             }
             root.addView(pair,new LinearLayout.LayoutParams(-1,-2));
         }
+        root.addView(text(tr("📊 SERVERIN TIEDOT","📊 SERVER DATA"),19,true,GOLD,Gravity.CENTER),lp(0,28,0,12));
+        root.addView(stateInput,lp(0,8,0,0));
+        root.addView(fidInput,lp(0,12,0,0));
+        Button load=button(tr("HAE PELAAJATIEDOT","LOAD PLAYER DATA"),ACCENT,16);
+        root.addView(load,lp(0,16,0,8));
+        root.addView(exportButton,lp(0,0,0,8));
+        root.addView(statusText,lp(0,12,0,8));
+        root.addView(resultsText,lp(0,0,0,8));
+        load.setOnClickListener(v->loadBestData());
+        exportButton.setOnClickListener(v->chooseXlsxLocation());
         root.addView(text("WOS community data • App owner: HAND33h",13,true,MUTED,Gravity.CENTER),lp(0,36,0,0));
         // Persistent bottom navigation remains visible while scoreboard content scrolls.
         LinearLayout shell=new LinearLayout(this);
@@ -147,9 +143,6 @@ public class MainActivity extends Activity {
         more.setOnClickListener(v->showMore());
         shell.addView(tabs,new LinearLayout.LayoutParams(-1,-2));
 
-        load.setOnClickListener(v->loadBestData());
-        dataCenter.setOnClickListener(v->{saveInputs();startActivity(new Intent(this,DataSourcesActivity.class));});
-        exportButton.setOnClickListener(v->chooseXlsxLocation());
         setContentView(shell);
     }
 
@@ -226,9 +219,9 @@ public class MainActivity extends Activity {
 
     private void loadBestData(){
         String rawState=stateInput.getText().toString().trim();
-        final String state=rawState.length()==0?"1674":rawState;
+        final String state=rawState;
         final String fid=fidInput.getText().toString().trim();
-        if(rawState.length()==0)stateInput.setText(state);
+        if(rawState.length()==0){Toast.makeText(this,tr("Anna serverinumero","Enter a server number"),Toast.LENGTH_SHORT).show();return;}
         currentState=state;
         getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",state).putString("fid",fid).apply();
         hideKeyboard();
@@ -252,7 +245,7 @@ public class MainActivity extends Activity {
 
     private void saveInputs(){
         String raw=stateInput.getText().toString().trim();
-        String state=raw.length()==0?"1674":raw;
+        String state=raw;
         getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",state).putString("fid",fidInput.getText().toString().trim()).apply();
     }
 
