@@ -72,6 +72,8 @@ public class MainActivity extends Activity {
         root.setGravity(Gravity.CENTER_HORIZONTAL);
         root.setBackgroundColor(BG);
         scroll.setBackgroundColor(BG);
+        scroll.setFillViewport(true);
+        scroll.setClipToPadding(false);
         scroll.addView(root);
 
         root.addView(text("🐰 👑",42,true,GOLD,Gravity.CENTER),lp(0,0,0,4));
@@ -91,7 +93,7 @@ public class MainActivity extends Activity {
         language.setAdapter(languageAdapter);
         GradientDrawable languageBg=new GradientDrawable();languageBg.setColor(Color.rgb(24,50,73));languageBg.setCornerRadius(14f);language.setBackground(languageBg);
         language.setSelection(english?1:0);
-        root.addView(language,new LinearLayout.LayoutParams(-1,-2));
+        root.addView(language,new LinearLayout.LayoutParams(-1,dp(52)));
         language.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             public void onItemSelected(AdapterView<?> p,android.view.View v,int pos,long id){boolean next=pos==1;if(next!=english){getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("lang",next?"en":"fi").apply();recreate();}}
             public void onNothingSelected(AdapterView<?> p){}
@@ -121,10 +123,12 @@ public class MainActivity extends Activity {
                 tile.setMinHeight(0);
                 tile.setMinimumHeight(0);
                 tile.setTextColor(GOLD);
-                tile.setTextSize(17);
+                tile.setTextSize(16);
+                tile.setGravity(Gravity.CENTER);
+                tile.setIncludeFontPadding(false);
                 tile.setElevation(7f);
                 LinearLayout.LayoutParams tileParams=new LinearLayout.LayoutParams(0,dp(112),1f);
-                tileParams.setMargins(5,5,5,5);
+                tileParams.setMargins(dp(3),dp(3),dp(3),dp(3));
                 pair.addView(tile,tileParams);
                 tile.setContentDescription(featureLabel(feature).replace("\\n"," "));
                 tile.setOnClickListener(v->openFeature(feature));
@@ -142,7 +146,7 @@ public class MainActivity extends Activity {
         root.addView(resultsText,lp(0,0,0,8));
         load.setOnClickListener(v->loadBestData());
         exportButton.setOnClickListener(v->chooseXlsxLocation());
-        root.addView(text("WOS community data • App owner: HAND33h",13,true,MUTED,Gravity.CENTER),lp(0,36,0,0));
+        root.addView(text("WOS community data • App owner: HAND33h",12,true,MUTED,Gravity.CENTER),lp(0,28,0,0));
         // Persistent bottom navigation remains visible while scoreboard content scrolls.
         LinearLayout shell=new LinearLayout(this);
         shell.setOrientation(LinearLayout.VERTICAL);
