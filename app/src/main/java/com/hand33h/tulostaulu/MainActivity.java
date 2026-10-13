@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -78,7 +79,19 @@ public class MainActivity extends Activity {
         scroll.setClipToPadding(false);
         scroll.addView(root);
 
-        root.addView(text("🐰 👑",42,true,GOLD,Gravity.CENTER),lp(0,0,0,4));
+        ImageView bunnyLogo=new ImageView(this);
+        bunnyLogo.setImageResource(R.drawable.wos_bunny);
+        bunnyLogo.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        bunnyLogo.setContentDescription(tr("Bunny King -logo","Bunny King logo"));
+        GradientDrawable logoFrame=new GradientDrawable();
+        logoFrame.setColor(Color.rgb(24,50,73));
+        logoFrame.setCornerRadius(dp(22));
+        logoFrame.setStroke(dp(2),GOLD);
+        bunnyLogo.setBackground(logoFrame);
+        bunnyLogo.setClipToOutline(true);
+        LinearLayout.LayoutParams logoParams=new LinearLayout.LayoutParams(dp(110),dp(110));
+        logoParams.setMargins(0,0,0,dp(10));
+        root.addView(bunnyLogo,logoParams);
         root.addView(text("BUNNY KING",32,true,GOLD,Gravity.CENTER),lp(0,0,0,4));
         root.addView(text("WHITEOUT SURVIVAL • COMMAND CENTER",13,true,MUTED,Gravity.CENTER),lp(0,0,0,18));
 
