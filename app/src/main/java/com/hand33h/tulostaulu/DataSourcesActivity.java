@@ -43,6 +43,7 @@ public class DataSourcesActivity extends Activity {
     private TextView status,data;
     private boolean english;
     private PlayerDataStore store;
+    private Button importBtn,refreshBtn;
 
     @Override protected void onCreate(Bundle b){
         super.onCreate(b);
@@ -59,8 +60,8 @@ public class DataSourcesActivity extends Activity {
         state=input(tr("Serverinumero, esim. 1674","State number, e.g. 1674"),p.getString("state",""),true,false);root.addView(state,margin(0,16,0,8));
         fids=input(tr("FID:t: yksi per rivi tai pilkulla eroteltuna","FIDs: one per line or comma separated"),"",true,true);root.addView(fids,margin(0,0,0,8));
 
-        Button importBtn=button(tr("HAE / TALLENNA FID:T","FETCH / SAVE FIDS"));root.addView(importBtn);
-        Button refreshBtn=button(tr("PÄIVITÄ TÄMÄN SERVERIN TUNNETUT PELAAJAT","REFRESH KNOWN PLAYERS FOR THIS STATE"));root.addView(refreshBtn,margin(0,8,0,0));
+        importBtn=button(tr("HAE / TALLENNA FID:T","FETCH / SAVE FIDS"));root.addView(importBtn);
+        refreshBtn=button(tr("PÄIVITÄ TÄMÄN SERVERIN TUNNETUT PELAAJAT","REFRESH KNOWN PLAYERS FOR THIS STATE"));root.addView(refreshBtn,margin(0,8,0,0));
         Button showBtn=button(tr("NÄYTÄ PAIKALLINEN TOP 100","SHOW LOCAL TOP 100"));root.addView(showBtn,margin(0,8,0,0));
         Button ocrBtn=button(tr("TUO WOS LEADERBOARD -KUVAT (OCR)","IMPORT WOS LEADERBOARD SCREENSHOTS (OCR)"));root.addView(ocrBtn,margin(0,8,0,0));
 
@@ -81,10 +82,13 @@ public class DataSourcesActivity extends Activity {
         setContentView(sc);
     }
 
+    private void setBusy(boolean busy){importBtn.setEnabled(!busy);refreshBtn.setEnabled(!busy);}
+
     private void startFidImport(){
         String s=saveState(); if(s.isEmpty())return;
         Set<String> ids=parseFids(fids.getText().toString());
         if(ids.isEmpty()){Toast.makeText(this,tr("Anna vähintään yksi FID","Enter at least one FID"),Toast.LENGTH_SHORT).show();return;}
+        setBusy(true);
         status.setText(tr("Haetaan ","Fetching ")+ids.size()+tr(" pelaajaa…"," players…"));
         new Thread(()->fetchMany(s,new ArrayList<>(ids))).start();
     }
@@ -94,6 +98,7 @@ public class DataSourcesActivity extends Activity {
         List<PlayerDataStore.PlayerRecord> known=store.listState(s,1000);
         Set<String> ids=new LinkedHashSet<>();for(PlayerDataStore.PlayerRecord r:known)if(r.fid!=null&&!r.fid.isEmpty())ids.add(r.fid);
         if(ids.isEmpty()){status.setText(tr("Tälle serverille ei ole vielä tunnettuja FID:itä. Tuo FID-lista tai leaderboard-kuvia.","No known FIDs for this state yet. Import FIDs or leaderboard screenshots."));return;}
+        setBusy(true);
         status.setText(tr("Päivitetään ","Refreshing ")+ids.size()+tr(" tunnettua pelaajaa…"," known players…"));
         new Thread(()->fetchMany(s,new ArrayList<>(ids))).start();
     }
@@ -113,7 +118,7 @@ public class DataSourcesActivity extends Activity {
             }catch(Exception e){failed++;}
         }
         final int a=ok,w=wrongState,f=failed;
-        runOnUiThread(()->{status.setText(tr("Valmis: ","Done: ")+a+tr(" tallennettu, "," saved, ")+w+tr(" eri serverillä, "," on another state, ")+f+tr(" epäonnistui."," failed."));showLocal();});
+        runOnUiThread(()->{setBusy(false);status.setText(tr("Valmis: ","Done: ")+a+tr(" tallennettu, "," saved, ")+w+tr(" eri serverillä, "," on another state, ")+f+tr(" epäonnistui."," failed."));showLocal();});
     }
 
     private PlayerDataStore.PlayerRecord recordFromJson(String fid,JSONObject p){
@@ -155,7 +160,7 @@ public class DataSourcesActivity extends Activity {
         data.setText(b.toString());
     }
 
-    private String saveState(){String s=state.getText().toString().trim();if(s.isEmpty()){Toast.makeText(this,tr("Anna serverinumero","Enter a state number"),Toast.LENGTH_SHORT).show();return"";}getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s).apply();return s;}
+    private String saveState(){String s=state.getText().toString().trim();if(!s.matches("[0-9]{1,6}")||"0".equals(s)){state.setError(tr("Anna kelvollinen serverinumero","Enter a valid state number"));state.requestFocus();return"";}getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",s).apply();return s;}
     private Set<String> parseFids(String raw){Set<String> out=new LinkedHashSet<>();if(raw==null)return out;for(String x:raw.split("[^0-9]+"))if(x.matches("\\d{6,14}"))out.add(x);return out;}
     private void collect(Object n,List<JSONObject> o,int d){if(n==null||d>7)return;if(n instanceof JSONObject){JSONObject j=(JSONObject)n;o.add(j);Iterator<String> it=j.keys();while(it.hasNext())collect(j.opt(it.next()),o,d+1);}else if(n instanceof JSONArray){JSONArray a=(JSONArray)n;for(int i=0;i<a.length();i++)collect(a.opt(i),o,d+1);}}
     private String str(JSONObject o,String...ks){for(String k:ks){Object v=o.opt(k);if(v!=null&&v!=JSONObject.NULL&&!String.valueOf(v).trim().isEmpty())return String.valueOf(v).trim();}return"";}
@@ -167,5 +172,6 @@ public class DataSourcesActivity extends Activity {
     private Button button(String s){Button b=new Button(this);b.setText(s);b.setTextColor(Color.WHITE);b.setAllCaps(false);b.setTypeface(Typeface.DEFAULT_BOLD);android.graphics.drawable.GradientDrawable bg=new android.graphics.drawable.GradientDrawable();bg.setColor(Color.rgb(24,61,92));bg.setCornerRadius(dp(14));bg.setStroke(dp(1),Color.rgb(239,192,90));b.setBackground(bg);b.setPadding(dp(12),dp(12),dp(12),dp(12));return b;}
     private LinearLayout.LayoutParams margin(int l,int t,int r,int b){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(dp(l),dp(t),dp(r),dp(b));return p;}
     private int dp(int n){return(int)(n*getResources().getDisplayMetrics().density+.5f);}private String tr(String fi,String en){return english?en:fi;}
+    @Override protected void onDestroy(){super.onDestroy();if(store!=null)store.close();}
     static class Resp{int code;String body;Resp(int c,String b){code=c;body=b==null?"":b;}}
 }
