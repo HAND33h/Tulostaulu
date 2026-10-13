@@ -58,6 +58,7 @@ public class MainActivity extends Activity {
     private String currentState = "";
     private boolean english;
     private PlayerDataStore store;
+    private ScrollView homeScroll;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +67,7 @@ public class MainActivity extends Activity {
         store=new PlayerDataStore(this);
 
         ScrollView scroll=new ScrollView(this);
+        homeScroll=scroll;
         LinearLayout root=new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(30,34,30,38);
@@ -176,6 +178,7 @@ public class MainActivity extends Activity {
         });
         setContentView(shell);
         shell.requestApplyInsets();
+        if(savedInstanceState!=null){int y=savedInstanceState.getInt("home_scroll_y",0);scroll.post(()->scroll.scrollTo(0,y));}
     }
 
     private static final String[] FEATURE_IDS={"data","battle","reports","upgrades","forum","calculator","sources","settings"};
@@ -221,7 +224,14 @@ public class MainActivity extends Activity {
         for(int i=0;i<names.length;i++)names[i]=featureLabel(FEATURE_IDS[i]).replace("\\n"," ");
         new AlertDialog.Builder(this).setTitle(tr("Kaikki työkalut","All tools"))
             .setItems(names,(dialog,which)->openFeature(FEATURE_IDS[which]))
+            .setNeutralButton(tr("Palauta pikavalinnat","Reset shortcuts"),(dialog,which)->resetShortcuts())
             .setNegativeButton(tr("Sulje","Close"),null).show();
+    }
+
+    private void resetShortcuts(){
+        SharedPreferences.Editor edit=getSharedPreferences(PREFS,MODE_PRIVATE).edit();
+        for(int i=0;i<4;i++)edit.remove("home_tile_"+i);
+        edit.apply();saveInputs();recreate();
     }
 
     private void addTab(LinearLayout parent,String label,Class<? extends Activity> target){
@@ -242,7 +252,7 @@ public class MainActivity extends Activity {
 
     private void scrollToTop(){
         // The home tab is already on this screen.
-        Toast.makeText(this,tr("Olet etusivulla","You are on Home"),Toast.LENGTH_SHORT).show();
+        if(homeScroll!=null)homeScroll.smoothScrollTo(0,0);
     }
 
     private void addHubButton(LinearLayout parent,String label,Class<? extends Activity> target){
@@ -255,7 +265,8 @@ public class MainActivity extends Activity {
         String rawState=stateInput.getText().toString().trim();
         final String state=rawState;
         final String fid=fidInput.getText().toString().trim();
-        if(rawState.length()==0){Toast.makeText(this,tr("Anna serverinumero","Enter a server number"),Toast.LENGTH_SHORT).show();return;}
+        if(!rawState.matches("[0-9]{1,6}")||"0".equals(rawState)){stateInput.setError(tr("Anna kelvollinen serverinumero","Enter a valid state number"));stateInput.requestFocus();return;}
+        if(!fid.isEmpty()&&!fid.matches("[0-9]{6,14}")){fidInput.setError(tr("FID:n pitää sisältää 6–14 numeroa","FID must contain 6–14 digits"));fidInput.requestFocus();return;}
         currentState=state;
         getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("state",state).putString("fid",fid).apply();
         hideKeyboard();
@@ -275,6 +286,11 @@ public class MainActivity extends Activity {
             String apiKey=getSharedPreferences(PREFS,MODE_PRIVATE).getString("api_key","").trim();
             if(apiKey.length()>0)new Thread(()->syncStateEndpoint(state)).start();
         }
+    }
+
+    @Override protected void onSaveInstanceState(Bundle out){
+        if(homeScroll!=null)out.putInt("home_scroll_y",homeScroll.getScrollY());
+        super.onSaveInstanceState(out);
     }
 
     private void saveInputs(){
