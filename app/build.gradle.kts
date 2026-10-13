@@ -7,11 +7,11 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.hand33h.tulostaulu.v291fresh"
+        applicationId = "com.hand33h.tulostaulu"
         minSdk = 26
         targetSdk = 35
-        versionCode = 291
-        versionName = "2.9.1-fresh-install"
+        versionCode = 30001
+        versionName = "3.0.0"
     }
 
     buildTypes {
