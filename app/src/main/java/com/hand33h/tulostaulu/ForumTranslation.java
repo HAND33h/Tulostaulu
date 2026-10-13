@@ -3,7 +3,7 @@ package com.hand33h.tulostaulu;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.mlkit.nl.languageid.LanguageIdentification;
-import com.google.mlkit.nl.translate.DownloadConditions;
+import com.google.mlkit.common.model.DownloadConditions;
 import com.google.mlkit.nl.translate.TranslateLanguage;
 import com.google.mlkit.nl.translate.Translator;
 import com.google.mlkit.nl.translate.TranslatorOptions;
