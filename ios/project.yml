@@ -1,0 +1,18 @@
+name: BunnyKing
+options:
+  bundleIdPrefix: com.hand33h
+targets:
+  BunnyKing:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - BunnyKing
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.hand33h.bunnyking
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Bunny King
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CODE_SIGNING_ALLOWED: NO
