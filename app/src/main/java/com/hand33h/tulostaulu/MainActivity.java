@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
     private TextView statusText, resultsText;
     private Button exportButton;
     private final List<PlayerRow> rows = new ArrayList<>();
-    private String currentState = "1674";
+    private String currentState = "";
     private boolean english;
     private PlayerDataStore store;
 
@@ -93,7 +93,7 @@ public class MainActivity extends Activity {
         resultsText.setLineSpacing(0,1.12f);
         exportButton=button(tr("VIE EXCEL (.XLSX)","EXPORT EXCEL (.XLSX)"),Color.rgb(48,95,130),15);
         exportButton.setEnabled(false);
-        root.addView(text(tr("VALITSE TOIMINTO","CHOOSE A FEATURE"),16,true,GOLD,Gravity.CENTER),lp(0,8,0,6));
+
         root.addView(text(tr("OMAT PIKAVALINNAT","MY SHORTCUTS"),21,true,GOLD,Gravity.CENTER),lp(0,18,0,12));
         root.addView(text(tr("Pidä painiketta pohjassa vaihtaaksesi toiminnon","Long-press a tile to customize it"),13,false,MUTED,Gravity.CENTER),lp(0,0,0,12));
         String[] defaults={"data","battle","upgrades","forum"};
@@ -112,6 +112,7 @@ public class MainActivity extends Activity {
                 LinearLayout.LayoutParams tileParams=new LinearLayout.LayoutParams(0,-2,1f);
                 tileParams.setMargins(5,5,5,5);
                 pair.addView(tile,tileParams);
+                tile.setContentDescription(featureLabel(feature).replace("\\n"," "));
                 tile.setOnClickListener(v->openFeature(feature));
                 tile.setOnLongClickListener(v->{chooseFeature(slot);return true;});
             }
@@ -142,7 +143,9 @@ public class MainActivity extends Activity {
         addTab(tabs,tr("⚔ Taistelu","⚔ Battle"),BattleSimulatorActivity.class);
         Button more=button(tr("••• Lisää","••• More"),Color.rgb(30,54,79),10);
         more.setAllCaps(false);
-        tabs.addView(more,new LinearLayout.LayoutParams(0,-2,1f));
+        LinearLayout.LayoutParams moreParams=new LinearLayout.LayoutParams(0,-2,1f);
+        moreParams.setMargins(2,0,2,0);
+        tabs.addView(more,moreParams);
         more.setOnClickListener(v->showMore());
         shell.addView(tabs,new LinearLayout.LayoutParams(-1,-2));
 
@@ -171,6 +174,7 @@ public class MainActivity extends Activity {
             case "upgrades":case "calculator":target=CalculatorHubActivity.class;break;
             case "forum":target=ForumActivity.class;break;
             case "sources":target=DataSourcesActivity.class;break;
+            case "settings":target=MyAccountActivity.class;break;
             default:target=UnifiedActivity.class;
         }
         saveInputs();
@@ -202,7 +206,8 @@ public class MainActivity extends Activity {
         tab.setAllCaps(false);
         tab.setMinWidth(0);
         tab.setMinimumWidth(0);
-        tab.setPadding(2,12,2,12);
+        tab.setPadding(2,18,2,18);
+        tab.setContentDescription(label);
         tab.setOnClickListener(v->{
             if(target!=null){saveInputs();startActivity(new Intent(this,target));}
             else scrollToTop();
