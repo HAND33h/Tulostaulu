@@ -1,6 +1,7 @@
 package com.hand33h.tulostaulu;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -107,13 +108,26 @@ public class MainActivity extends Activity {
         resultsText.setLineSpacing(0,1.12f);
         root.addView(statusText,lp(0,24,0,16));
         root.addView(resultsText,new LinearLayout.LayoutParams(-1,-2));
-        // Group existing features by topic without replacing or removing old screens.
-        root.addView(text(tr("PIKAVALIKKO • WOS TYÖKALUT","QUICK MENU • WOS TOOLS"),19,true,TEXT,Gravity.CENTER),lp(0,28,0,12));
-        addHubButton(root,tr("📊 Pelaajat ja ranking","📊 Players and ranking"),DataSourcesActivity.class);
-        addHubButton(root,tr("⚔ Taistelu ja raportit","⚔ Battle and reports"),BattleReportAnalyzerActivity.class);
-        addHubButton(root,tr("🛡 Taistelusimulaattori","🛡 Battle simulator"),BattleSimulatorActivity.class);
-        addHubButton(root,tr("🔧 Kehitys ja laskurit","🔧 Upgrades and calculators"),CalculatorHubActivity.class);
-        addHubButton(root,tr("⚙ Asetukset ja tietolähteet","⚙ Settings and data sources"),UnifiedActivity.class);
+        root.addView(text(tr("OMAT PIKAVALINNAT","MY SHORTCUTS"),19,true,Color.rgb(244,201,95),Gravity.CENTER),lp(0,28,0,12));
+        root.addView(text(tr("Pidä painiketta pohjassa vaihtaaksesi toiminnon","Long-press a tile to customize it"),13,false,MUTED,Gravity.CENTER),lp(0,0,0,12));
+        String[] defaults={"data","battle","upgrades","forum"};
+        for(int row=0;row<2;row++){
+            LinearLayout pair=new LinearLayout(this);
+            pair.setOrientation(LinearLayout.HORIZONTAL);
+            for(int col=0;col<2;col++){
+                final int slot=row*2+col;
+                String feature=prefs.getString("home_tile_"+slot,defaults[slot]);
+                Button tile=button(featureLabel(feature),Color.rgb(27,66,104),15);
+                tile.setAllCaps(false);
+                tile.setMinHeight(190);
+                LinearLayout.LayoutParams tileParams=new LinearLayout.LayoutParams(0,-2,1f);
+                tileParams.setMargins(5,5,5,5);
+                pair.addView(tile,tileParams);
+                tile.setOnClickListener(v->openFeature(feature));
+                tile.setOnLongClickListener(v->{chooseFeature(slot);return true;});
+            }
+            root.addView(pair,new LinearLayout.LayoutParams(-1,-2));
+        }
         root.addView(text("WOS community data • App owner: HAND33h",13,true,MUTED,Gravity.CENTER),lp(0,36,0,0));
         // Persistent bottom navigation remains visible while scoreboard content scrolls.
         LinearLayout shell=new LinearLayout(this);
@@ -127,14 +141,61 @@ public class MainActivity extends Activity {
         addTab(tabs,tr("🏠 Koti","🏠 Home"),null);
         addTab(tabs,tr("📊 Data","📊 Data"),DataSourcesActivity.class);
         addTab(tabs,tr("⚔ Taistelu","⚔ Battle"),BattleSimulatorActivity.class);
-        addTab(tabs,tr("🔧 Kehitys","🔧 Upgrade"),CalculatorHubActivity.class);
-        addTab(tabs,tr("⚙ Lisää","⚙ More"),UnifiedActivity.class);
+        Button more=button(tr("••• Lisää","••• More"),Color.rgb(30,54,79),10);
+        more.setAllCaps(false);
+        tabs.addView(more,new LinearLayout.LayoutParams(0,-2,1f));
+        more.setOnClickListener(v->showMore());
         shell.addView(tabs,new LinearLayout.LayoutParams(-1,-2));
 
         load.setOnClickListener(v->loadBestData());
         dataCenter.setOnClickListener(v->{saveInputs();startActivity(new Intent(this,DataSourcesActivity.class));});
         exportButton.setOnClickListener(v->chooseXlsxLocation());
         setContentView(shell);
+    }
+
+    private static final String[] FEATURE_IDS={"data","battle","reports","upgrades","forum","calculator","sources","settings"};
+    private String featureLabel(String id){
+        switch(id){
+            case "data":return tr("📊 Pelaajat\\n& ranking","📊 Players\\n& ranking");
+            case "battle":return tr("⚔ Taistelu-\\nsimulaattori","⚔ Battle\\nsimulator");
+            case "reports":return tr("📋 Taistelu-\\nraportit","📋 Battle\\nreports");
+            case "upgrades":return tr("🔧 Kehitys\\n& laskurit","🔧 Upgrades\\n& tools");
+            case "forum":return tr("💬 Foorumi","💬 Forum");
+            case "calculator":return tr("🧮 Laskurit","🧮 Calculators");
+            case "sources":return tr("🌐 Tietolähteet","🌐 Data sources");
+            default:return tr("⚙ Asetukset","⚙ Settings");
+        }
+    }
+    private void openFeature(String id){
+        Class<? extends Activity> target;
+        switch(id){
+            case "data":target=DataSourcesActivity.class;break;
+            case "battle":target=BattleSimulatorActivity.class;break;
+            case "reports":target=BattleReportAnalyzerActivity.class;break;
+            case "upgrades":case "calculator":target=CalculatorHubActivity.class;break;
+            case "forum":target=ForumActivity.class;break;
+            case "sources":target=DataSourcesActivity.class;break;
+            default:target=UnifiedActivity.class;
+        }
+        saveInputs();
+        startActivity(new Intent(this,target));
+    }
+    private void chooseFeature(int slot){
+        String[] names=new String[FEATURE_IDS.length];
+        for(int i=0;i<names.length;i++)names[i]=featureLabel(FEATURE_IDS[i]).replace("\\n"," ");
+        new AlertDialog.Builder(this)
+            .setTitle(tr("Valitse pikavalinta "+(slot+1),"Choose shortcut "+(slot+1)))
+            .setItems(names,(dialog,which)->{
+                getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("home_tile_"+slot,FEATURE_IDS[which]).apply();
+                saveInputs();recreate();
+            }).setNegativeButton(tr("Peruuta","Cancel"),null).show();
+    }
+    private void showMore(){
+        String[] names=new String[FEATURE_IDS.length];
+        for(int i=0;i<names.length;i++)names[i]=featureLabel(FEATURE_IDS[i]).replace("\\n"," ");
+        new AlertDialog.Builder(this).setTitle(tr("Kaikki työkalut","All tools"))
+            .setItems(names,(dialog,which)->openFeature(FEATURE_IDS[which]))
+            .setNegativeButton(tr("Sulje","Close"),null).show();
     }
 
     private void addTab(LinearLayout parent,String label,Class<? extends Activity> target){
