@@ -115,11 +115,46 @@ public class MainActivity extends Activity {
         addHubButton(root,tr("🔧 Kehitys ja laskurit","🔧 Upgrades and calculators"),CalculatorHubActivity.class);
         addHubButton(root,tr("⚙ Asetukset ja tietolähteet","⚙ Settings and data sources"),UnifiedActivity.class);
         root.addView(text("WOS community data • App owner: HAND33h",13,true,MUTED,Gravity.CENTER),lp(0,36,0,0));
+        // Persistent bottom navigation remains visible while scoreboard content scrolls.
+        LinearLayout shell=new LinearLayout(this);
+        shell.setOrientation(LinearLayout.VERTICAL);
+        shell.setBackgroundColor(BG);
+        shell.addView(scroll,new LinearLayout.LayoutParams(-1,0,1f));
+        LinearLayout tabs=new LinearLayout(this);
+        tabs.setOrientation(LinearLayout.HORIZONTAL);
+        tabs.setPadding(8,8,8,8);
+        tabs.setBackgroundColor(Color.rgb(20,37,58));
+        addTab(tabs,tr("🏠 Koti","🏠 Home"),null);
+        addTab(tabs,tr("📊 Data","📊 Data"),DataSourcesActivity.class);
+        addTab(tabs,tr("⚔ Taistelu","⚔ Battle"),BattleSimulatorActivity.class);
+        addTab(tabs,tr("🔧 Kehitys","🔧 Upgrade"),CalculatorHubActivity.class);
+        addTab(tabs,tr("⚙ Lisää","⚙ More"),UnifiedActivity.class);
+        shell.addView(tabs,new LinearLayout.LayoutParams(-1,-2));
 
         load.setOnClickListener(v->loadBestData());
         dataCenter.setOnClickListener(v->{saveInputs();startActivity(new Intent(this,DataSourcesActivity.class));});
         exportButton.setOnClickListener(v->chooseXlsxLocation());
-        setContentView(scroll);
+        setContentView(shell);
+    }
+
+    private void addTab(LinearLayout parent,String label,Class<? extends Activity> target){
+        Button tab=button(label,target==null?Color.rgb(29,114,158):Color.rgb(30,54,79),10);
+        LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(0,-2,1f);
+        p.setMargins(2,0,2,0);
+        parent.addView(tab,p);
+        tab.setAllCaps(false);
+        tab.setMinWidth(0);
+        tab.setMinimumWidth(0);
+        tab.setPadding(2,12,2,12);
+        tab.setOnClickListener(v->{
+            if(target!=null){saveInputs();startActivity(new Intent(this,target));}
+            else scrollToTop();
+        });
+    }
+
+    private void scrollToTop(){
+        // The home tab is already on this screen.
+        Toast.makeText(this,tr("Olet etusivulla","You are on Home"),Toast.LENGTH_SHORT).show();
     }
 
     private void addHubButton(LinearLayout parent,String label,Class<? extends Activity> target){
