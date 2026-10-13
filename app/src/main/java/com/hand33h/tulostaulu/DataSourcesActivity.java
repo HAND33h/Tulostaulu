@@ -50,6 +50,7 @@ public class DataSourcesActivity extends Activity {
         SharedPreferences p=getSharedPreferences(PREFS,MODE_PRIVATE);
         english="en".equals(p.getString("lang","fi"));
         store=new PlayerDataStore(this);
+        SecurePrefs.migrateLegacyApiKey(this);
 
         ScrollView sc=new ScrollView(this);
         LinearLayout root=new LinearLayout(this);
@@ -79,7 +80,7 @@ public class DataSourcesActivity extends Activity {
         refreshBtn.setOnClickListener(v->refreshKnown());
         showBtn.setOnClickListener(v->showLocal());
         ocrBtn.setOnClickListener(v->{saveState();startActivity(new Intent(this,ScreenshotImportActivity.class));});
-        setContentView(sc);
+        BottomNavigation.show(this,sc,BottomNavigation.RANKING);
     }
 
     private void setBusy(boolean busy){importBtn.setEnabled(!busy);refreshBtn.setEnabled(!busy);}
@@ -136,7 +137,7 @@ public class DataSourcesActivity extends Activity {
 
     private Resp getPlayer(String fid){
         HttpURLConnection c=null;try{
-            String key=getSharedPreferences(PREFS,MODE_PRIVATE).getString("api_key","").trim();
+            String key=SecurePrefs.getApiKey(this).trim();
             if(key.toLowerCase(Locale.ROOT).startsWith("bearer "))key=key.substring(7).trim();
             if(key.isEmpty())return new Resp(401,"Missing API key");
             c=(HttpURLConnection)new URL(API+"/player/"+Uri.encode(fid)).openConnection();c.setConnectTimeout(15000);c.setReadTimeout(25000);c.setRequestProperty("Accept","application/json");c.setRequestProperty("X-API-Key",key);c.setRequestProperty("Authorization","Bearer "+key);c.setRequestProperty("User-Agent","WOSControl/1.0");
