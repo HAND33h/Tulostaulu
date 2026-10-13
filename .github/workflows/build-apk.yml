@@ -32,30 +32,19 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Prepare WOS artwork
+      - name: Validate Bunny vector artwork
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p app/src/main/res/drawable app/src/main/res/mipmap-xxxhdpi
           python3 - <<'PY'
           from pathlib import Path
-          import base64, re
-          def decode(src, dst):
-              s = Path(src).read_text()
-              s = re.sub(r'[^A-Za-z0-9+/=]', '', s)
-              s += '=' * ((-len(s)) % 4)
-              Path(dst).write_bytes(base64.b64decode(s, validate=False))
-          decode('app/src/main/splash_image.b64', 'app/src/main/res/drawable/wos_splash.jpg')
-          decode('app/src/main/bunny_icon.b64', 'app/src/main/res/drawable/wos_bunny.jpg')
-          PY
-          cp app/src/main/res/drawable/wos_bunny.jpg app/src/main/res/mipmap-xxxhdpi/ic_launcher.jpg
-          cp app/src/main/res/drawable/wos_bunny.jpg app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.jpg
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path('app/src/main/java/com/hand33h/tulostaulu/MainActivity.java')
-          s = p.read_text()
-          s = s.replace("replace('.', ' › ')", "replace(\".\", \" › \")")
-          p.write_text(s)
+          from xml.etree import ElementTree as ET
+          path=Path('app/src/main/res/drawable/app_icon.xml')
+          ET.parse(path)
+          text=path.read_text()
+          assert 'android:pathData' in text, 'Bunny icon is missing path data'
+          assert 'bunny' in text.lower(), 'Unexpected icon source'
+          print('Bunny vector icon OK')
           PY
 
       - name: Build debug APK
@@ -64,7 +53,7 @@ jobs:
       - name: Upload test APK
         uses: actions/upload-artifact@v4
         with:
-          name: WOS-Tulostaulu-Test-APK
+          name: Bunny-Android-Test-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7
@@ -95,15 +84,15 @@ jobs:
           BUILD_TOOLS="$(ls -1 "$ANDROID_HOME/build-tools" | sort -V | tail -1)"
           ZIPALIGN="$ANDROID_HOME/build-tools/$BUILD_TOOLS/zipalign"
           APKSIGNER="$ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner"
-          "$ZIPALIGN" -f -p 4 app/build/outputs/apk/release/app-release-unsigned.apk WOS-Tulostaulu-aligned.apk
-          "$APKSIGNER" sign --ks release.jks --ks-key-alias "$KEY_ALIAS" --ks-pass "pass:$KEYSTORE_PASSWORD" --key-pass "pass:$KEY_PASSWORD" --out WOS-Tulostaulu.apk WOS-Tulostaulu-aligned.apk
+          "$ZIPALIGN" -f -p 4 app/build/outputs/apk/release/app-release-unsigned.apk Bunny-Android-aligned.apk
+          "$APKSIGNER" sign --ks release.jks --ks-key-alias "$KEY_ALIAS" --ks-pass "pass:$KEYSTORE_PASSWORD" --key-pass "pass:$KEY_PASSWORD" --out Bunny-Android.apk WOS-Tulostaulu-aligned.apk
           "$APKSIGNER" verify --verbose --print-certs WOS-Tulostaulu.apk
 
       - name: Upload signed APK
         if: ${{ env.HAS_SIGNING_KEY == 'true' }}
         uses: actions/upload-artifact@v4
         with:
-          name: WOS-Tulostaulu-APK
+          name: Bunny-Android-APK
           path: WOS-Tulostaulu.apk
           if-no-files-found: error
           retention-days: 7
