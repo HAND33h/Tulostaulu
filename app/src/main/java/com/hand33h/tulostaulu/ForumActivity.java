@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.*;
+import android.text.InputType;
 
 public class ForumActivity extends Activity {
     private static final String PREFS = "wos_tulostaulu";
@@ -42,6 +43,46 @@ public class ForumActivity extends Activity {
         info.addView(text(tr("FORUM v1", "FORUM v1"), 13, true, Color.rgb(119,205,255)));
         info.addView(text(tr("Osio on nyt erotettu omaksi sovellusnäkymäkseen. Seuraava vaihe liittää viestit, vastaukset, tykkäykset, kuvat ja moderoinnin palvelimeen.", "The forum is now a standalone app section. The next stage connects posts, replies, likes, images and moderation to the backend."), 12, false, Color.WHITE), margins(0,5,0,0));
         root.addView(info, margins(0,18,0,0));
+
+        LinearLayout translationPanel=panel();
+        translationPanel.setPadding(dp(14),dp(14),dp(14),dp(14));
+        translationPanel.addView(text(tr("🌍 Viestien automaattikäännös – kokeile","🌍 Automatic message translation – try it"),17,true,Color.rgb(244,201,95)));
+        translationPanel.addView(text(tr("Kirjoita tai liitä esimerkkiviesti millä tahansa tuetulla kielellä. Käännös näkyy valitulla lukukielellä.","Type or paste a sample message in a supported language. Translation appears in your reading language."),12,false,Color.WHITE),margins(0,7,0,9));
+        EditText sample=new EditText(this);
+        sample.setHint(tr("Kirjoita testiviesti...","Type a test message..."));
+        sample.setTextColor(Color.WHITE);
+        sample.setHintTextColor(Color.rgb(175,196,211));
+        sample.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        sample.setMinLines(2);
+        translationPanel.addView(sample,margins(0,0,0,8));
+        TextView translated=text(tr("Käännös näkyy tässä. Alkuperäinen viesti säilyy yläpuolella.","Translation appears here. Original text remains above."),14,false,Color.WHITE);
+        Button translate=new Button(this);
+        translate.setAllCaps(false);
+        translate.setText(tr("🌍 Käännä lukukielelleni","🌍 Translate to my language"));
+        translate.setOnClickListener(v->{
+            String original=sample.getText().toString().trim();
+            if(original.isEmpty()){
+                Toast.makeText(this,tr("Kirjoita ensin viesti","Enter a message first"),Toast.LENGTH_SHORT).show();
+                return;
+            }
+            translate.setEnabled(false);
+            translated.setText(tr("Tunnistetaan kieltä ja ladataan kielimallia tarvittaessa…","Detecting language and downloading a model if needed…"));
+            ForumTranslation.translate(this,original,new ForumTranslation.Callback(){
+                @Override public void onSuccess(String result){
+                    runOnUiThread(()->{translated.setText(result);translate.setEnabled(true);});
+                }
+                @Override public void onError(String original,String reason){
+                    runOnUiThread(()->{
+                        translated.setText(original);
+                        translate.setEnabled(true);
+                        Toast.makeText(ForumActivity.this,tr("Käännös ei onnistunut. Tarkista Wi-Fi ja kielituki.","Translation unavailable. Check Wi-Fi and language support."),Toast.LENGTH_LONG).show();
+                    });
+                }
+            });
+        });
+        translationPanel.addView(translate,margins(0,0,0,8));
+        translationPanel.addView(translated,margins(0,0,0,0));
+        root.addView(translationPanel,margins(0,16,0,0));
 
         setContentView(sc);
     }
