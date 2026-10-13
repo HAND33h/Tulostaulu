@@ -129,7 +129,7 @@ public class MyAccountActivity extends Activity {
             status.setText(tr("✓ Nopeudet tallennettu", "✓ Speeds saved"));
         });
 
-        setContentView(sc);
+        BottomNavigation.show(this,sc,BottomNavigation.MORE);
     }
 
     private void setAnonUi(boolean on, Button connect) {
