@@ -24,11 +24,12 @@ public class ForumActivity extends Activity {
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(dp(18), dp(20), dp(18), dp(40));
-        root.setBackgroundColor(Color.rgb(7, 23, 39));
+        root.setBackgroundColor(Color.rgb(12, 23, 38));
         sc.addView(root);
 
-        root.addView(text("💬  WOS FORUM", 28, true, Color.WHITE));
-        root.addView(text(tr("Bunny King -yhteisö", "Bunny King community"), 14, true, Color.rgb(119,205,255)), margins(0,4,0,5));
+        root.addView(text("👑  BUNNY KING", 26, true, Color.rgb(239,192,90)));
+        root.addView(text("💬  WOS FORUM", 24, true, Color.WHITE), margins(0,6,0,0));
+        root.addView(text(tr("Bunny King -yhteisö", "Bunny King community"), 14, true, Color.rgb(239,192,90)), margins(0,4,0,5));
         root.addView(text(anonymous ? tr("🕶️ Anonyymi tila käytössä", "🕶️ Anonymous mode enabled") : tr("Keskustelut, rekrytointi ja oppaat yhdessä paikassa.", "Discussions, recruitment and guides in one place."), 12, false, Color.rgb(202,224,238)), margins(0,0,0,16));
 
         addCategory(root, "🌐", tr("Yleinen", "General"), tr("WOS-keskustelu ja kysymykset", "WOS discussion and questions"));
@@ -46,7 +47,7 @@ public class ForumActivity extends Activity {
 
         LinearLayout translationPanel=panel();
         translationPanel.setPadding(dp(14),dp(14),dp(14),dp(14));
-        translationPanel.addView(text(tr("🌍 Viestien automaattikäännös – kokeile","🌍 Automatic message translation – try it"),17,true,Color.rgb(244,201,95)));
+        translationPanel.addView(text(tr("🌍 Viestien automaattikäännös – kokeile","🌍 Automatic message translation – try it"),17,true,Color.rgb(239,192,90)));
         translationPanel.addView(text(tr("Kirjoita tai liitä esimerkkiviesti millä tahansa tuetulla kielellä. Käännös näkyy valitulla lukukielellä.","Type or paste a sample message in a supported language. Translation appears in your reading language."),12,false,Color.WHITE),margins(0,7,0,9));
         EditText sample=new EditText(this);
         sample.setHint(tr("Kirjoita testiviesti...","Type a test message..."));
@@ -97,9 +98,9 @@ public class ForumActivity extends Activity {
         b.setTypeface(Typeface.DEFAULT_BOLD);
         b.setPadding(dp(16), dp(10), dp(16), dp(10));
         GradientDrawable g = new GradientDrawable();
-        g.setColor(Color.rgb(18,48,70));
+        g.setColor(Color.rgb(24,61,92));
         g.setCornerRadius(dp(16));
-        g.setStroke(dp(1), Color.rgb(52,104,136));
+        g.setStroke(dp(1), Color.rgb(169,135,68));
         b.setBackground(g);
         b.setOnClickListener(v -> Toast.makeText(this, tr("Keskusteluketjut kytketään seuraavassa vaiheessa.", "Discussion threads will be connected in the next stage."), Toast.LENGTH_SHORT).show());
         root.addView(b, margins(0,0,0,9));
@@ -109,9 +110,9 @@ public class ForumActivity extends Activity {
         LinearLayout l = new LinearLayout(this);
         l.setOrientation(LinearLayout.VERTICAL);
         GradientDrawable g = new GradientDrawable();
-        g.setColor(Color.rgb(13,48,76));
+        g.setColor(Color.rgb(24,50,73));
         g.setCornerRadius(dp(16));
-        g.setStroke(dp(1), Color.rgb(37,78,105));
+        g.setStroke(dp(1), Color.rgb(169,135,68));
         l.setBackground(g);
         return l;
     }
