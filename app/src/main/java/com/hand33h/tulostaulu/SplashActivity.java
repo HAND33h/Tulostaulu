@@ -31,7 +31,7 @@ public class SplashActivity extends Activity {
         setContentView(image);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, UnifiedActivity.class));
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
             finish();
         }, 1900);
     }
