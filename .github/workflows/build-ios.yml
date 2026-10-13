@@ -1,0 +1,25 @@
+name: Build iOS Simulator App
+on:
+  push:
+    paths:
+      - 'ios/**'
+      - '.github/workflows/build-ios.yml'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate project
+        working-directory: ios
+        run: xcodegen generate
+      - name: Compile for iOS Simulator
+        working-directory: ios
+        run: xcodebuild -project BunnyKing.xcodeproj -scheme BunnyKing -sdk iphonesimulator -configuration Debug -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BunnyKing-iOS-Simulator
+          path: ios/build/Build/Products/Debug-iphonesimulator/BunnyKing.app
+          retention-days: 7
