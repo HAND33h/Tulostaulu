@@ -11,6 +11,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.View;
+import android.view.WindowInsets;
+import android.graphics.drawable.GradientDrawable;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -76,7 +79,17 @@ public class MainActivity extends Activity {
         root.addView(text("WHITEOUT SURVIVAL • COMMAND CENTER",13,true,MUTED,Gravity.CENTER),lp(0,0,0,18));
 
         Spinner language=new Spinner(this);
-        language.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"🇫🇮 Suomi","🇬🇧 English"}));
+        ArrayAdapter<String> languageAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,new String[]{"🇫🇮 Suomi","🇬🇧 English"}){
+            @Override public View getView(int position,View convertView,android.view.ViewGroup parent){
+                TextView v=(TextView)super.getView(position,convertView,parent);v.setTextColor(TEXT);v.setTextSize(17);v.setPadding(18,14,18,14);return v;
+            }
+            @Override public View getDropDownView(int position,View convertView,android.view.ViewGroup parent){
+                TextView v=(TextView)super.getDropDownView(position,convertView,parent);v.setTextColor(TEXT);v.setBackgroundColor(Color.rgb(24,50,73));v.setPadding(18,18,18,18);return v;
+            }
+        };
+        languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        language.setAdapter(languageAdapter);
+        GradientDrawable languageBg=new GradientDrawable();languageBg.setColor(Color.rgb(24,50,73));languageBg.setCornerRadius(14f);language.setBackground(languageBg);
         language.setSelection(english?1:0);
         root.addView(language,new LinearLayout.LayoutParams(-1,-2));
         language.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
@@ -105,11 +118,12 @@ public class MainActivity extends Activity {
                 String feature=prefs.getString("home_tile_"+slot,defaults[slot]);
                 Button tile=button(featureLabel(feature),Color.rgb(24,61,92),15);
                 tile.setAllCaps(false);
-                tile.setMinHeight(240);
+                tile.setMinHeight(0);
+                tile.setMinimumHeight(0);
                 tile.setTextColor(GOLD);
                 tile.setTextSize(17);
                 tile.setElevation(7f);
-                LinearLayout.LayoutParams tileParams=new LinearLayout.LayoutParams(0,-2,1f);
+                LinearLayout.LayoutParams tileParams=new LinearLayout.LayoutParams(0,dp(112),1f);
                 tileParams.setMargins(5,5,5,5);
                 pair.addView(tile,tileParams);
                 tile.setContentDescription(featureLabel(feature).replace("\\n"," "));
@@ -149,7 +163,15 @@ public class MainActivity extends Activity {
         more.setOnClickListener(v->showMore());
         shell.addView(tabs,new LinearLayout.LayoutParams(-1,-2));
 
+        // Respect Android gesture and three-button navigation insets on Android 15/16.
+        shell.setOnApplyWindowInsetsListener((view,insets)->{
+            android.graphics.Insets bars=insets.getInsets(WindowInsets.Type.systemBars());
+            tabs.setPadding(8,12,8,14+bars.bottom);
+            root.setPadding(30,34+bars.top,30,38);
+            return insets;
+        });
         setContentView(shell);
+        shell.requestApplyInsets();
     }
 
     private static final String[] FEATURE_IDS={"data","battle","reports","upgrades","forum","calculator","sources","settings"};
@@ -399,6 +421,7 @@ public class MainActivity extends Activity {
     private String formatNumber(long n){return String.format(Locale.US,"%,d",n).replace(',',' ');}
     private void showError(String m){runOnUiThread(()->{statusText.setText(m);resultsText.setText(tr("Ei live-dataa. Paikallinen state-rekisteri säilyy ennallaan.","No live data. The local state registry is unchanged."));exportButton.setEnabled(!rows.isEmpty());});}
     private void hideKeyboard(){InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);if(imm!=null)imm.hideSoftInputFromWindow(stateInput.getWindowToken(),0);}
+    private int dp(int n){return (int)(n*getResources().getDisplayMetrics().density+0.5f);}
     private LinearLayout.LayoutParams lp(int l,int t,int r,int b){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(l,t,r,b);return p;}
     private TextView text(String s,int size,boolean bold,int color,int gravity){TextView v=new TextView(this);v.setText(s);v.setTextSize(size);v.setTextColor(color);v.setGravity(gravity);if(bold)v.setTypeface(Typeface.DEFAULT_BOLD);return v;}
     private EditText input(String hint,String value,boolean numeric){EditText e=new EditText(this);e.setHint(hint);e.setHintTextColor(Color.rgb(174,194,211));e.setTextColor(TEXT);e.setBackgroundColor(Color.rgb(32,53,76));e.setPadding(22,16,22,16);e.setText(value);e.setSingleLine(true);e.setInputType(numeric?InputType.TYPE_CLASS_NUMBER:InputType.TYPE_CLASS_TEXT);return e;}
