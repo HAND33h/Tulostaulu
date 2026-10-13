@@ -41,10 +41,10 @@ public class MainActivity extends Activity {
     private static final int CREATE_XLSX = 9002;
     private static final String PREFS = "wos_tulostaulu";
     private static final String API_BASE = "https://woscontrol.com/api/v1";
-    private static final int BG = Color.rgb(234,244,251);
-    private static final int TEXT = Color.rgb(18,43,64);
-    private static final int MUTED = Color.rgb(68,94,113);
-    private static final int ACCENT = Color.rgb(20,125,190);
+    private static final int BG = Color.rgb(12,23,38);
+    private static final int TEXT = Color.rgb(239,247,255);
+    private static final int MUTED = Color.rgb(159,185,207);
+    private static final int ACCENT = Color.rgb(23,128,195);
 
     private EditText stateInput, fidInput;
     private TextView statusText, resultsText;
@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
         scroll.setBackgroundColor(BG);
         scroll.addView(root);
 
-        root.addView(text("👑 BUNNY KING • WOS",29,true,TEXT,Gravity.CENTER),lp(0,0,0,4));
+        root.addView(text("👑 BUNNY KING • WOS",29,true,Color.rgb(244,201,95),Gravity.CENTER),lp(0,0,0,4));
         root.addView(text(tr("WOS DATA / TULOSTAULU","WOS DATA / SCOREBOARD"),18,true,MUTED,Gravity.CENTER),lp(0,0,0,18));
 
         Spinner language=new Spinner(this);
@@ -304,8 +304,8 @@ public class MainActivity extends Activity {
     private void hideKeyboard(){InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);if(imm!=null)imm.hideSoftInputFromWindow(stateInput.getWindowToken(),0);}
     private LinearLayout.LayoutParams lp(int l,int t,int r,int b){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(l,t,r,b);return p;}
     private TextView text(String s,int size,boolean bold,int color,int gravity){TextView v=new TextView(this);v.setText(s);v.setTextSize(size);v.setTextColor(color);v.setGravity(gravity);if(bold)v.setTypeface(Typeface.DEFAULT_BOLD);return v;}
-    private EditText input(String hint,String value,boolean numeric){EditText e=new EditText(this);e.setHint(hint);e.setHintTextColor(Color.rgb(105,120,132));e.setTextColor(TEXT);e.setBackgroundColor(Color.WHITE);e.setPadding(22,16,22,16);e.setText(value);e.setSingleLine(true);e.setInputType(numeric?InputType.TYPE_CLASS_NUMBER:InputType.TYPE_CLASS_TEXT);return e;}
-    private Button button(String label,int color,int size){Button b=new Button(this);b.setText(label);b.setTextColor(Color.WHITE);b.setTextSize(size);b.setTypeface(Typeface.DEFAULT_BOLD);b.setBackgroundColor(color);return b;}
+    private EditText input(String hint,String value,boolean numeric){EditText e=new EditText(this);e.setHint(hint);e.setHintTextColor(Color.rgb(174,194,211));e.setTextColor(TEXT);e.setBackgroundColor(Color.rgb(32,53,76));e.setPadding(22,16,22,16);e.setText(value);e.setSingleLine(true);e.setInputType(numeric?InputType.TYPE_CLASS_NUMBER:InputType.TYPE_CLASS_TEXT);return e;}
+    private Button button(String label,int color,int size){Button b=new Button(this);b.setText(label);b.setTextColor(Color.WHITE);b.setTextSize(size);b.setTypeface(Typeface.DEFAULT_BOLD);android.graphics.drawable.GradientDrawable bg=new android.graphics.drawable.GradientDrawable();bg.setColor(color);bg.setCornerRadius(22f);bg.setStroke(2,Color.rgb(76,112,143));b.setBackground(bg);b.setPadding(12,12,12,12);return b;}
     private String tr(String fi,String en){return english?en:fi;}
 
     @Override protected void onDestroy(){super.onDestroy();if(store!=null)store.close();}
