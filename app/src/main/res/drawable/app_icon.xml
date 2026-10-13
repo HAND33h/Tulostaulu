@@ -2,7 +2,7 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp"
     android:viewportWidth="108" android:viewportHeight="108">
-    <!-- Self-contained vector logo: no JPEG to corrupt during build. -->
+    <!-- Bunny crown self-contained vector logo: no JPEG to corrupt during build. -->
     <path android:fillColor="#102640" android:pathData="M54,4 C81.6,4 104,26.4 104,54 C104,81.6 81.6,104 54,104 C26.4,104 4,81.6 4,54 C4,26.4 26.4,4 54,4 Z"/>
     <path android:strokeColor="#EFC05A" android:strokeWidth="2" android:fillColor="#00102640" android:pathData="M54,8 C79.4,8 100,28.6 100,54 C100,79.4 79.4,100 54,100 C28.6,100 8,79.4 8,54 C8,28.6 28.6,8 54,8 Z"/>
     <path android:fillColor="#FAF9FA" android:pathData="M36,55 C28,44 20,31 21,23 C22,13 31,13 37,20 C43,28 45,39 45,47 Z"/>
